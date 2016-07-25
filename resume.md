@@ -39,7 +39,7 @@ mentoring staff in the use of Performa's proprietary technology stack.
 
 ## Experience
 
-### BIDS Solution Architect at Performa Software USA (2015 - 2016)
+### BIDS Solution Architect at Performa Software USA (2015-16)
 Implementation of a Budget Management System for the State of Tennessee.
 
 * ASP.NET / C#
@@ -120,6 +120,7 @@ Marked assignments and tests.
 * Tutored in VB.NET and C++
 
 ## Projects
+
 ### State of Tennessee Budget Management System (2015-16)
 Implementation of Budget Management System for the Tennessee State Government.
 
@@ -255,6 +256,7 @@ Managed bug fixes and deployment of and access based grant management system (Fi
 * VBA
 
 ## Education
+
 ### University of Canberra (2000-03)
 Bachelor of Engineering (BEng), Computer Engineering (discontinued).
 Member of the Golden Key International Honour society
