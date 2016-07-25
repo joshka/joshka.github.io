@@ -55,7 +55,7 @@ Services (Victoria) budget management system.
 * ASP.NET / VB.NET
 * Git
 
-### Senior Developer at Readify (2010-2014)
+### Senior Developer at Readify (2010-14)
 Full stack consultant / developer for a variety of private and government
 customers mainly focussed around .NET and related Microsoft technologies.
 This position was a combination of project work, mentoring teams,
@@ -68,13 +68,13 @@ section for more information.
 * Microsoft SQL Server / SSRS / Oracle
 * TFS / Git
 
-### Software Developer / Consultant at Beacon IT (2007-2009)
+### Software Developer / Consultant at Beacon IT (2007-09)
 Analysis, design and implementation of new features and bug fixes for Beacon
 BIDS. Created and delivered training courses. End user support for product
 managing triage, bug fix, feature development, documentation etc.
 
 * ASP.NET / C# / VB
-* Microsoft SQL Server and SSRS 2005-2008 / Oracle
+* Microsoft SQL Server and SSRS 2005-08 / Oracle
 * TFS
 * Infor BPA / Hyperion Financials
 
@@ -88,7 +88,7 @@ system. Creation of Crystal reports and ad hoc membership queries
 * Access
 * VBA
 
-### Software Developer at F1 Solutions Australia (2004-2005)
+### Software Developer at F1 Solutions Australia (2004-05)
 Consultant developer for a variety of government and private companies. See
 projects section for more details.
 
@@ -96,7 +96,7 @@ projects section for more details.
 * VBA / VB.NET
 * HTML / JavaScript
 
-### Managed Security Services Operator at Citadel Securix / eGlobal (2002-2003)
+### Managed Security Services Operator at Citadel Securix / eGlobal (2002-03)
 Remote monitoring (24/7) and administration of firewalls, VPNs, and Intrusion
 Detection Systems Enhancements on Perl based ticketing system (Request Tracker)
 to support and enhance reporting and client workflows.
@@ -107,11 +107,11 @@ to support and enhance reporting and client workflows.
 * PureSecure
 * RealSecure
 
-### IT Support at IEAust (Engineers Australia) (2001-2002)
+### IT Support at IEAust (Engineers Australia) (2001-02)
 Integrated membership system with weekly newsletter emails using VBA and Novel
 Groupwise APIs. Miscellaneous IT support across the organisation.
 
-### Tutor / Student Resource Centre at University of Canberra (2000-2002)
+### Tutor / Student Resource Centre at University of Canberra (2000-02)
 Class tutor for several first and second year university IT classes.
 Tutored at the Information Services and Engineering Student Resource Centre in
 IT and Mathematics subjects. Led class discussions on tutorial material.
@@ -120,7 +120,7 @@ Marked assignments and tests.
 * Tutored in VB.NET and C++
 
 ## Projects
-### State of Tennessee Budget Management System (2015-2016)
+### State of Tennessee Budget Management System (2015-16)
 Implementation of Budget Management System for the Tennessee State Government.
 
 * ASP.NET / C#
@@ -129,7 +129,7 @@ Implementation of Budget Management System for the Tennessee State Government.
 * SQL Server Reporting Services (SSRS)
 * Integration with PeopleSoft commitment control ledger
 
-### Department of Health and Human Services (Victoria) - BMS (2014-2015)
+### Department of Health and Human Services (Victoria) - BMS (2014-15)
 Bug fixes and new feature development on a government budget management system.
 
 * ASP.NET
@@ -161,7 +161,7 @@ leading to a successful launch of UniSuper's customer facing website.
 * SiteCore
 * SpecFlow
 
-### VivaTags (2012-2013)
+### VivaTags (2012-13)
 Front and backend development for mobile payments platform.
 
 * ASP.NET MVC / C#
@@ -183,7 +183,7 @@ Development of a mobile single page banking application.
 * ASP.NET MVC / C#
 * JavaScript (KnockoutJS / jQuery)
 
-### Australian Taxation Office DART project (2010-2011)
+### Australian Taxation Office DART project (2010-11)
 TFS Subject Matter Expert. Process improvement, support, planning.
 Tool creation for integrating TFS into an enterprise wide
 Configuration Management process.
@@ -241,7 +241,7 @@ Customs Service
 * VBA
 * SQL
 
-### National Occupational Health and Safety Commission - Dangerous Goods Ready Reckoner (2004-2005)
+### National Occupational Health and Safety Commission - Dangerous Goods Ready Reckoner (2004-05)
 Development of a JavaScript based application to manage the placarding requirements for facilities and vehicles storing dangerous materials.
 
 * JavaScript
@@ -255,7 +255,7 @@ Managed bug fixes and deployment of and access based grant management system (Fi
 * VBA
 
 ## Education
-### University of Canberra (2000-2003)
+### University of Canberra (2000-03)
 Bachelor of Engineering (BEng), Computer Engineering (discontinued).
 Member of the Golden Key International Honour society
 
