@@ -7,7 +7,7 @@
 
 # Site settings
 title: joshka.net
-#email: joshka.blog2016@no.spam.joshka.net
+email: joshka.blog2016@no.spam.joshka.net
 description: > # this means to ignore newlines until "baseurl:"
   The homepage of Joshua McKinney.
 baseurl: "" # the subpath of your site, e.g. /blog
