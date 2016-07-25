@@ -1,3 +1,8 @@
+---
+layout: page
+title: Resume
+permalink: /resume/
+---
 # Joshua McKinney
 Software Engineer seeking an opportunity to build something awesome in
 Seattle, WA.
