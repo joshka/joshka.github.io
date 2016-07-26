@@ -18,7 +18,7 @@ objective is to create and build great software.
 Most recently, I worked with Performa Software at the Tennessee Department of
 Finance to deliver a best of breed budget management system. This is a web
 based workflow system with integration points into the department's PeopleSoft
-ccounting system as well as SQL Server Analysis Services cubes and queries. My
+accounting system as well as SQL Server Analysis Services cubes and queries. My
 responsibilities included requirements analysis, implementation, delivery, and
 mentoring staff in the use of Performa's proprietary technology stack.
 
@@ -216,7 +216,7 @@ Developed and delivered training material to small onsite team.
 * ASP.NET / C#
 * SQL Server
 
-### Institut d'émission des départements d'Outre Mer (IEDOM) Budget Management System (2008)
+### Institut d'émission des départements d'Outre Mer (IEDOM) Budget Management System (2008)
 Analysis, design, implementation and rollout of annual budget entry and
 consolidation system. Onsite Training and mentoring implementation consultants
 at Beacon's French distributor, AEXIS, in usage and customization of budget
