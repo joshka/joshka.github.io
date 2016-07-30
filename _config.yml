@@ -16,6 +16,7 @@ twitter_username: joshuamck
 github_username: joshka
 linkedin_username: joshuamckinney
 soundcloud_username: joshka
+permalink: /:year/:month/:title
 
 # Build settings
 markdown: kramdown
