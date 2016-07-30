@@ -4,10 +4,11 @@ title:  "My Geek Origin Story"
 date:   2016-07-30 14:14:00 -0500
 categories:
 ---
-Like many a software engineer, I'm restarting my blog. This time I'm going to
-make stick :D. I'm going to kick this iteration off with an idea inspired by
-Michael Kordahi (@delicateGenius) many years ago for Tech.Ed 2011, the
-[geek origin story](http://delicategeniusblog.com/my-geek-origin-story-whats-yours/).
+Like many a software engineer does again and again, I'm restarting my blog.
+This time I'm going to kick this iteration off with an idea inspired by
+[Michael Kordahi (@delicateGenius)](http://delicategeniusblog.com)
+many years ago for Tech.Ed 2011, the
+[Geek Origin Story](http://delicategeniusblog.com/my-geek-origin-story-whats-yours/).
 
 One of my earliest memories of computers was at the age of 6 or 7 finding a copy
 of [The CP/M Handbook](https://www.amazon.com/CP-Handbook-Mp-Rodnay-Zaks/dp/0895880482)
