@@ -63,7 +63,7 @@ dropping out as I found the real world workplace more interesting than learning
 things I'd been doing most of my life. I sometimes regret not finishing, but so
 far, it's not held me back from delivering software projects big and small.
 
-Since then, I've been really fortunate to be able to take something that I found
-a passion for at an early age to a job. I never would have imagined that that
+Since then, I've been really fortunate to be able to make something that I found
+a passion for at an early age into a job. I never would have imagined that that
 one book would have lead to all the interesting things I've worked on over the
 course of my career.
