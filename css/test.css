@@ -1,0 +1,135 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: #369;
+}
+a:hover,
+a:focus {
+    text-decoration: underline;
+}
+
+#layout {
+  padding: 0;
+}
+
+.sidebar {
+  background: #345;
+  color: #fff;
+}
+
+.site-header {
+    text-align: center;
+    top: auto;
+    margin: 3em auto;
+}
+
+.nav-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.nav-item {
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+}
+.nav-item a {
+    background: transparent;
+    border: 2px solid rgb(176, 202, 219);
+    color: #fff;
+    margin-top: 1em;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 85%;
+}
+.nav-item a:hover,
+.nav-item a:focus {
+    border: 2px solid rgb(61, 146, 201);
+    text-decoration: none;
+}
+
+.content {
+  padding: 2em 3em 0;
+  margin-left: 20%;
+}
+
+.site-title {
+  font-family: "Raleway", sans-serif;
+}
+
+.site-tagline {
+  font-family: "Raleway", sans-serif;
+}
+
+.site-title,
+.site-tagline {
+  margin: 0;
+}
+
+.site-title {
+  text-transform: uppercase;
+}
+
+.site-tagline {
+  font-weight: 300;
+  color: rgb(176, 202, 219);
+}
+
+@media (min-width: 48em) {
+  .content {
+    padding: 2em 3em 0;
+    margin-left: 20%;
+  }
+
+  .site-header {
+    margin: 80% 2em 0;
+    text-align: right;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+  }
+}
+
+.sidebar p {
+  font-family: "Raleway";
+  //color: rgb(176, 202, 219);
+}
+
+.content-heading {
+    text-transform: uppercase;
+    color: #aaa;
+    border-bottom: 1px solid #eee;
+    padding: 0.4em 0;
+    font-size: 80%;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+}
+
+.post {
+    padding-bottom: 2em;
+}
+.post-title {
+    font-size: 2em;
+    color: #222;
+    margin-bottom: 0.2em;
+}
+
+.post-content {
+    font-family: Georgia, "Cambria", serif;
+    color: #444;
+    line-height: 1.8em;
+}
+
+.post-meta {
+    color: #999;
+    font-size: 90%;
+    margin: 0;
+}
