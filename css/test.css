@@ -28,6 +28,10 @@ a:focus {
     margin: 3em auto;
 }
 
+.site-header a {
+  color: rgb(176, 202, 219);
+}
+
 .nav-list {
     margin: 0;
     padding: 0;
@@ -73,6 +77,10 @@ a:focus {
 
 .site-title {
   text-transform: uppercase;
+}
+
+.site-title a {
+  color: #fff;
 }
 
 .site-tagline {

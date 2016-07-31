@@ -3,11 +3,6 @@ layout: default
 ---
 
 <div class="home">
-
-  <!-- {% capture my_include %}{% include about.md %}{% endcapture %}
-  {{ my_include | markdownify }} -->
-
-
   <div class="posts">
     <h1 class="content-heading">Recent Posts</h1>
     {% for post in site.posts %}
@@ -19,12 +14,8 @@ layout: default
         </h2>
         <p class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</p>
       </header>
-      <!-- <p class="post-description">{{ post.excerpt | remove: '<p>' | remove: '</p>' }}</p> -->
       <div class="post-content">{{ post.content  }}</div>
     </section>
     {% endfor %}
   </ul>
-
-  <!-- <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p> -->
-
 </div>

@@ -1,8 +1,8 @@
 <header class="site-header">
   <h1 class="site-title">
-    <!-- <a href="{{ site.baseurl }}/"> -->
+    <a href="{{ site.baseurl }}/">
       {{ site.title }}
-    <!-- </a> -->
+    </a>
     </h1>
   <h2 class="site-tagline">{{ site.tagline }}</h2>
 
@@ -39,4 +39,10 @@
         <i class="fa fa-soundcloud" aria-hidden="true"></i></a>
     </li>
   </nav>
+
+  <p class="rss-subscribe">Subscribe
+    <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+  <p>Built with <a href="https://jekyllrb.com/">Jekyll</a></p>
+  <p>Copyright &copy; 2016</p>
+
 </header>
