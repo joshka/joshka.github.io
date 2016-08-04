@@ -11,11 +11,13 @@ on OSX is a little different than the way currently suggested on the official si
 ## Instructions
 
 If you have not already installed Homebrew, install it.
+
 ```console
 $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
 Install dotnet using caskroom. This will also automatically install openssl if it's not already installed.
+
 ```console
 $ brew update
 $ brew tap caskroom/cask
@@ -23,6 +25,7 @@ $ brew cask install dotnet
 ```
 
 By default, the installation of .NET Core links the crypto library to a folder location other than the Homebrew default. To fix the link to the openssl libraries run the following.
+
 ```console
 $ sudo install_name_tool -add_rpath \
     $(brew --prefix openssl)/lib \
