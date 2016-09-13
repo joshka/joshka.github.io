@@ -5,9 +5,6 @@ date:   2016-08-03 19:31:00 -0500
 categories:
 ---
 
-**Update 2016-08-18:** replaced rpath with linking
-([diff](https://github.com/joshka/joshka.github.io/commit/fed667f640251b74a4cbb92d446136d75e3fe95e))
-
 The easiest way to install [.NET Core](https://www.microsoft.com/net/core#macos)
 on OSX is a little different than the way currently suggested at the Previous
 link. I suggest using [Homebrew](http://brew.sh), and
@@ -39,3 +36,6 @@ of openssl to your `/usr/local/lib` folder.
 $ ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/
 $ ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/
 ```
+
+**Update 2016-08-18:** replaced rpath with linking method
+([diff](https://github.com/joshka/joshka.github.io/commit/fed667f640251b74a4cbb92d446136d75e3fe95e))
