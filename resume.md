@@ -5,7 +5,6 @@ permalink: /resume/
 ---
 # Joshua McKinney
 
-(615) 457 7530 /
 <resume.2016@joshka.net>
 
 ## Summary
@@ -22,10 +21,6 @@ based workflow system with integration points into the department's PeopleSoft
 accounting system as well as SQL Server Analysis Services cubes and queries. My
 responsibilities included requirements analysis, implementation, delivery, and
 mentoring staff in the use of Performa's proprietary technology stack.
-
-I'm seeking an opportunity to build something awesome in Seattle, WA (will
-consider other locations).
-
 
 ## Skills & Expertise
 * .NET / ASP.NET / ASP.NET MVC
