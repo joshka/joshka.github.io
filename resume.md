@@ -8,14 +8,17 @@ permalink: /resume/
 <resume.2016@joshka.net>
 
 ## Summary
-I am a solutions focused professional software engineer, with 12+ years
+I am a solutions focused professional software engineer, with 14 years
 experience delivering, maintaining and supporting applications and systems.
 Over this time I've gained a broad knowledge of Microsoft platforms and
 technologies, as well as many other software stacks. Whether it's driving
 pixels on the screen or bytes on the wire (or anything in between), my
 objective is to create and build great software.
 
-Most recently, I worked with Performa Software at the Tennessee Department of
+I'm currently working at Amazon in a role related to service security in the
+Consumer Cloud Enablement part of the organization.
+
+Prior to this, I worked with Performa Software at the Tennessee Department of
 Finance to deliver a best of breed budget management system. This is a web
 based workflow system with integration points into the department's PeopleSoft
 accounting system as well as SQL Server Analysis Services cubes and queries. My
@@ -23,6 +26,7 @@ responsibilities included requirements analysis, implementation, delivery, and
 mentoring staff in the use of Performa's proprietary technology stack.
 
 ## Skills & Expertise
+* Java / JaxRS / OAuth / InfoSec
 * .NET / ASP.NET / ASP.NET MVC
 * C# / VB.NET
 * Microsoft SQL Server / Oracle
@@ -34,10 +38,13 @@ mentoring staff in the use of Performa's proprietary technology stack.
 * XML / HTML
 * JavaScript
 * Scrum / Agile Methodologies
-* Exposure to (but not proficient in) many other programming languages: Java,
+* Exposure to (but not proficient in) many other programming languages:
   Python, Ruby, C / C++, PowerShell, BASH / ZSH script, ...
 
 ## Experience
+
+### Amazon (2017-present)
+Service Security (Authorization / Authentication) related software.
 
 ### BIDS Solution Architect at Performa Software USA (2015-16)
 Implementation of a Budget Management System for the State of Tennessee.
