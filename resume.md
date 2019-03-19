@@ -46,6 +46,12 @@ mentoring staff in the use of Performa's proprietary technology stack.
 ### Amazon (2017-present)
 Service Security (Authorization / Authentication) related software.
 
+* Java, Ruby, Python, JavaScript
+* AWS (S3, Dynamo, ECS, EC2, CloudFormation, VPCs, API Gateway, CloudWatch etc.)
+* OAuth 2.0
+* Open ID Connect
+* JWT
+
 ### BIDS Solution Architect at Performa Software USA (2015-16)
 Implementation of a Budget Management System for the State of Tennessee.
 
