@@ -5,10 +5,13 @@ date:   2016-08-03 19:31:00 -0500
 categories:
 ---
 
+**Note:** this post contains  outdated instructions for a problem that occurred installing .NET core on OSX in 2016. <https://github.com/dotnet/sdk/issues/4600> suggests that you can now install dotnet core on macOS by running `brew install dotnet`. The instructions at <https://learn.microsoft.com/en-us/dotnet/core/install/macos> are also worth reading rather than this post.
+
+---
+
 The easiest way to install [.NET Core](https://www.microsoft.com/net/core#macos)
-on OSX is a little different than the way currently suggested at the Previous
-link. I suggest using [Homebrew](http://brew.sh), and
-[Homebrew Cask](http://caskroom.io).
+on OSX is a little different than the way currently suggested at the official site.
+I suggest using [Homebrew](http://brew.sh), and [Homebrew Cask](http://caskroom.io).
 
 ## Instructions
 
