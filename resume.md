@@ -1,278 +1,117 @@
 ---
 layout: page
 title: Resume
-permalink: /resume/
+permalink: /resume
 ---
-# Joshua McKinney
 
-<resume.2016@joshka.net>
+Available to interview for positions in Seattle WA and remote.
+Please email <resume.2022@joshka.net> for a PDF or Word version of this resume.
 
-## Summary
-I am a solutions focused professional software engineer, with 14 years
-experience delivering, maintaining and supporting applications and systems.
-Over this time I've gained a broad knowledge of Microsoft platforms and
-technologies, as well as many other software stacks. Whether it's driving
-pixels on the screen or bytes on the wire (or anything in between), my
-objective is to create and build great software.
+Senior Software Development Engineer with over 16 years’ experience leading teams, delivering, maintaining, operating, and supporting software applications and systems. Broad knowledge of .NET, Java, and AWS based development for websites and backend services. Deep understanding of building secure and resilient software, infrastructure, developer tools, and large-scale services.
 
-I'm currently working at Amazon in a role related to service security in the
-Consumer Cloud Enablement part of the organization.
+I spent the last 5 years working at Amazon and AWS as a developer specializing in security services managing permissions, access control, authorization, authentication, and service-to-service communication security.
 
-Prior to this, I worked with Performa Software at the Tennessee Department of
-Finance to deliver a best of breed budget management system. This is a web
-based workflow system with integration points into the department's PeopleSoft
-accounting system as well as SQL Server Analysis Services cubes and queries. My
-responsibilities included requirements analysis, implementation, delivery, and
-mentoring staff in the use of Performa's proprietary technology stack.
+Prior to this, I worked with Performa Software at the Tennessee Department of Finance to deliver a budget management system to control the state's $32B annual budget process.
 
-## Skills & Expertise
-* Java / JaxRS / OAuth / InfoSec
-* .NET / ASP.NET / ASP.NET MVC
-* C# / VB.NET
-* Microsoft SQL Server / Oracle
-* SSAS / DAX / MDX
+As a consultant in previous positions, I delivered many [Projects for government and private clients](/projects).
+
+## Skills
+
+* Software Consulting / Strategy / Team Leadership / Training
+* Agile / Devops / Scrum
+* Information Security / TLS / OAuth / OpenID Connect / JWT
+* Docker / Linux / Network / Infrastructure / Firewalls
+* Java / JaxRS / Perl / Python / Ruby / Shell / SQL / C / JavaScript
+* C# / VB.NET / Visual Studio / ASP.NET / ASP.NET MVC
+* AWS / DynamoDB / EC2 / ECS / ElasticSearch / IAM / Lambda / S3
+* SQL Server / Oracle / SSAS / DAX / MDX / PostgreSQL
+* LINQ / Entity Framework / Hibernate and NHibernate ORMs
+* WCF / Web Services / WPF / XAML / XML / HTML
 * TFS / Git / Mercurial
-* LINQ / Entity Framework
-* WCF / Web Services
-* WPF / XAML
-* XML / HTML
-* JavaScript
-* Scrum / Agile Methodologies
-* Exposure to (but not proficient in) many other programming languages:
-  Python, Ruby, C / C++, PowerShell, BASH / ZSH script, ...
 
 ## Experience
 
-### Amazon (2017-present)
-Service Security (Authorization / Authentication) related software.
+### Amazon and AWS (2017-2022) / Software Development Engineer / Seattle WA
 
-* Java, Ruby, Python, JavaScript
-* AWS (S3, Dynamo, ECS, EC2, CloudFormation, VPCs, API Gateway, CloudWatch etc.)
-* OAuth 2.0
-* Open ID Connect
-* JWT
+* Designed, architected, integrated, implemented, and maintained infosec websites, services, libraries, and related developer tools
+* 24/7 on-call and operations for three critical Tier-0 / Tier-1 internal systems
+* Advised managers and director on scoping, strategy, vision, tradeoffs, and risk analysis
+* Performed security assessments of legacy and new systems.
+* Ran internal customer office hours for system integration support
+* Presented talks on developer tools, libraries, and security topics at internal conferences
+* Mentored junior developers and interns resulting in 2 successful post-internship offers
+* As a tech lead, built and operated a new OAuth / OpenID authentication and authorization service securing 80K+ inter-service connections on 2.5M hosts, running at 15K TPS peak
+* Created and maintained devops pipelines, ops queues, team standards, infrastructure
+* Wrote documentation and training for developers and non-technical employees
+* Provided critical feedback and advice addressing security gaps in a draft IETF OAuth standard
+* Maintained a rule-based access system controlling 3M+ employees, 1M+ groups, 2M+ resources
+* Designed and implemented new and updated integrations with PeopleSoft, LDAP, ElasticSearch
+* Planned and executed critical peak season operations to prevent overload and downtime
+* Maintained and implemented features on a hierarchical resource permissions website and service managing tens of millions of resources
 
-### BIDS Solution Architect at Performa Software USA (2015-16)
-Implementation of a Budget Management System for the State of Tennessee.
+### Performa Software (2015-16) / Senior Application Analyst / Melbourne Australia, Nashville TN
 
-* ASP.NET / C#
-* SQL Server
-* SSAS
-* PeopleSoft
-* TFS / Git
+* Delivered a budget entry, analysis, and reporting system ([BEARS](https://home.bears.tn.gov)) to manage the State of Tennessee’s $32 billion annual budget as lead developer on a small team
+* Captured and documented requirements, designed and implemented workflows and UI
+* Planned and built SQL Server and Analysis Services schemas, and SSRS reports
+* Integrated budget management system with PeopleSoft commitment control ledger APIs
+* Developed bug fixes for legacy budget management system for Victoria Department of Health
 
-### Senior Application Analyst at Performa Solutions (2014)
-New feature development and bug fixes for the Department of Health and Human
-Services (Victoria) budget management system.
+### Readify (2010-14) / Senior Developer / Canberra, Melbourne, Sydney Australia
 
-* ASP.NET / VB.NET
-* Git
+* Consulted as a developer on over 30 government and private projects
+* Developed frontends and backends for ASP.NET websites, systems, and Windows Applications
+* Maintained legacy systems with ramp up time measured in days to productive contribution
+* Designed schemas, queries, and reports for SQL Server and Oracle databases
+* Analyzed and fixed performance problems. Reduced a customer’s query from 4+ hours to <10s
+* Integrated websites and systems with a variety of CRM, ERP, CMS, SOA and CI/CD products
+* Installed and supported Microsoft technologies (SQL Server / SQL / Microsoft CRM / TFS / Azure)
+* Trained teams and organizations on devops and agile practices using Team Foundation Server
 
-### Senior Developer at Readify (2010-14)
-Full stack consultant / developer for a variety of private and government
-customers mainly focussed around .NET and related Microsoft technologies.
-This position was a combination of project work, mentoring teams,
-implementation of process improvement, systems management, TFS upgrade planning
-and implementation, and a number of other tasks on any given day. See projects
-section for more information.
+### Beacon IT (2007-09) / Software Developer / Canberra, Australia
 
-* ASP.NET / ASP.NET MVC / C#
-* JavaScript / KnockoutJS / AngularJS
-* Microsoft SQL Server / SSRS / Oracle
-* TFS / Git
+* Developed and maintained proprietary business process management software
+* Implemented budget management systems, and user training for government and private clients
+* Created and led training courses, wrote documentation, and provided support for customers
+* Delivered SQL Server to Oracle migration and product training for international clients
 
-### Software Developer / Consultant at Beacon IT (2007-09)
-Analysis, design and implementation of new features and bug fixes for Beacon
-BIDS. Created and delivered training courses. End user support for product
-managing triage, bug fix, feature development, documentation etc.
+### Pharmacy Guild of Australia (2006) / Database Officer / Canberra, Australia
 
-* ASP.NET / C# / VB
-* Microsoft SQL Server and SSRS 2005-08 / Oracle
-* TFS
-* Infor BPA / Hyperion Financials
+* Migrated a legacy membership database from Access to an ASP.NET website with SQL Server
+* Developed integration with a proprietary document management system
+* Created Crystal Reports for membership queries
 
-### Database Officer at Pharmacy Guild of Australia (2006)
-Lead developer responsible for migration of legacy Quality Care Pharmacy
-Program system to .NET / SQL Server. Integration with document management
-system. Creation of Crystal reports and ad hoc membership queries
+### F1 Solutions Australia (2004-05) / Software Developer / Canberra, Australia
 
-* VB.NET
-* Microsoft SQL Server 2005
-* Access
-* VBA
+* Developed software as a consultant for many government and private projects
+* Maintained Access and SQL Server databases, creating new forms, queries, and reporting
+* Built and deployed ASP.NET and JavaScript SPA websites
+* Developed new features, migrations, integrations, user interfaces and reports
 
-### Software Developer at F1 Solutions Australia (2004-05)
-Consultant developer for a variety of government and private companies. See
-projects section for more details.
+### Citadel Securix and eGlobal (2002-03) / Managed Security Services Operator / Canberra, Australia
 
-* Microsoft Access / SQL Server
-* VBA / VB.NET
-* HTML / JavaScript
+* Remotely monitored (24/7) and administerd network firewalls, VPNs, and Intrusion Detection Systems
+* Developed improvements on Perl based ticketing system (Request Tracker) to support and enhance reporting and client workflows
+* CyberGuard / Check Point Firewall 1 / Novel BorderManager / PureSecure / RealSecure
 
-### Managed Security Services Operator at Citadel Securix / eGlobal (2002-03)
-Remote monitoring (24/7) and administration of firewalls, VPNs, and Intrusion
-Detection Systems Enhancements on Perl based ticketing system (Request Tracker)
-to support and enhance reporting and client workflows.
+### IEAust (Engineers Australia) (2001-02) / IT Support / Canberra, Australia
 
-* CyberGuard
-* Check Point Firewall 1
-* Novel BorderManager
-* PureSecure
-* RealSecure
+* Integrated membership system with weekly newsletter emails using VBA and Novel Groupwise APIs
+* Miscellaneous IT support across the organisation.
 
-### IT Support at IEAust (Engineers Australia) (2001-02)
-Integrated membership system with weekly newsletter emails using VBA and Novel
-Groupwise APIs. Miscellaneous IT support across the organisation.
+### University of Canberra (2000-02) / Class Tutor and Student Resource Centre Tutor / Canberra, Australia
 
-### Tutor / Student Resource Centre at University of Canberra (2000-02)
-Class tutor for several first and second year university IT classes.
-Tutored at the Information Services and Engineering Student Resource Centre in
-IT and Mathematics subjects. Led class discussions on tutorial material.
-Marked assignments and tests.
-
-* Tutored in VB.NET and C++
-
-## Projects
-
-### State of Tennessee Budget Management System (2015-16)
-Implementation of Budget Management System for the Tennessee State Government.
-
-* ASP.NET / C#
-* SQL Server 2012 / 2014
-* SQL Server Analysis Services (SSAS)
-* SQL Server Reporting Services (SSRS)
-* Integration with PeopleSoft commitment control ledger
-
-### Department of Health and Human Services (Victoria) - BMS (2014-15)
-Bug fixes and new feature development on a government budget management system.
-
-* ASP.NET
-* VB.NET
-* JavaScript
-
-### Readify - Internal Systems (2014)
-Internal systems redevelopment of legacy Microsoft Dynamics CRM system with CRM
-Online and integration with internal processes.
-
-* ASP.NET MVC / C#
-* Azure
-* MicroServices
-* MYOB AccountRight Live API
-* Microsoft Dynamics CRM 4.0 and CRM 2013
-
-### iCareHealth (2014)
-Creation of SQL Server Reporting Services 2014 reports for aged care facility
-management system.
-
-* SQL Server / SSRS 2012
-
-### UniSuper - Sitecore CMS (2013)
-Implementation of SiteCore integration with various other internal systems,
-leading to a successful launch of UniSuper's customer facing website.
-
-* ASP.NET / C#
-* WCF
-* SiteCore
-* SpecFlow
-
-### VivaTags (2012-13)
-Front and backend development for mobile payments platform.
-
-* ASP.NET MVC / C#
-* Azure Websites
-* SQL Server
-* JavaScript / jQueryUI / KnockoutJS
-* WCF
-
-### Webjet - Windows 8 Application (2012)
-Developed the user interface for one of the first Windows 8 applications to
-hit the Australian Windows Store.
-
-* C# / XAML
-* Web Services
-
-### Fiserv / Westpac Bank (2011)
-Development of a mobile single page banking application.
-
-* ASP.NET MVC / C#
-* JavaScript (KnockoutJS / jQuery)
-
-### Australian Taxation Office DART project (2010-11)
-TFS Subject Matter Expert. Process improvement, support, planning.
-Tool creation for integrating TFS into an enterprise wide
-Configuration Management process.
-
-* C# / Java / VBScript
-* TFS (management, API, planning and guidance)
-* IBM Build Forge
-
-### Australian Fisheries Management Authority (2010)
-Performance troubleshooting; mentoring; TFS implementation planning.
-
-* VB.NET
-* Oracle Database
-* TFS 2010
-
-### COIN Software / OLICC / Macquarie Bank (2010)
-Performance troubleshooting a web based financial brokerage tracking system, mentoring staff in technology choices and best practice.
-Reduced several long duration SQL queries from 4+ hours to <10 seconds.
-
-* ASP.NET / VB.NET
-* SQL Server 2008
-* TFS 2008
-
-### Government of Vanuatu Budget Management System (2009)
-Redevelopment of central budget management system. Analysis and design of new components.
-Developed and delivered training material to small onsite team.
-
-* Beacon BIDS
-* ASP.NET / C#
-* SQL Server
-
-### Institut d'émission des départements d'Outre Mer (IEDOM) Budget Management System (2008)
-Analysis, design, implementation and rollout of annual budget entry and
-consolidation system. Onsite Training and mentoring implementation consultants
-at Beacon's French distributor, AEXIS, in usage and customization of budget
-management software.
-
-* Beacon BIDS
-* C#
-* Oracle Database
-
-### Australian National University School of Biology (2006)
-Development of a software system to monitor an array of microphones to detect temporal signaling pattens of crickets.
-
-* C#
-* WinForms
-* Digital/Analog hardware interface board
-
-### Australian Customs Service Anti Dumping Database (2005)
-Developed new features and bug fixes for an Access database tracking the
-various antidumping / countervailing activities undertaken by the Australian
-Customs Service
-
-* Microsoft Access
-* VBA
-* SQL
-
-### National Occupational Health and Safety Commission - Dangerous Goods Ready Reckoner (2004-05)
-Development of a JavaScript based application to manage the placarding requirements for facilities and vehicles storing dangerous materials.
-
-* JavaScript
-* HTML
-
-### Fisheries Research and Development Corporation (2004)
-Managed bug fixes and deployment of and access based grant management system (FishBase)
-
-* Microsoft Access
-* SQL
-* VBA
+* Class tutor for several first and second year university IT classes
+* Led class discussions on tutorial material.
+* Marked assignments and tests.
+* Tutored as a drop in Tutor at the Student Resource Centre in IT and Mathematics subjects
 
 ## Education
 
-### University of Canberra (2000-03)
-Bachelor of Engineering (BEng), Computer Engineering (discontinued).
-Member of the Golden Key International Honour society
+### University of Canberra (2000-03) / Bachelor of Engineering / Canberra, Australia
 
-## Certifications
-MCSD: Application Lifecycle Management (MCP: 10162190) - June 2014
+* 68 of 96 credit points towards degree majoring in Computer Engineering. Achieved a GPA 6.1 (out of 7)
+
+### MCSD Certification (2014)
+
+* MCSD: Application Lifecycle Management (MCP: 10162190)
