@@ -6,8 +6,8 @@
 # 'jekyll serve'. If you change this file, please restart the server process.
 
 # Site settings
-title: joshka.net
-tagline: Josh McKinney
+title: Josh McKinney
+tagline: Joshka.net
 email: joshka.blog2016@no.spam.joshka.net
 description: > # this means to ignore newlines until "baseurl:"
   The homepage of Joshua McKinney.

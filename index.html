@@ -14,7 +14,11 @@ layout: default
         </h2>
         <p class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</p>
       </header>
-      <div class="post-content">{{ post.excerpt }}</div>
+      <div class="post-excerpt">
+        {{ post.excerpt }}
+        <p><a class="read-more-link" href="{{ post.url | prepend: site.baseurl }}">Read more...</a></p>
+      </div>
+      
     </section>
     {% endfor %}
   </ul>
