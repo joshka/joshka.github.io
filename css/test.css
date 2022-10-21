@@ -4,6 +4,13 @@
     box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'Optima Bold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Optima Bold'), url('/fonts/OPTIMA_B.woff') format('woff');
+}
+
 a {
     text-decoration: none;
     color: hsl(195, 100%, 30%);;
@@ -39,17 +46,17 @@ a:focus {
 }
 
 .site-title {
-  font-family: "Optima", serif;
+  font-family: "Optima Bold", serif;
   font-size: 48px;
+  font-weight: normal;
   display: inline-block;
   margin: 0;
 }
 
 .site-tagline {
-  font-family: "Optima", serif;
-  /* color: rgb(0, 65, 87); */
+  font-family: "Optima Bold", serif;
   display: inline;
-  /* text-align: end; */
+  font-weight: normal;
   font-size: 48px;
   float: right;
   margin: 0;
