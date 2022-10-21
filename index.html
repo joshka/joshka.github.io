@@ -4,8 +4,28 @@ layout: default
 
 <div class="home">
   <div class="posts">
-    <h1 class="content-heading">Recent Posts</h1>
-    {% for post in site.posts %}
+    <h1 class="content-heading">
+      Posts
+      <!-- Pagination links -->
+      <span class="pagination">
+        <span class="page_number ">
+          Page: {{ paginator.page }} of {{ paginator.total_pages }}
+        </span>
+        {% if paginator.previous_page %}
+        <a href="{{ paginator.previous_page_path }}" class="previous">
+          Prev
+        </a>
+        {% else %}
+        <span class="previous">Prev</span>
+        {% endif %}
+        {% if paginator.next_page %}
+        <a href="{{ paginator.next_page_path }}" class="next">Next</a>
+        {% else %}
+        <span class="next ">Next</span>
+        {% endif %}
+      </span>
+    </h1>
+    {% for post in paginator.posts %}
     <section class="post">
       <header class="post-header">
         <h2 class="post-title">
@@ -22,6 +42,7 @@ layout: default
     </section>
     {% endfor %}
   </div>
+
   <div class="categories">
     <h1 class="content-heading">Archive</h1>
     {% for category in site.categories %}

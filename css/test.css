@@ -147,3 +147,21 @@ h4 {
   font-weight: 400;
   margin-bottom: -0.7em;
 }
+
+.center-image
+{
+    margin: 0 auto;
+    display: block;
+}
+
+.pagination {
+  float: right;
+}
+
+.previous, .next {
+  color: #444;
+}
+
+a.previous, a.next {
+  color: #007FAB;
+}

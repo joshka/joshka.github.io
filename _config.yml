@@ -25,4 +25,5 @@ permalink: /:year/:month/:title
 markdown: kramdown
 plugins:
   - jekyll-redirect-from
-  
+paginate: 4
+paginate_path: "/page:num"
