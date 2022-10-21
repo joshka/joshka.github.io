@@ -4,15 +4,14 @@
 
   <nav class="nav">
     <ul class="nav-list">
-      {% for my_page in site.pages %}
-      {% if my_page.title %}
       <li class="nav-item">
-        <a href="{{ my_page.url | prepend: site.baseurl }}">
-          {{ my_page.title }}
-        </a>
+        <a href="https://joshka.net/">
+          <i class="fa fa-home" aria-hidden="true"></i></a>
       </li>
-      {% endif %}
-      {% endfor %}
+      <li class="nav-item">
+        <a href="https://linkedin.com/in/joshuamckinney">
+          <i class="fa fa-linkedin" aria-hidden="true"></i></a>
+      </li>
       <li class="nav-item">
         <a href="https://github.com/joshka">
           <i class="fa fa-github" aria-hidden="true"></i></a>
@@ -22,13 +21,18 @@
           <i class="fa fa-twitter" aria-hidden="true"></i></a>
       </li>
       <li class="nav-item">
-        <a href="https://linkedin.com/in/joshuamckinney">
-          <i class="fa fa-linkedin" aria-hidden="true"></i></a>
-      </li>
-      <li class="nav-item">
         <a href="https://soundcloud.com/joshka">
           <i class="fa fa-soundcloud" aria-hidden="true"></i></a>
       </li>
+      {% for my_page in site.pages %}
+      {% if my_page.title %}
+      <li class="nav-item">
+        <a href="{{ my_page.url | prepend: site.baseurl }}">
+          {{ my_page.title }}
+        </a>
+      </li>
+      {% endif %}
+      {% endfor %}
     </ul>
   </nav>
 

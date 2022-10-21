@@ -6,7 +6,7 @@
 
 a {
     text-decoration: none;
-    color: hsl(195, 100%, 25%);;
+    color: hsl(195, 100%, 30%);;
 }
 a:hover,
 a:focus {
@@ -33,7 +33,7 @@ a:focus {
     margin-right: 0.5em;
 }
 .nav-item a {
-    color: hsl(195, 100%, 25%);;
+    color: hsl(195, 100%, 30%);;
     letter-spacing: 0.05em;
     text-transform: uppercase;
 }
