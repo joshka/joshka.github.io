@@ -1,7 +1,7 @@
 ---
 title:  app.config and Dev Prod Test databases
 date:   2006-09-05 17:19:00 +1000
-categories:
+categories: software
 ---
 
 In well designed enterprise apps, it is often the case that your application will run in multiple environments, and against different databases (Development, Test, and Production). This can lead to issues when it comes to storing connections strings.

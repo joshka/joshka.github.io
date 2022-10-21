@@ -21,5 +21,19 @@ layout: default
       
     </section>
     {% endfor %}
-  </ul>
+  </div>
+  <div class="categories">
+    <h1 class="content-heading">Archive</h1>
+    {% for category in site.categories %}
+    <div class="category-group">
+      {% capture category_name %}{{ category | first }}{% endcapture %}
+      <h3 class="category-head">{{ category_name }}</h3>
+      {% for post in site.categories[category_name] %}
+      <article class="category-item">
+        <h4><a href="{{ site.baseurl }}{{ post.url }}">{{post.title}}</a></h4>
+      </article>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
 </div>

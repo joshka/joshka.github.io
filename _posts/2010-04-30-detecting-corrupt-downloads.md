@@ -1,7 +1,7 @@
 ---
 title:  Detecting and Preventing Corrupt Software Downloads
 date:   2010-04-30 11:33:00 +1000
-categories:
+categories: software
 ---
 
 In the past I and several of my colleagues have run into problems when attempting to install software downloaded from the [MSDN Subscriber Downloads](http://msdn.microsoft.com/en-us/subscriptions/downloads/default.aspx) or elsewhere. One possible cause for this is file corruption either due to an incomplete download, or caused later when copying the file to another device (e.g. over a local network or via flaky USB drives). This problem is easy to detect and prevent.

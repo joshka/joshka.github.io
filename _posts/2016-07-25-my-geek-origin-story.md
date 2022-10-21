@@ -1,7 +1,7 @@
 ---
 title:  "My Geek Origin Story"
 date:   2016-07-30 14:14:00 -0500
-categories:
+categories: life
 ---
 Like many a software engineer does again and again, I'm restarting my blog.
 This time I'm going to kick this iteration off with an idea inspired by

@@ -1,7 +1,7 @@
 ---
 title:  "Introducing JUnit JSON Params"
 date:   2018-08-27 11:03:00 -0700
-categories: java
+categories: [software, java]
 ---
 Yesterday, I released [junit-json-params](https://www.joshka.net/junit-json-params/),
 a small java library built on JUnit 5 that enables parameterizing unit tests
