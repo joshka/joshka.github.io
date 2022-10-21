@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  Taskbar Shuffle rockin my world today
 date:   2006-06-23 08:54:00 +1000
 categories:

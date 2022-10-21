@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  app.config and Dev Prod Test databases
 date:   2006-09-05 17:19:00 +1000
 categories:

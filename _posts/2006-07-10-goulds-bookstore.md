@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  Goulds Bookstore
 date:   2006-07-10 11:17:00 +1000
 categories:

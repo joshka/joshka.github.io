@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Installing .NET Core on OSX"
 date:   2016-08-03 19:31:00 -0500
 categories:

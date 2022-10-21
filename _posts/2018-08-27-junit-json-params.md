@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Introducing JUnit JSON Params"
 date:   2018-08-27 11:03:00 -0700
 categories: java

@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  Detecting and Preventing Corrupt Software Downloads
 date:   2010-04-30 11:33:00 +1000
 categories:

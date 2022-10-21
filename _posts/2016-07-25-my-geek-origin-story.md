@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "My Geek Origin Story"
 date:   2016-07-30 14:14:00 -0500
 categories:
