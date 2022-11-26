@@ -27,3 +27,5 @@ plugins:
   - jekyll-redirect-from
 paginate: 4
 paginate_path: "/page:num"
+
+include: [".well-known"]
