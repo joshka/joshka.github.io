@@ -3,13 +3,20 @@ title: ChatGPT Memes
 categories: ["OpenAI", "ChatGPT", "Midjourney"]
 ---
 
+<style>
+  code {
+    white-space : pre-wrap !important;
+    word-break: break-word;
+  }
+</style>
+
 @jeisc [asks on Hacker news](https://news.ycombinator.com/item?id=34516204):
 
 > Does anyone here really think that AI will produce a new "Jungle Book" by Kipling or a new "Mona Lisa" by Da Vinci or a new "Requiem" by Mozart" which could even have a remote possibility of becoming cultural icon and reference? And is that a goal or event that the spectators are waiting for? And if it occurs what would it infer about human cultural evolution?
 >
 > -- <https://news.ycombinator.com/item?id=34516204>
 
-I was curious about how ChatGPT would go with creating memes (this era's main cultural output). Here goes nothing:
+I was curious about how ChatGPT would go with creating memes (this era's main cultural output):
 
 > Come up with some ideas for a new meme format
 
