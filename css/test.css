@@ -172,3 +172,15 @@ h4 {
 a.previous, a.next {
   color: #007FAB;
 }
+
+code {
+  white-space : pre-wrap !important;
+  word-break: break-word;
+}
+
+blockquote {
+  margin: 1em 0em;
+  color: hsl(195, 100%, 20%);
+  border-left: 2px solid #999;
+  padding-left: 1em;
+}
