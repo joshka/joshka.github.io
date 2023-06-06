@@ -1,0 +1,6 @@
+no-inline-html:
+  allowed_elements:
+    - a
+    - img
+line-length:
+  line_length: 100
