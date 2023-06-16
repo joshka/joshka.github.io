@@ -4,3 +4,4 @@ no-inline-html:
     - img
 line-length:
   line_length: 100
+  tables: false
