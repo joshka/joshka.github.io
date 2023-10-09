@@ -1,14 +1,18 @@
-# On every push this script is executed
-on: push
-name: Build and deploy GH Pages
+name: Zola Deploy Action
+
+on:
+  push:
+    branches:
+    - main
 jobs:
   build:
+    name: Deploy site
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3.0.0
-      - name: build_and_deploy
+      - name: Build and Deploy
         uses: shalzz/zola-deploy-action@v0.17.2
         env:
           # Target branch
