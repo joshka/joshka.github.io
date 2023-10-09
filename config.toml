@@ -1,5 +1,5 @@
 # The URL the site will be built for
-base_url = "https://joshka.net"
+base_url = "https://www.joshka.net"
 
 # The site title and description; used in feeds by default.
 title = "Joshka.net"
