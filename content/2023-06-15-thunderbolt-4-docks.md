@@ -1,11 +1,12 @@
 +++
-title = "Thunderbolt 4 Docks Comparison"
+title = "Thunderbolt 4 Dock Comparison"
 date = "2023-06-15T19:35:00-07:00"
 [taxonomies]
 tags = ["Hardware"]
 +++
 
-I was shopping for a Thunderbolt 4 Dock, and couldn't find a good fearure comparison table anywhere.
+Recently, while searching for a Thunderbolt 4 Dock, I found myself in a sea of data, but with no
+detailed comparison table to help. Hence, I decided to create one myself.
 
 <!-- more -->
 
@@ -26,5 +27,7 @@ Name | TB Ports | Host TB Port | Ethernet | USB-C 3.2Gen2 | USB-A 3.2Gen2 | USB 
 
 </div>
 
-There's probably a few docks i've missed here (by pluggable, OWC etc.). Feel free to [open a
-PR](https://github.com/joshka/joshka.github.io) to update this.
+I ended up grabbing the Caldigit as it suited my needs. There's probably a few docks i've missed
+here (by pluggable, OWC etc.). Feel free to open a PR on [this post] to update the table.
+
+[this post]: https://github.com/joshka/joshka.github.io/edit/main/content/2023-06-15-thunderbolt-4-docks.md
