@@ -4,6 +4,7 @@ base_url = "https://www.joshka.net"
 # The site title and description; used in feeds by default.
 title = "Joshka.net"
 description = "Josh McKinney's personal website"
+author = "Josh McKinney"
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
