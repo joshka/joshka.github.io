@@ -1,19 +1,20 @@
 +++
-title = "Your article critiquing AI tools for software development is..."
+title = "AI Article Checklist"
 date = "2023-06-06T15:45:00-08:00"
 [taxonomies]
 tags = ["LLMs"]
 +++
 
-In early 2000s in Slashdot comments (and perhaps even earlier on Usenet), there was a
-[checklist](https://craphound.com/spamsolutions.txt) that was often posted in response to any
-articles presenting a possible solution to fighting spam.
+I remember the early 2000s, a time marked by heated discussions in Slashdot comments and perhaps
+even earlier on Usenet. The topic of interest? Articles presenting possible solutions to fight spam.
+Accompanying these articles, a popular [checklist](https://craphound.com/spamsolutions.txt) was
+often shared. Now, in the 2020s, we're seeing a similar phenomenon with articles questioning the
+usefulness of LLMs in software writing. So, I decided to dust off this old spam checklist and
+repurpose it to the modern age.
+
+Your article critiquing using AI tools for software development is...
 
 <!-- more -->
-
-The equivalent in the 2020s is perhaps the article decrying that LLMs are useless for writing
-software. This list is an intentionally snarky update to the spam checklist which focuses on the
-mistakes that those articles make time after time.
 
 ```markdown
 # AI Article Checklist
