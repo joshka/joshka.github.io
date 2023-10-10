@@ -6,37 +6,39 @@ date = "2023-06-05T12:00:00-08:00"
 tags = ["OpenAI", "ChatGPT", "LLMs"]
 +++
 
-Before we dive into the world of LLMs, let's take a moment to appreciate the absurdity of a world
-where the Moon is actually made of cheese. Imagine the cosmic fondue parties we could have!
-
-Recently, there has been a surge in articles questioning the usefulness of large language models
-(LLMs) like GPT-3.5 for certain tasks. These articles often base their conclusions on single
-experiments, which can be misleading due to the inherent randomness in LLMs' outputs. In this blog
-post, we will discuss the importance of conducting multiple tests and considering the probabilities
-of different completions when evaluating the performance of LLMs.
+Lately, we've seen a significant rise in articles casting doubt on the utility of Large Language
+Models (LLMs) like ChatGPT for specific tasks. These articles tend to anchor their conclusions on
+isolated experiments, generally an inadequate and potentially misleading approach due to the
+intrinsic randomness characterizing the outputs of LLMs. Instead, it's crucial this evaluation
+doesn't rely on a solitary experiment. Multiple trials and a deep understanding of the probabilities
+involved in different outcomes can provide a much more accurate reflection of LLMs' overall
+performance.
 
 <!-- more -->
 
-To illustrate the issue of misinterpretation, let's ask GPT 3.5 to complete the phrase "The Moon is
-made of." By using the completion API in the playground with the `text-davinci-003` model, limiting
-the output to one token, and revealing the probabilities, we can observe the variability in the
-results.
+To shed light on the rampant misinterpretation issue, let's employ a practical approach using GPT
+3.5. Imagine we prompt this model to complete the phrase "The Moon is made of." We'll use the
+`text-davinci-003` model in the API playground, capping the output at just one token, and display
+the probabilities. This test exposes the variable nature of the model's results.
 
 ![Screenshot of "The Moon Is Made of Rock" in the OpenAI Playground](the-moon.png)
 
-The completion models of GPT can display the probabilities for each word in a completion, which is a
-great way to demonstrate why relying on just one experiment can be misleading when evaluating these
-models. The screenshot shows that around 48% of the time, the model completes the sentence with the
-word "cheese", while just 32% of the time it will complete the sentence with the word "rock. Add in
-the 4% of the time that the completions is Green (which completes with "cheese" 99% of the time),
-and you have more than half the completions of that sentence incorrectly suggesting we should send
-an expedition of Ritz Cracker (Jatz for my antipodean friends) wielding astronauts up there to bring
-back that yellow gold.
+The ability of GPT's completion models to display the probabilities for each potential word in a
+completion is a compelling argument against relying on single experiments for the evaluation of
+these models. A look at the screenshot highlights that, interestingly, the model selects the word
+"cheese" to complete the sentence for around 48% of the attempts, conversely choosing "rock" a mere
+32% of the time.
 
-While the above example showed a place where the more frequent outcome (Cheese) was incorrect, it's
-also possible to see this problem with outcomes that incorrect as well. Take the query "The
-president in 2017 was", which returns "Donald" 76% of the time and "Barack" 17% of the time, likely
-due to Trump's inauguration on January 20th.
+Let's consider "Green," which pops up 4% of the time, but almost invariably leads to the word
+"cheese." This situation creates an amusingly erroneous scenario where over half of the sentence
+completions would have us sending a team of Ritz Cracker-wielding astronauts to the Moon to harvest
+this spurious dairy product. It's a humorous illustration but underscores the point – multiple
+output examination is crucial when working with LLMs.
+
+While the previous example demonstrated the frequent but incorrect outcome ("Cheese"), this issue
+may also arise with outcomes that are technically correct. For example, when we query "The president
+in 2017 was", the model answers with "Donald" in 76% of cases and "Barack" in 17% of cases. This
+discrepancy is likely due to Trump's inauguration taking place on January 20th, 2017.
 
 Every word in the output can have this sort of problem. This isn't exactly controversial; it's
 simply how LLMs work. However, it does show that drawing conclusions from a single conversation
