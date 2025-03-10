@@ -18,7 +18,7 @@ theme = "terminimal"
 taxonomies = [{ name = "tags" }]
 
 # When set to "true", a feed is automatically generated.
-generate_feed = true
+generate_feeds = true
 
 [markdown]
 # Whether to do syntax highlighting
