@@ -6,10 +6,10 @@ title = "Zola Terminimal theme"
 compile_sass = true
 
 # The theme supports feeds (RSS and ATOM)
-generate_feed = true
+generate_feeds = true
 
 # Use `rss.xml` for RSS feeds and `atom.xml` for ATOM.
-feed_filename = "atom.xml"
+feed_filenames = ["rss.xml", "atom.xml"]
 
 # Optional: enable tags
 taxonomies = [
@@ -96,3 +96,8 @@ use_full_hack_font = false
 #
 # Note that the main (index) page only has the main title.
 page_titles = "main_only"
+
+# Optional: default image to use for OpenGraph.
+#           If the page doesnt set og_image, use this one as fallback. Usefull
+#           for indexes and taxonomies' pages.
+#default_og_image = "static/ocean.jpg"

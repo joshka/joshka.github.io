@@ -11,14 +11,20 @@
     <title>{%- block title %}{{ config.title }}{% endblock title -%}</title>
     {{ head_macros::head(config=config) }}
 
-    {%- if config.generate_feed %}
-        {%- if "rss" in config.feed_filename %}
-            {% set feed_type = 'rss+xml' %}
-        {%- else %}
-            {% set feed_type = 'atom+xml' %}
-        {% endif -%}
-        <link rel="alternate" type="application/{{ feed_type }}" title="RSS" href="{{ get_url(path=config.feed_filename) | safe }}">
-    {% endif -%}
+    {%- block open_graph %}{{ head_macros::open_graph(config=config) }}{% endblock open_graph -%}
+
+    {%- if config.generate_feeds %}
+        {%- for feed in config.feed_filenames %}
+            {%- if feed is containing('atom') %}
+                <link rel="alternate" type="application/atom+xml" title="{{ config.title }} Atom Feed" href="{{ get_url(path=feed, trailing_slash=false, lang=lang) | safe }}" />
+            {%- endif %}
+
+            {%- if feed is containing('rss') %}
+                <link rel="alternate" type="application/rss+xml" title="{{ config.title }} RSS Feed" href="{{ get_url(path=feed, trailing_slash=false, lang=lang) | safe }}" />
+            {%- endif %}
+
+        {%- endfor %}
+    {%- endif -%}
 
     {%- if config.extra.favicon %}
         <link rel="shortcut icon" type="{{ config.extra.favicon_mimetype | default(value="image/x-icon") | safe }}" href="{{ config.extra.favicon | safe }}">
@@ -71,7 +77,8 @@
             {%- for page in show_pages %}
                 <div class="post on-list">
                     {{ post_macros::header(page=page) }}
-                    {{ post_macros::content(page=page, summary=true) }}
+
+                    {{ post_macros::content(page=page, summary=true, show_only_description=page.extra.show_only_description | default(value=false)) }}
                 </div>
             {% endfor -%}
             <div class="pagination">

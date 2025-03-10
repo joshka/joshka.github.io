@@ -1,5 +1,9 @@
-{% macro content(page, summary) %}
-    {%- if summary and page.summary %}
+{% macro content(page, summary, show_only_description) %}
+    {%- if show_only_description %}
+        <div class="post-content">
+            {{ page.description | safe }}
+        </div>
+    {% elif summary and page.summary %}
         <div class="post-content">
             {{ page.summary | safe }}
         </div>
@@ -11,6 +15,7 @@
             </a>
         </div>
     {% else %}
+        {#- full content -#}
         <div class="post-content">
             {{ page.content | safe }}
         </div>
@@ -28,31 +33,33 @@
 
 
 {% macro earlier_later(page) %}
-    {%- if config.extra.enable_post_view_navigation and page.lower or page.higher %}
-        <div class="pagination">
-            <div class="pagination__title">
-                <span class="pagination__title-h">{{ config.extra.post_view_navigation_prompt }}</span>
-                <hr />
+    {%- if config.extra.enable_post_view_navigation %}
+        {%- if page.lower or page.higher %}
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h">{{ config.extra.post_view_navigation_prompt }}</span>
+                    <hr />
+                </div>
+                <div class="pagination__buttons">
+                    {%- if page.higher %}
+                        <span class="button previous">
+                            <a href="{{ page.higher.permalink | safe }}">
+                                <span class="button__icon">←</span>&nbsp;
+                                <span class="button__text">{{ page.higher.title }}</span>
+                            </a>
+                        </span>
+                    {% endif %}
+                    {% if page.lower %}
+                        <span class="button next">
+                            <a href="{{ page.lower.permalink | safe }}">
+                                <span class="button__text">{{ page.lower.title }}</span>&nbsp;
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    {% endif -%}
+                </div>
             </div>
-            <div class="pagination__buttons">
-                {%- if page.higher %}
-                    <span class="button previous">
-                        <a href="{{ page.higher.permalink | safe }}">
-                            <span class="button__icon">←</span>&nbsp;
-                            <span class="button__text">{{ page.higher.title }}</span>
-                        </a>
-                    </span>
-                {% endif %}
-                {% if page.lower %}
-                    <span class="button next">
-                        <a href="{{ page.lower.permalink | safe }}">
-                            <span class="button__text">{{ page.lower.title }}</span>&nbsp;
-                            <span class="button__icon">→</span>
-                        </a>
-                    </span>
-                {% endif -%}
-            </div>
-        </div>
+        {% endif -%}
     {% endif -%}
 {% endmacro earlier_later %}
 
@@ -75,7 +82,7 @@
         {% endif -%}
         <li class="post-list">
             <a href="{{ page.permalink | safe }}">
-                <span class="post-date">{{ page.date | date(format="%Y-%m-%d") }}</span>
+                <span class="post-date">{{ page.date }}</span>
                 :: <span class="post-list-title">{{ page.title }}</span></a>
             {{ post_macros::tags(page=page, short=true) }}
         </li>
