@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Programmable IO (PIO) for MIDI with the Rasberry Pi Pico | Joshka.net</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://www.joshka.net/style.css">
+    <link rel="stylesheet" href="https://www.joshka.net/color/blue.css">
+
+    <link rel="stylesheet" href="https://www.joshka.net/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="Programmable IO (PIO) for MIDI with the Rasberry Pi Pico | Joshka.net">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.joshka.net/pio-for-midi-with-raspberry-pi-pico/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="Programmable IO (PIO) for MIDI with the Rasberry Pi Pico | Joshka.net">
+    <meta property="twitter:domain" content="www.joshka.net">
+    <meta property="twitter:url" content="https://www.joshka.net/pio-for-midi-with-raspberry-pi-pico/">
+
+                <link rel="alternate" type="application/atom+xml" title="Joshka.net Atom Feed" href="https://www.joshka.net/atom.xml" />
+    </head>
+
+<body class="">
+<div class="container">
+    
+    <header class="header">
+        <div class="header__inner">
+            <div class="header__logo">
+                    
+                <a href="https://www.joshka.net" style="text-decoration: none;">
+                    <div class="logo">
+                      
+                            Joshka.net
+                        
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://www.joshka.net">blog</a></li>
+            
+                <li><a href="https://www.joshka.net/archive">archive</a></li>
+            
+                <li><a href="https://www.joshka.net/about">about me</a></li>
+            
+                <li><a href="https://www.joshka.net/resume">resume</a></li>
+            
+                <li><a href="https://www.joshka.net/projects">projects</a></li>
+            
+                <li><a href="https://github.com/joshka" target="_blank" rel="noopener noreferrer">github</a></li>
+            
+                <li><a href="https://hachyderm.io/@joshka" target="_blank" rel="noopener noreferrer">mastodon</a></li>
+            
+                <li><a href="https://soundcloud.com/joshka" target="_blank" rel="noopener noreferrer">soundcloud</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://www.joshka.net/pio-for-midi-with-raspberry-pi-pico/">Programmable IO (PIO) for MIDI with the Rasberry Pi Pico</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2022-11-05
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                :: tags:&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/midi/">#MIDI</a>&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/raspberry-pi/">#Raspberry Pi</a></span>
+    
+
+        <div class="post-content">
+            <p>I recently read a few posts on the <a href="https://diyelectromusic.wordpress.com/">Simple DIY Electronic Music Project</a> blog about using the
+Raspberry Pi Pico to interface with synthesizers over MIDI. The Pico is an interesting beast and I
+was curious how far it can be pushed - how many devices can a Pico control at once?  It turns out
+that it is possible to create a MIDI thru device of up to 25 outputs with PIO doing most of the
+heavy lifting leaving the main CPUs to handle program logic (and perhaps USB / WiFi / Bluetooth /
+etc).</p>
+<span id="continue-reading"></span>
+<p>People with synths (especially those of us who suffer from GAS<sup class="footnote-reference"><a href="#gas">1</a></sup>) often need something to copy
+the output of one device (a keyboard, sequencer, or output from a DAW<sup class="footnote-reference"><a href="#daw">2</a></sup>) to the input of several
+other devices (synths, sequencers, drum machines etc.). There are a few niche products on the market
+that provide this MIDI thru capability, but these are significantly more expensive than the $4 Pico.</p>
+<p>The MIDI protocol is transported over a serial communications link. Most microprocessors have one or
+more UART controllers that handle the transmission of serial data. These UARTs allow the CPU to send
+a number of bytes in parallel freeing the CPU from having to manage the exact timing of the
+electrical signals. Most microprocessors have a small number of UART controllers (usually less than
+4). Going beyond the limit of the number of UARTs requires the CPU to send tightly timed on/off
+signals to the GPIOs which wastes a significant portion of the processing time managing input and
+output tasks.</p>
+<p>One barrier to this however is the Pico only has two built in serial (UART) controllers. But it does
+have a neat feature to avoid having to bitbang a protocol - Programmable IO (PIO).</p>
+<h2 id="pio">PIO</h2>
+<p>The Raspberry Pi Pico provides 8 programmable state machines that run at a fractional multiple of
+the main clock and allow us to offload input / ouput tasks from the CPU. Each machine is controlled
+by a very small instruction set with only 32 instruction slots per machine. Programs written for PIO
+can access and control any of the GPIO pins on the Pico.</p>
+<h2 id="serial-midi">Serial MIDI</h2>
+<blockquote>
+<p>The hardware MIDI interface operates at 31.25 (+/- 1%) Kbaud, asynchronous, with a start bit, 8
+data bits (D0 to D7), and a stop bit. This makes a total of 10 bits for a period of 320
+microseconds per serial byte. The start bit is a logical 0 (current on) and the stop bit is a
+logical 1 (current off). Bytes are sent LSB first.</p>
+<p>-- the <a href="https://www.midi.org/specifications-old/item/midi-din-electrical-specification">MIDI DIN Electrical Specification</a></p>
+</blockquote>
+<h2 id="raspberry-pi-pico-uart">Raspberry Pi Pico UART</h2>
+<p>The Raspberry Pi Pico only has two UART transmit/receive (TX/RX) pairs (UART0 and UART1 in the
+pinout diagram below). PIO allows us to build equivalent functionality on any GPIO pin to extend
+this limitation. The Raspberry Pi Pico SDK examples contains sample code for a <a href="https://github.com/raspberrypi/pico-examples/tree/master/pio/uart_tx">single PIO UART</a>. In
+this post I'll extend that example so that the PIO code can transmit over any number of pins.</p>
+<p><img src="https://www.joshka.net/pio-for-midi-with-raspberry-pi-pico/pico-uart.png" alt="Raspberry Pico UART Pins" /></p>
+<h2 id="the-existing-uart-transmit-example">The Existing UART Transmit Example</h2>
+<p>The <a href="https://github.com/raspberrypi/pico-examples/blob/master/pio/uart_tx/uart_tx.pio">example UART TX PIO code</a> handles a single UART transmission, and is configured to 1 start bit
+(LO), 8 data bits, and then 1 stop bit (HI). We call this 8n1 (the n indicates that there is no
+parity bit in the protocol).</p>
+<pre data-lang="txt" style="background-color:#2b303b;color:#c0c5ce;" class="language-txt "><code class="language-txt" data-lang="txt"><span>.program uart_tx
+</span><span>.side_set 1 opt
+</span><span>
+</span><span>; An 8n1 UART transmit program.
+</span><span>; OUT pin 0 and side-set pin 0 are both mapped to UART TX pin.
+</span><span>
+</span><span>    pull       side 1 [7]  ; Assert stop bit, or stall with line in idle state
+</span><span>    set x, 7   side 0 [7]  ; Preload bit counter, assert start bit for 8 clocks
+</span><span>bitloop:                   ; This loop will run 8 times (8n1 UART)
+</span><span>    out pins, 1            ; Shift 1 bit from OSR to the first OUT pin
+</span><span>    jmp x-- bitloop   [6]  ; Each loop iteration is 8 cycles.
+</span></code></pre>
+<p>This code configures the programmable io program to be able to set a single pin hi or low while
+simultaneously running another instruction. It then pulls 32 bits of data from the input buffer into
+the state machine's output shift register (OSR) and sidesets the Tx pin high to indicate a stop bit.
+It then sets the x register up as a loop variable to run 8 times while simultaneously setting the
+start bit. Then we see the meat of the loop, grab a single bit from the output shift and set the Tx
+pin high or low depending on the that bit. It repeats this 8 times, and then starts again.</p>
+<p>An astute reader will notice that there are some extra numbers in square brackets at the end of the
+line. These add pauses to each instruction of a certain number of instructions. This allows each bit
+sent on the transmit line to be a standard known length. In this case each bit takes 8 ticks. The
+first two instructions (pull and setup the loop counter) each take a single tick plus 7 extra ticks.
+Each time through the loop we see a single clock tick for the output instruction, plus another
+single conditional jump instruction with 6 extra ticks for a total of 8 ticks. (The pull command is
+a little different as it may block indefinitely if the output buffer is empty).</p>
+<p>The <a href="https://github.com/raspberrypi/pico-examples/blob/master/pio/uart_tx/uart_tx.pio">transmit example</a> also sets up the input and output pin parameters, including ensuring that the
+pin starts out high indicating stop or no data yet. It configures the state machine to run at 8
+ticks per cycle (dividing the CPU frequency by 8 times the baudrate to transmit at the required
+serial frequency). It finally contains some convenience methods to write to the state machine output
+buffer.</p>
+<p>We can take this program, and assemble it to C code using pioasm. This generates a header file which
+can be included in a standard pico program. An online version of the compiler is at <a href="https://wokwi.com/tools/pioasm">PIOASM</a>.</p>
+<h2 id="modifying-the-example-to-write-multiple-pins-in-parallel">Modifying the Example to Write Multiple Pins in Parallel</h2>
+<p>My first attempt at moving from a single pin to 8 pins was to treat the buffer as a transposed
+version of what should end up in each pin. E.g. if we want to send abcdefgh to 8 pins (where a-h are
+either 0 or 1), then our buffer should contain two 32 bit values: <code>aaaaaaaabbbbbbbbccccccccdddddddd</code>
+and <code>eeeeeeeeffffffffgggggggghhhhhhhh</code>. This allows us to send 8 pins of data at once on each output
+instruction. We use 2 as the cycles per bit as a simplified unwrapped loop works well enough:</p>
+<ol>
+<li>Pull 32 bits</li>
+<li>Set 8 pins to 0 (start bits)</li>
+<li>Output 8 bits from the output shift register to the 8 pins</li>
+<li>Output 8 bits from the output shift register to the 8 pins</li>
+<li>Output 8 bits from the output shift register to the 8 pins</li>
+<li>Output 8 bits from the output shift register to the 8 pins</li>
+<li>Pull 32 bits</li>
+<li>Output 8 bits from the output shift register to the 8 pins</li>
+<li>Output 8 bits from the output shift register to the 8 pins</li>
+<li>Output 8 bits from the output shift register to the 8 pins</li>
+<li>Output 8 bits from the output shift register to the 8 pins</li>
+<li>Set 8 pins to 1 (stop bits)</li>
+</ol>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#65737e;">// a multi pin uart that send 8 bits at a time by treating the buffer as
+</span><span style="color:#65737e;">// transposed (i.e. byte0 provides LSB0 of all pins, byte1 -&gt; LSB1 etc.)
+</span><span style="color:#65737e;">// buffer is 32 bits, so for 8 x 8-bit pushes, we need two full buffers
+</span><span style="color:#65737e;">// to fill a single UART byte (start-b7-b6-b5-b4-b3-b2-b1-b0-stop)
+</span><span>
+</span><span>.</span><span style="color:#bf616a;">program</span><span> uart_tx
+</span><span>    pull
+</span><span>    mov pins, null [</span><span style="color:#d08770;">1</span><span>] ; start </span><span style="color:#bf616a;">bit </span><span>(</span><span style="color:#d08770;">0</span><span>)
+</span><span>    out pins, </span><span style="color:#d08770;">8 </span><span>[</span><span style="color:#d08770;">1</span><span>]
+</span><span>    out pins, </span><span style="color:#d08770;">8 </span><span>[</span><span style="color:#d08770;">1</span><span>]
+</span><span>    out pins, </span><span style="color:#d08770;">8 </span><span>[</span><span style="color:#d08770;">1</span><span>]
+</span><span>    out pins, </span><span style="color:#d08770;">8
+</span><span>    pull
+</span><span>    out pins, </span><span style="color:#d08770;">8 </span><span>[</span><span style="color:#d08770;">1</span><span>]
+</span><span>    out pins, </span><span style="color:#d08770;">8 </span><span>[</span><span style="color:#d08770;">1</span><span>]
+</span><span>    out pins, </span><span style="color:#d08770;">8 </span><span>[</span><span style="color:#d08770;">1</span><span>]
+</span><span>    out pins, </span><span style="color:#d08770;">8 </span><span>[</span><span style="color:#d08770;">1</span><span>]
+</span><span>    mov pins, !null   ; stop </span><span style="color:#bf616a;">bit </span><span>(</span><span style="color:#d08770;">1</span><span>)
+</span></code></pre>
+<p>Our configuration is similar to the example code, but removes the sideset code:</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">static inline void </span><span style="color:#8fa1b3;">uart_tx_program_init</span><span>(PIO </span><span style="color:#bf616a;">pio</span><span>, uint </span><span style="color:#bf616a;">sm</span><span>, uint </span><span style="color:#bf616a;">offset</span><span>, uint </span><span style="color:#bf616a;">pin</span><span>, uint </span><span style="color:#bf616a;">baud</span><span>) {
+</span><span>    </span><span style="color:#b48ead;">const int</span><span> PIN_COUNT = </span><span style="color:#d08770;">8</span><span>;
+</span><span>    </span><span style="color:#b48ead;">const int</span><span> PIN_MASK = </span><span style="color:#d08770;">0xFF</span><span>;
+</span><span>    </span><span style="color:#65737e;">// the number of PIO cycles that it takes to output a single bit
+</span><span>    </span><span style="color:#b48ead;">const </span><span>uint cycles_per_bit = </span><span style="color:#d08770;">2</span><span>;
+</span><span>    </span><span style="color:#65737e;">// the clock divider (number of CPU cycles that each PIO cycle takes)
+</span><span>    </span><span style="color:#b48ead;">float</span><span> div = (</span><span style="color:#b48ead;">float</span><span>)</span><span style="color:#bf616a;">clock_get_hz</span><span>(clk_sys) / (baud * cycles_per_bit);
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// initialize the pins to high indicating the stop bit
+</span><span>    </span><span style="color:#bf616a;">pio_sm_set_set_pins</span><span>(pio, sm, pin, PIN_COUNT);
+</span><span>    </span><span style="color:#bf616a;">pio_sm_set_pindirs_with_mask</span><span>(pio, sm, </span><span style="color:#d08770;">0xFFFFFFFF</span><span>, PIN_MASK &lt;&lt; pin);
+</span><span>    </span><span style="color:#bf616a;">pio_sm_set_pins_with_mask</span><span>(pio, sm, </span><span style="color:#d08770;">0xFFFFFFFF</span><span>, PIN_MASK &lt;&lt; pin);
+</span><span>    </span><span style="color:#b48ead;">for </span><span>(</span><span style="color:#b48ead;">int</span><span> i = </span><span style="color:#d08770;">0</span><span>; i &lt; PIN_COUNT; i++) {
+</span><span>        </span><span style="color:#bf616a;">pio_gpio_init</span><span>(pio, pin + i);
+</span><span>    }
+</span><span>    
+</span><span>    pio_sm_config c = </span><span style="color:#bf616a;">uart_tx_program_get_default_config</span><span>(offset);
+</span><span>    </span><span style="color:#bf616a;">sm_config_set_out_shift</span><span>(&amp;c, </span><span style="color:#d08770;">true</span><span>, </span><span style="color:#d08770;">false</span><span>, </span><span style="color:#d08770;">32</span><span>); </span><span style="color:#65737e;">// shift to right, no autopull
+</span><span>    </span><span style="color:#bf616a;">sm_config_set_out_pins</span><span>(&amp;c, pin, PIN_COUNT); </span><span style="color:#65737e;">// Set 8 pins starting at `pin`
+</span><span>    </span><span style="color:#bf616a;">sm_config_set_set_pins</span><span>(&amp;c, pin, PIN_COUNT); </span><span style="color:#65737e;">// Set 8 pins starting at `pin`
+</span><span>    </span><span style="color:#bf616a;">sm_config_set_clkdiv</span><span>(&amp;c, div);
+</span><span>    </span><span style="color:#bf616a;">pio_sm_init</span><span>(pio, sm, offset, &amp;c); </span><span style="color:#65737e;">// Load config
+</span><span>    </span><span style="color:#bf616a;">pio_sm_set_enabled</span><span>(pio, sm, </span><span style="color:#d08770;">true</span><span>); </span><span style="color:#65737e;">// Start state machine
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">static inline void </span><span style="color:#8fa1b3;">uart_tx_program_putc</span><span>(PIO </span><span style="color:#bf616a;">pio</span><span>, uint </span><span style="color:#bf616a;">sm</span><span>, uint32_t </span><span style="color:#bf616a;">b1</span><span>, uint32_t </span><span style="color:#bf616a;">b2</span><span>) {
+</span><span>    </span><span style="color:#bf616a;">pio_sm_put_blocking</span><span>(pio, sm, b1);
+</span><span>    </span><span style="color:#bf616a;">pio_sm_put_blocking</span><span>(pio, sm, b2);
+</span><span>}
+</span></code></pre>
+<p>(<a href="https://gist.github.com/joshka/8bb618dcda96f3dd940602bf41eb96af#file-uart_tx-pio-h">uart_tx.pio.h</a>)</p>
+<p>We compile this using the <a href="https://wokwi.com/tools/pioasm">online pioasm tool</a> which generates a
+header file
+(<a href="https://gist.github.com/joshka/8bb618dcda96f3dd940602bf41eb96af#file-uart_tx-h">uart_tx.h</a>) to
+include in our project</p>
+<p>The benefit of this approach is that we can send different messages to each transmit line, which
+allows us to process each output differently before sending. It does however introduce a bit more
+complexity in the message sending part that runs on the CPU as each set of messages has to be
+transposed prior to sending or code written to copy each byte to the right bits of the output
+buffer. E.g.:</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#65737e;">// Send the exact same byte to all outputs
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">sendByte</span><span>(uint </span><span style="color:#bf616a;">idx</span><span>) {
+</span><span>  uint8_t m = messages[idx];
+</span><span>  uint32_t low = (
+</span><span>    ((m &gt;&gt; </span><span style="color:#d08770;">0 </span><span>&amp; </span><span style="color:#d08770;">0x01</span><span>) &lt;&lt; </span><span style="color:#d08770;">0</span><span>) +
+</span><span>    ((m &gt;&gt; </span><span style="color:#d08770;">1 </span><span>&amp; </span><span style="color:#d08770;">0x01</span><span>) &lt;&lt; </span><span style="color:#d08770;">8</span><span>) +
+</span><span>    ((m &gt;&gt; </span><span style="color:#d08770;">2 </span><span>&amp; </span><span style="color:#d08770;">0x01</span><span>) &lt;&lt; </span><span style="color:#d08770;">16</span><span>) +
+</span><span>    ((m &gt;&gt; </span><span style="color:#d08770;">3 </span><span>&amp; </span><span style="color:#d08770;">0x01</span><span>) &lt;&lt; </span><span style="color:#d08770;">24</span><span>)
+</span><span>  ) * </span><span style="color:#d08770;">0xFF</span><span>;
+</span><span>  uint32_t high = (
+</span><span>    ((m &gt;&gt; </span><span style="color:#d08770;">4 </span><span>&amp; </span><span style="color:#d08770;">0x01</span><span>) &lt;&lt; </span><span style="color:#d08770;">0</span><span>) +
+</span><span>    ((m &gt;&gt; </span><span style="color:#d08770;">5 </span><span>&amp; </span><span style="color:#d08770;">0x01</span><span>) &lt;&lt; </span><span style="color:#d08770;">8</span><span>) +
+</span><span>    ((m &gt;&gt; </span><span style="color:#d08770;">6 </span><span>&amp; </span><span style="color:#d08770;">0x01</span><span>) &lt;&lt; </span><span style="color:#d08770;">16</span><span>) +
+</span><span>    ((m &gt;&gt; </span><span style="color:#d08770;">7 </span><span>&amp; </span><span style="color:#d08770;">0x01</span><span>) &lt;&lt; </span><span style="color:#d08770;">24</span><span>)
+</span><span>  ) * </span><span style="color:#d08770;">0xFF</span><span>;
+</span><span>  </span><span style="color:#bf616a;">uart_tx_program_putc</span><span>(pio, sm, low, high);
+</span><span>}
+</span></code></pre>
+<p>The <a href="https://gist.github.com/joshka/8bb618dcda96f3dd940602bf41eb96af#file-sketch-ino">full sketch</a>
+just writes some test MIDI messages on the output ports starting at PIN2 on the Pico (leaving UART0
+to handle PIN0 and PIN1):</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#65737e;">// A test harness for 8 pin UART TX on a single PIO State Machine
+</span><span style="color:#65737e;">// Test project https://wokwi.com/projects/344410676217774675
+</span><span style="color:#65737e;">// uart_tx.h source 
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">pico/stdlib.h</span><span>&quot;
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">hardware/pio.h</span><span>&quot;
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">uart_tx.h</span><span>&quot;
+</span><span>
+</span><span style="color:#65737e;">// start at pin 2, so if we want we have UART0 on GP0 and GP1
+</span><span style="color:#b48ead;">const </span><span>uint pin = </span><span style="color:#d08770;">2</span><span>;
+</span><span>
+</span><span style="color:#65737e;">// NOTE the simulator doesn&#39;t seem to hit this exactly (on my 2015 macbook)
+</span><span style="color:#65737e;">// It ends up being slow by about 6% YMMV
+</span><span style="color:#b48ead;">const </span><span>uint baud = </span><span style="color:#d08770;">31250</span><span>;
+</span><span style="color:#b48ead;">const</span><span> PIO pio = pio0;
+</span><span>
+</span><span>uint sm;
+</span><span>
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">setup</span><span>() {
+</span><span>  uint offset = </span><span style="color:#bf616a;">pio_add_program</span><span>(pio, &amp;uart_tx_program);
+</span><span>  sm = </span><span style="color:#bf616a;">pio_claim_unused_sm</span><span>(pio, </span><span style="color:#d08770;">true</span><span>);
+</span><span>  </span><span style="color:#bf616a;">uart_tx_program_init</span><span>(pio, sm, offset, pin, baud);
+</span><span>}
+</span><span>
+</span><span style="color:#65737e;">// Some test messages
+</span><span>uint8_t messages[</span><span style="color:#d08770;">12</span><span>] = {
+</span><span>  </span><span style="color:#d08770;">0x80</span><span>, </span><span style="color:#d08770;">0x3C</span><span>, </span><span style="color:#d08770;">0x00</span><span>, </span><span style="color:#65737e;">// Note Off Channel 1, Middle C, Velocity 0
+</span><span>  </span><span style="color:#d08770;">0x90</span><span>, </span><span style="color:#d08770;">0x3C</span><span>, </span><span style="color:#d08770;">0x7F</span><span>, </span><span style="color:#65737e;">// Note On Channel 1, Middle C, Velocity 127
+</span><span>  </span><span style="color:#d08770;">0x80</span><span>, </span><span style="color:#d08770;">0x3D</span><span>, </span><span style="color:#d08770;">0x00</span><span>, </span><span style="color:#65737e;">// Note Off Channel 1, Middle C, Velocity 0
+</span><span>  </span><span style="color:#d08770;">0x90</span><span>, </span><span style="color:#d08770;">0x3D</span><span>, </span><span style="color:#d08770;">0x7F  </span><span style="color:#65737e;">// Note On Channel 1, Middle C, Velocity 127
+</span><span>};
+</span><span>uint counter = </span><span style="color:#d08770;">0</span><span>;
+</span><span>
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">loop</span><span>() {
+</span><span>  </span><span style="color:#65737e;">// pull 3 message bytes off
+</span><span>  </span><span style="color:#bf616a;">sendByte</span><span>(counter++);
+</span><span>  </span><span style="color:#bf616a;">sendByte</span><span>(counter++);
+</span><span>  </span><span style="color:#bf616a;">sendByte</span><span>(counter++);
+</span><span>  counter %= </span><span style="color:#d08770;">12</span><span>;
+</span><span>  </span><span style="color:#65737e;">// delay(1);
+</span><span>  </span><span style="color:#65737e;">// delayMicroseconds(100);
+</span><span>}
+</span></code></pre>
+<p>There's not much to this. Copy the pio program into the first PIO (the Pico has 2 PIOs each with 4
+state machines), and start it running at 31.25kHz sending some note on/off messages.</p>
+<h2 id="simulating-the-output">Simulating the output</h2>
+<p>We <a href="https://wokwi.com/projects/344410676217774675">load this into the simulator</a> and run it
+capturing the outputs on a simulated logic analyzer. The following configures a simulated pi pico,
+with a logic analyzer hooked up to monitor the pins.</p>
+<p><img src="https://user-images.githubusercontent.com/381361/193454808-25e547c9-c8d1-4500-a6cd-8c469d322bd8.png" alt="Sketch diagram" /></p>
+<pre data-lang="json" style="background-color:#2b303b;color:#c0c5ce;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  &quot;</span><span style="color:#a3be8c;">version</span><span>&quot;: </span><span style="color:#d08770;">1</span><span>,
+</span><span>  &quot;</span><span style="color:#a3be8c;">author</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">Joshka</span><span>&quot;,
+</span><span>  &quot;</span><span style="color:#a3be8c;">editor</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">wokwi</span><span>&quot;,
+</span><span>  &quot;</span><span style="color:#a3be8c;">parts</span><span>&quot;: [
+</span><span>    {
+</span><span>      &quot;</span><span style="color:#a3be8c;">type</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">wokwi-pi-pico</span><span>&quot;,
+</span><span>      &quot;</span><span style="color:#a3be8c;">id</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">pico</span><span>&quot;,
+</span><span>      &quot;</span><span style="color:#a3be8c;">top</span><span>&quot;: </span><span style="color:#d08770;">6.35</span><span>,
+</span><span>      &quot;</span><span style="color:#a3be8c;">left</span><span>&quot;: </span><span style="color:#d08770;">153.6</span><span>,
+</span><span>      &quot;</span><span style="color:#a3be8c;">rotate</span><span>&quot;: </span><span style="color:#d08770;">1800</span><span>,
+</span><span>      &quot;</span><span style="color:#a3be8c;">attrs</span><span>&quot;: { &quot;</span><span style="color:#a3be8c;">env</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">arduino-community</span><span>&quot; }
+</span><span>    },
+</span><span>    {
+</span><span>      &quot;</span><span style="color:#a3be8c;">type</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">wokwi-logic-analyzer</span><span>&quot;,
+</span><span>      &quot;</span><span style="color:#a3be8c;">id</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">logic1</span><span>&quot;,
+</span><span>      &quot;</span><span style="color:#a3be8c;">top</span><span>&quot;: </span><span style="color:#d08770;">165.4</span><span>,
+</span><span>      &quot;</span><span style="color:#a3be8c;">left</span><span>&quot;: </span><span style="color:#d08770;">9.05</span><span>,
+</span><span>      &quot;</span><span style="color:#a3be8c;">rotate</span><span>&quot;: </span><span style="color:#d08770;">90</span><span>,
+</span><span>      &quot;</span><span style="color:#a3be8c;">attrs</span><span>&quot;: { &quot;</span><span style="color:#a3be8c;">bufferSize</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">3000</span><span>&quot; }
+</span><span>    }
+</span><span>  ],
+</span><span>  &quot;</span><span style="color:#a3be8c;">connections</span><span>&quot;: [
+</span><span>    [ &quot;</span><span style="color:#a3be8c;">pico:GP0</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">$serialMonitor:RX</span><span>&quot;, &quot;&quot;, [] ],
+</span><span>    [ &quot;</span><span style="color:#a3be8c;">pico:GP1</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">$serialMonitor:TX</span><span>&quot;, &quot;&quot;, [] ],
+</span><span>    [ &quot;</span><span style="color:#a3be8c;">pico:GND.1</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">logic1:GND</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">black</span><span>&quot;, [ &quot;</span><span style="color:#a3be8c;">h0</span><span>&quot; ] ],
+</span><span>    [ &quot;</span><span style="color:#a3be8c;">pico:GP2</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">logic1:D0</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">green</span><span>&quot;, [ &quot;</span><span style="color:#a3be8c;">h0</span><span>&quot; ] ],
+</span><span>    [ &quot;</span><span style="color:#a3be8c;">pico:GP3</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">logic1:D1</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">green</span><span>&quot;, [ &quot;</span><span style="color:#a3be8c;">h0</span><span>&quot; ] ],
+</span><span>    [ &quot;</span><span style="color:#a3be8c;">pico:GP4</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">logic1:D2</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">green</span><span>&quot;, [ &quot;</span><span style="color:#a3be8c;">h0</span><span>&quot; ] ],
+</span><span>    [ &quot;</span><span style="color:#a3be8c;">pico:GP5</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">logic1:D3</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">green</span><span>&quot;, [ &quot;</span><span style="color:#a3be8c;">h0</span><span>&quot; ] ],
+</span><span>    [ &quot;</span><span style="color:#a3be8c;">pico:GP6</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">logic1:D4</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">green</span><span>&quot;, [ &quot;</span><span style="color:#a3be8c;">h0</span><span>&quot; ] ],
+</span><span>    [ &quot;</span><span style="color:#a3be8c;">pico:GP7</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">logic1:D5</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">green</span><span>&quot;, [ &quot;</span><span style="color:#a3be8c;">h0</span><span>&quot; ] ],
+</span><span>    [ &quot;</span><span style="color:#a3be8c;">pico:GP8</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">logic1:D6</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">green</span><span>&quot;, [ &quot;</span><span style="color:#a3be8c;">h0</span><span>&quot; ] ],
+</span><span>    [ &quot;</span><span style="color:#a3be8c;">pico:GP9</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">logic1:D7</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">green</span><span>&quot;, [ &quot;</span><span style="color:#a3be8c;">h0</span><span>&quot; ] ]
+</span><span>  ],
+</span><span>  &quot;</span><span style="color:#a3be8c;">serialMonitor</span><span>&quot;: { &quot;</span><span style="color:#a3be8c;">display</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">auto</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">newline</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">lf</span><span>&quot; }
+</span><span>}
+</span></code></pre>
+<p>Once we finish running this for a bit, we grab the output and load it into Pulseview to see how we
+went. You may need to configure the analysis to be slightly lower baud rate than we're actually
+anticipating. I'm unsure if this is a simulator bug or just a performance issue. To work out the
+exact frequency to use, measure the time between the start bit and the first bit and find the
+inverse. On my machine, this was about 6% slower than real time - YMMV.</p>
+<p><img src="https://user-images.githubusercontent.com/381361/193454591-c51b9baf-0452-4f56-839b-a2c5424f9fe8.png" alt="Pulseview output" /></p>
+<h2 id="extending-this-to-any-number-of-bits">Extending this to any number of bits</h2>
+<p>The first attempt works, but if all we want is to send the same data to every port we can simplify
+and ditch the buffer transposition code that runs on the CPU. This also avoids the difficulty of
+what to do with odd pin counts that won't neatly fit in 32 bits.</p>
+<p>In this approach, we use the y register to count down the bits like the original example uart tx
+code. We load each bit of the output buffer bit by bit into the x register, and either write all
+zeroes or all ones to every pin. We use 4 cycles per bit as this is necessary to allow the right
+number of jump instructions etc. The logic for this is:</p>
+<ol>
+<li>Pull</li>
+<li>Output 0 to all pins (start bit)</li>
+<li>Loop 8 times:
+<ol>
+<li>If the next bit is 0, putput all zeros otherwise output all 1s</li>
+</ol>
+</li>
+<li>Output 1 to all pins (stop bit)</li>
+</ol>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#65737e;">// a multi pin uart that send 16 bits at a time by copying each bit LSB to the output
+</span><span style="color:#65737e;">// different from the previous version in that this just plain copies a normal byte,
+</span><span style="color:#65737e;">// rather than having a larger buffer that can set every pin differently.
+</span><span style="color:#65737e;">// so the input is a single byte in the buffer, rather than one byte per bit
+</span><span style="color:#65737e;">// 16 isn&#39;t at all special in this, it should work from 1 to whatever number of
+</span><span style="color:#65737e;">// consecutive pins you have available (pico has 0-22)
+</span><span>
+</span><span style="color:#65737e;">// only tested at https://wokwi.com/tools/pioasm so far, not on a real
+</span><span style="color:#65737e;">// device see also https://wokwi.com/projects/344410676217774675
+</span><span style="color:#65737e;">// This version https://wokwi.com/projects/344453034004185682
+</span><span>
+</span><span>.</span><span style="color:#bf616a;">program</span><span> uart_tx
+</span><span>
+</span><span>    pull [</span><span style="color:#d08770;">2</span><span>]
+</span><span>    mov pins, null  ; output start bit to all pins
+</span><span>    set y, </span><span style="color:#d08770;">7        </span><span>; y is bit counter </span><span style="color:#d08770;">7</span><span> to </span><span style="color:#d08770;">0
+</span><span>loopbits:
+</span><span>    out x, </span><span style="color:#d08770;">1        </span><span>; get LSB from OSR
+</span><span>    jmp !x, zerobit
+</span><span>onebit:
+</span><span>    mov pins, !null ; output one to all pins
+</span><span>    jmp y--, loopbits
+</span><span>    jmp </span><span style="color:#8fa1b3;">end
+</span><span>zerobit:
+</span><span>    mov pins, null  ; output zero to all pins
+</span><span>    jmp y--, loopbits
+</span><span>    nop
+</span><span>end:
+</span><span>    nop
+</span><span>    mov pins, !null ; output stop bit to all pins
+</span><span>
+</span><span>% c-sdk {
+</span><span style="color:#b48ead;">static inline void </span><span style="color:#bf616a;">uart_tx_program_init</span><span>(PIO pio, uint sm, uint offset, uint pin, uint baud) {
+</span><span>    </span><span style="color:#b48ead;">const int</span><span> PIN_COUNT = </span><span style="color:#d08770;">16</span><span>;
+</span><span>    </span><span style="color:#b48ead;">const </span><span>uint32_t PIN_MASK = </span><span style="color:#d08770;">0xFFFF</span><span>;
+</span><span>    </span><span style="color:#65737e;">// the number of PIO cycles that it takes to output a single bit
+</span><span>    </span><span style="color:#b48ead;">const </span><span>uint cycles_per_bit = </span><span style="color:#d08770;">4</span><span>;
+</span><span>    </span><span style="color:#65737e;">// the clock divider (number of CPU cycles that each PIO cycle takes)
+</span><span>    </span><span style="color:#b48ead;">float</span><span> div = (</span><span style="color:#b48ead;">float</span><span>)</span><span style="color:#bf616a;">clock_get_hz</span><span>(clk_sys) / (baud * cycles_per_bit);
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// initialize the pins to high indicating the stop bit
+</span><span>    </span><span style="color:#bf616a;">pio_sm_set_set_pins</span><span>(pio, sm, pin, PIN_COUNT);
+</span><span>    </span><span style="color:#bf616a;">pio_sm_set_pindirs_with_mask</span><span>(pio, sm, </span><span style="color:#d08770;">0xFFFFFFFF</span><span>, PIN_MASK &lt;&lt; pin);
+</span><span>    </span><span style="color:#bf616a;">pio_sm_set_pins_with_mask</span><span>(pio, sm, </span><span style="color:#d08770;">0xFFFFFFFF</span><span>, PIN_MASK &lt;&lt; pin);
+</span><span>    </span><span style="color:#b48ead;">for </span><span>(</span><span style="color:#b48ead;">int</span><span> i = </span><span style="color:#d08770;">0</span><span>; i &lt; PIN_COUNT; i++) {
+</span><span>        </span><span style="color:#bf616a;">pio_gpio_init</span><span>(pio, pin + i);
+</span><span>    }
+</span><span>    
+</span><span>    pio_sm_config c = </span><span style="color:#bf616a;">uart_tx_program_get_default_config</span><span>(offset);
+</span><span>    </span><span style="color:#bf616a;">sm_config_set_out_shift</span><span>(&amp;c, </span><span style="color:#d08770;">true</span><span>, </span><span style="color:#d08770;">false</span><span>, </span><span style="color:#d08770;">32</span><span>); </span><span style="color:#65737e;">// shift to right, no autopull
+</span><span>    </span><span style="color:#bf616a;">sm_config_set_out_pins</span><span>(&amp;c, pin, PIN_COUNT); </span><span style="color:#65737e;">// Set 8 pins starting at `pin`
+</span><span>    </span><span style="color:#bf616a;">sm_config_set_set_pins</span><span>(&amp;c, pin, PIN_COUNT); </span><span style="color:#65737e;">// Set 8 pins starting at `pin`
+</span><span>    </span><span style="color:#bf616a;">sm_config_set_clkdiv</span><span>(&amp;c, div);
+</span><span>    </span><span style="color:#bf616a;">pio_sm_init</span><span>(pio, sm, offset, &amp;c); </span><span style="color:#65737e;">// Load config
+</span><span>    </span><span style="color:#bf616a;">pio_sm_set_enabled</span><span>(pio, sm, </span><span style="color:#d08770;">true</span><span>); </span><span style="color:#65737e;">// Start state machine
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">static inline void </span><span style="color:#bf616a;">uart_tx_program_putc</span><span>(PIO pio, uint sm, uint32_t b1) {
+</span><span>    </span><span style="color:#bf616a;">pio_sm_put_blocking</span><span>(pio, sm, b1);
+</span><span>}
+</span><span>%}
+</span></code></pre>
+<p>The test harness, sketch etc. is equivalent and a simulated version can be seen at:
+<a href="https://wokwi.com/projects/344345628967436882">https://wokwi.com/projects/344345628967436882</a></p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">loop</span><span>() {
+</span><span>  </span><span style="color:#65737e;">// pull 3 message bytes off
+</span><span>  </span><span style="color:#bf616a;">sendByte</span><span>(counter++);
+</span><span>  </span><span style="color:#bf616a;">sendByte</span><span>(counter++);
+</span><span>  </span><span style="color:#bf616a;">sendByte</span><span>(counter++);
+</span><span>  counter %= </span><span style="color:#d08770;">12</span><span>;
+</span><span>  </span><span style="color:#65737e;">// delay(1);
+</span><span>  </span><span style="color:#65737e;">// delayMicroseconds(100);
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">sendByte</span><span>(uint </span><span style="color:#bf616a;">idx</span><span>) {
+</span><span>  uint8_t m = messages[idx];
+</span><span>  </span><span style="color:#bf616a;">uart_tx_program_putc</span><span>(pio, sm, (uint32_t)m);
+</span><span>}
+</span></code></pre>
+<h2 id="wrapping-up">Wrapping up</h2>
+<p>While this exists only in simulated form right now, we can see that the Pico could indeed run a copy
+based UART to implement MIDI thru on every pin from PIN0 to PIN22 (PIN23-25 are used internally). A
+DIY version of Kenton's 25 port version might set you back $4 for the pico, and $1.50 per port (plus
+incidental wires breadboard etc.), about $41 total. The cool part about this is that it would be
+possible to sync two of these with a higher bandwitch protocol than midi for easy latency free
+expandability (whereas daisy chaining today introduces ~1ms lag for an average 3 byte message at
+31.25kHz). We can also extend this to USB, Wifi (using the Pico-W), and potentially event bluetooth
+MIDI (once this is enabled on the Pico-W).</p>
+<div class="footnote-definition" id="gas"><sup class="footnote-definition-label">1</sup>
+<p>Gear Acquisition Syndrome.</p>
+</div>
+<div class="footnote-definition" id="daw"><sup class="footnote-definition-label">2</sup>
+<p>Digital Audio Workstation. E.g. Ableton Live, Bitwig, etc.</p>
+</div>
+
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h">Thanks for reading! Read other posts?</span>
+                    <hr />
+                </div>
+                <div class="pagination__buttons">
+                        <span class="button previous">
+                            <a href="https://www.joshka.net/junit-json-params/">
+                                <span class="button__icon">←</span>&nbsp;
+                                <span class="button__text">Introducing JUnit JSON Params</span>
+                            </a>
+                        </span>
+                    
+                    
+                        <span class="button next">
+                            <a href="https://www.joshka.net/chatgpt-memes/">
+                                <span class="button__text">ChatGPT Memes</span>&nbsp;
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    </div>
+            </div>
+        
+    </div>
+
+    </div>
+
+    
+    <footer class="footer">
+        <div class="footer__inner">
+                <div class="copyright">
+                        <span>© 
+    2025
+ Josh McKinney</span>
+                    <span class="copyright-theme">
+                        <span class="copyright-theme-sep">:: </span>
+                        Theme: <a href="https://github.com/pawroman/zola-theme-terminimal/">Terminimal</a> by pawroman
+                    </span>
+                </div>
+            </div>
+    </footer>
+    
+
+</div>
+</body>
+
+</html>

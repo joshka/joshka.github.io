@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>An ergonomic pattern for SQLx queries in Axum | Joshka.net</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://www.joshka.net/style.css">
+    <link rel="stylesheet" href="https://www.joshka.net/color/blue.css">
+
+    <link rel="stylesheet" href="https://www.joshka.net/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="An ergonomic pattern for SQLx queries in Axum | Joshka.net">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.joshka.net/axum-sqlx-queries-pattern/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="An ergonomic pattern for SQLx queries in Axum | Joshka.net">
+    <meta property="twitter:domain" content="www.joshka.net">
+    <meta property="twitter:url" content="https://www.joshka.net/axum-sqlx-queries-pattern/">
+
+                <link rel="alternate" type="application/atom+xml" title="Joshka.net Atom Feed" href="https://www.joshka.net/atom.xml" />
+    </head>
+
+<body class="">
+<div class="container">
+    
+    <header class="header">
+        <div class="header__inner">
+            <div class="header__logo">
+                    
+                <a href="https://www.joshka.net" style="text-decoration: none;">
+                    <div class="logo">
+                      
+                            Joshka.net
+                        
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://www.joshka.net">blog</a></li>
+            
+                <li><a href="https://www.joshka.net/archive">archive</a></li>
+            
+                <li><a href="https://www.joshka.net/about">about me</a></li>
+            
+                <li><a href="https://www.joshka.net/resume">resume</a></li>
+            
+                <li><a href="https://www.joshka.net/projects">projects</a></li>
+            
+                <li><a href="https://github.com/joshka" target="_blank" rel="noopener noreferrer">github</a></li>
+            
+                <li><a href="https://hachyderm.io/@joshka" target="_blank" rel="noopener noreferrer">mastodon</a></li>
+            
+                <li><a href="https://soundcloud.com/joshka" target="_blank" rel="noopener noreferrer">soundcloud</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://www.joshka.net/axum-sqlx-queries-pattern/">An ergonomic pattern for SQLx queries in Axum</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-03-09
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                :: tags:&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/rust/">#Rust</a>&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/software/">#Software</a></span>
+    
+
+        <div class="post-content">
+            <p>Axum is the most popular web framework in Rust at the time of writing. In this post, I'll show an
+easy and ergonomic pattern for connecting to a database using SQLx and Axum.</p>
+<p>This is a small response to a question on <a href="https://www.reddit.com/r/rust/comments/1j76nhm/comment/mgy2ptm/?utm_source=share&amp;utm_medium=web3x&amp;utm_name=web3xcss&amp;utm_term=1&amp;utm_content=share_button">a reddit thread about how to structure SQLx queries in
+Axum</a>.
+The pattern I'll show here is not the only way to do it, but it's one that I've found to be simple
+and effective.</p>
+<p>TL;DR: Store the database pool in your application state, create a struct to hold your queries, and
+use the <code>FromRef</code> trait to simplify the interaction between your handlers and the database.</p>
+<span id="continue-reading"></span><h2 id="the-problem">The problem</h2>
+<p>When writing web applications, you often need to interact with a database. In Rust, one of the the
+most popular database libraries is SQLx. Setting up SQLx with Axum is straightforward, but it can be
+a bit repetitive. You need to create a database pool, pass it to your handlers, and then use it in
+your queries.</p>
+<p>For the purpose of this post, let's assume you have a simple web application that interacts directly
+with a Sqlite database rather than through some ORM or other service abstraction. This is common for
+smaller projects or when you want to keep things simple.</p>
+<p>Here's an example of how you might set up SQLx with Axum:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">type </span><span>Db = sqlx::SqlitePool;
+</span><span style="color:#b48ead;">type </span><span>Result&lt;T, E&gt; = std::result::Result&lt;T, E = crate::Error&gt;; </span><span style="color:#65737e;">// or use anyhow / color-eyre
+</span><span>
+</span><span>#[</span><span style="color:#bf616a;">derive</span><span>(Clone)]
+</span><span style="color:#b48ead;">struct </span><span>AppState {
+</span><span>    </span><span style="color:#bf616a;">db</span><span>: Db,
+</span><span>}
+</span><span>
+</span><span>#[</span><span style="color:#bf616a;">tokio</span><span>::</span><span style="color:#bf616a;">main</span><span>]
+</span><span>async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span>() -&gt; Result&lt;()&gt; {
+</span><span>    </span><span style="color:#65737e;">// ... other config code ...
+</span><span>    
+</span><span>    </span><span style="color:#b48ead;">let</span><span> db = Db::connect(config.connection_string).await?;
+</span><span>    </span><span style="color:#b48ead;">let</span><span> state = AppState { db };
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">let</span><span> app = Router::new()
+</span><span>        .</span><span style="color:#96b5b4;">nest</span><span>(&quot;</span><span style="color:#a3be8c;">/users</span><span>&quot;, users::router())
+</span><span>        .</span><span style="color:#96b5b4;">nest</span><span>(&quot;</span><span style="color:#a3be8c;">/posts</span><span>&quot;, posts::router())
+</span><span>        </span><span style="color:#65737e;">// ... other routes ...
+</span><span>        .</span><span style="color:#96b5b4;">with_state</span><span>(state);
+</span><span>    
+</span><span>    </span><span style="color:#65737e;">// ... other server setup code ...
+</span><span>}
+</span></code></pre>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">mod </span><span>users {
+</span><span>    </span><span style="color:#b48ead;">use </span><span>axum::{extract::{FromRequest, Path}, response::Json, Router};
+</span><span>    </span><span style="color:#b48ead;">use </span><span>sqlx::query;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">use super</span><span>::{AppState, Db};
+</span><span>
+</span><span>    #[</span><span style="color:#bf616a;">derive</span><span>(sqlx::FromRow)]
+</span><span>    </span><span style="color:#b48ead;">struct </span><span>User {
+</span><span>        </span><span style="color:#bf616a;">id</span><span>: </span><span style="color:#b48ead;">i32</span><span>,
+</span><span>        </span><span style="color:#bf616a;">name</span><span>: String,
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">router</span><span>() -&gt; Router {
+</span><span>        Router::new()
+</span><span>            .</span><span style="color:#96b5b4;">route</span><span>(&quot;</span><span style="color:#a3be8c;">/</span><span>&quot;, </span><span style="color:#96b5b4;">get</span><span>(index))
+</span><span>            .</span><span style="color:#96b5b4;">route</span><span>(&quot;</span><span style="color:#a3be8c;">/:id</span><span>&quot;, </span><span style="color:#96b5b4;">get</span><span>(show))
+</span><span>    }
+</span><span>
+</span><span>    async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">index</span><span>(</span><span style="color:#bf616a;">state</span><span>: AppState) -&gt; Result&lt;Json&lt;Vec&lt;User&gt;&gt;&gt; {
+</span><span>        </span><span style="color:#b48ead;">let</span><span> users = query!(&quot;</span><span style="color:#a3be8c;">SELECT * FROM users</span><span>&quot;)
+</span><span>            .</span><span style="color:#96b5b4;">fetch_all</span><span>(&amp;state.db)
+</span><span>            .await?;
+</span><span>        Ok(Json(users))
+</span><span>    }
+</span><span>
+</span><span>    async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">show</span><span>(</span><span style="color:#bf616a;">state</span><span>: AppState, </span><span style="color:#bf616a;">id</span><span>: Path&lt;</span><span style="color:#b48ead;">i64</span><span>&gt;) -&gt; Result&lt;Json&lt;User&gt;&gt; {
+</span><span>        </span><span style="color:#b48ead;">let</span><span> user = query!(&quot;</span><span style="color:#a3be8c;">SELECT * FROM users WHERE id = ?</span><span>&quot;, id)
+</span><span>            .</span><span style="color:#96b5b4;">fetch_one</span><span>(&amp;state.db)
+</span><span>            .await?;
+</span><span>        Ok(Json(user))
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// ... other handlers ...
+</span><span>}
+</span></code></pre>
+<p>The two main issues with this approach are:</p>
+<ol>
+<li>The queries are scattered throughout the handlers, making it hard to see what queries are
+available and where they are used.</li>
+<li>The code for extracting the database pool from the state is repeated in every handler.</li>
+</ol>
+<h2 id="the-solution">The solution</h2>
+<p>To make this process simpler, we can create a type in each vertical slice which holds the logic for
+all the queries in the module and implement the <code>FromRef</code> trait for it. This trait allows us to pass
+a State extractor to our handlers which is scoped to only the queries struct related to the module.</p>
+<p>Here's how you might refactor the above example:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">mod </span><span>users {
+</span><span>    </span><span style="color:#b48ead;">use </span><span>axum::{extract::{FromRequest, Path}, response::Json, Router};
+</span><span>    </span><span style="color:#b48ead;">use </span><span>sqlx::query;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">use super</span><span>::{AppState, Db};
+</span><span>
+</span><span>    #[</span><span style="color:#bf616a;">derive</span><span>(sqlx::FromRow)]
+</span><span>    </span><span style="color:#b48ead;">struct </span><span>User {
+</span><span>        </span><span style="color:#bf616a;">id</span><span>: </span><span style="color:#b48ead;">i32</span><span>,
+</span><span>        </span><span style="color:#bf616a;">name</span><span>: String,
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">pub struct </span><span>Users {
+</span><span>        </span><span style="color:#bf616a;">db</span><span>: sqlx::SqlitePool,
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">impl </span><span>FromRef&lt;AppState&gt; </span><span style="color:#b48ead;">for </span><span>Users {
+</span><span>        </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">from_ref</span><span>(</span><span style="color:#bf616a;">state</span><span>: &amp;AppState) -&gt; </span><span style="color:#b48ead;">Self </span><span>{
+</span><span>            </span><span style="color:#b48ead;">let</span><span> db = state.db.</span><span style="color:#96b5b4;">clone</span><span>();
+</span><span>            </span><span style="color:#b48ead;">Self </span><span>{ db }
+</span><span>        }
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">impl </span><span>Users {
+</span><span>        </span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">new</span><span>(</span><span style="color:#bf616a;">db</span><span>: Db) -&gt; </span><span style="color:#b48ead;">Self </span><span>{
+</span><span>            </span><span style="color:#b48ead;">Self </span><span>{ db }
+</span><span>        }
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">pub</span><span> async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">all</span><span>(&amp;</span><span style="color:#bf616a;">self</span><span>) -&gt; sqlx::Result&lt;Vec&lt;User&gt;&gt; {
+</span><span>            query!(&quot;</span><span style="color:#a3be8c;">SELECT * FROM users</span><span>&quot;)
+</span><span>                .</span><span style="color:#96b5b4;">fetch_all</span><span>(&amp;</span><span style="color:#bf616a;">self</span><span>.db)
+</span><span>                .await
+</span><span>        }
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">pub</span><span> async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">find_by_id</span><span>(&amp;</span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">id</span><span>: </span><span style="color:#b48ead;">i64</span><span>) -&gt; Result&lt;User&gt; {
+</span><span>            query!(&quot;</span><span style="color:#a3be8c;">SELECT * FROM users WHERE id = ?</span><span>&quot;, id)
+</span><span>                .</span><span style="color:#96b5b4;">fetch_one</span><span>(&amp;</span><span style="color:#bf616a;">self</span><span>.db)
+</span><span>                .await
+</span><span>        }
+</span><span>
+</span><span>        </span><span style="color:#65737e;">// ... other queries ...
+</span><span>    }
+</span><span>
+</span><span>    async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">index</span><span>(</span><span style="color:#bf616a;">queries</span><span>: State&lt;Users&gt;) -&gt; Result&lt;Json&lt;Vec&lt;User&gt;&gt;&gt; {
+</span><span>        </span><span style="color:#b48ead;">let</span><span> users = queries.</span><span style="color:#96b5b4;">index</span><span>().await?;
+</span><span>        Ok(Json(users))
+</span><span>    }
+</span><span>
+</span><span>    async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">show</span><span>(</span><span style="color:#bf616a;">queries</span><span>: State&lt;Users&gt;, </span><span style="color:#bf616a;">id</span><span>: Path&lt;</span><span style="color:#b48ead;">i64</span><span>&gt;) -&gt; Result&lt;Json&lt;User&gt;&gt; {
+</span><span>        </span><span style="color:#b48ead;">let</span><span> user = queries.</span><span style="color:#96b5b4;">find_by_id</span><span>(*id).await?;
+</span><span>        Ok(Json(user))
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// ... other handlers ...
+</span><span>}
+</span></code></pre>
+<p>Using this pattern lets the infrastructure code be separated from the handlers. The <code>Users</code> struct
+is automatically created from the state and passed to the handlers. This makes the handlers cleaner
+and easier to read as they avoid the need to extract the database pool from the state.</p>
+<p>This approach provides a nice separation of concerns. The <code>Users</code> struct is responsible for
+interacting with the database, while the handlers are responsible for handling the HTTP requests.</p>
+<p>It also provides a seam for unit testing. You can easily mock the <code>Users</code> struct in your tests to
+avoid hitting the database, as well as providing an ability to test the queries in isolation from
+the handlers.</p>
+
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h">Thanks for reading! Read other posts?</span>
+                    <hr />
+                </div>
+                <div class="pagination__buttons">
+                        <span class="button previous">
+                            <a href="https://www.joshka.net/thunderbolt-4-docks/">
+                                <span class="button__icon">←</span>&nbsp;
+                                <span class="button__text">Thunderbolt 4 Dock Comparison</span>
+                            </a>
+                        </span>
+                    
+                    </div>
+            </div>
+        
+    </div>
+
+    </div>
+
+    
+    <footer class="footer">
+        <div class="footer__inner">
+                <div class="copyright">
+                        <span>© 
+    2025
+ Josh McKinney</span>
+                    <span class="copyright-theme">
+                        <span class="copyright-theme-sep">:: </span>
+                        Theme: <a href="https://github.com/pawroman/zola-theme-terminimal/">Terminimal</a> by pawroman
+                    </span>
+                </div>
+            </div>
+    </footer>
+    
+
+</div>
+</body>
+
+</html>

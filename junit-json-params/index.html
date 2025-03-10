@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Introducing JUnit JSON Params | Joshka.net</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://www.joshka.net/style.css">
+    <link rel="stylesheet" href="https://www.joshka.net/color/blue.css">
+
+    <link rel="stylesheet" href="https://www.joshka.net/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="Introducing JUnit JSON Params | Joshka.net">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.joshka.net/junit-json-params/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="Introducing JUnit JSON Params | Joshka.net">
+    <meta property="twitter:domain" content="www.joshka.net">
+    <meta property="twitter:url" content="https://www.joshka.net/junit-json-params/">
+
+                <link rel="alternate" type="application/atom+xml" title="Joshka.net Atom Feed" href="https://www.joshka.net/atom.xml" />
+    </head>
+
+<body class="">
+<div class="container">
+    
+    <header class="header">
+        <div class="header__inner">
+            <div class="header__logo">
+                    
+                <a href="https://www.joshka.net" style="text-decoration: none;">
+                    <div class="logo">
+                      
+                            Joshka.net
+                        
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://www.joshka.net">blog</a></li>
+            
+                <li><a href="https://www.joshka.net/archive">archive</a></li>
+            
+                <li><a href="https://www.joshka.net/about">about me</a></li>
+            
+                <li><a href="https://www.joshka.net/resume">resume</a></li>
+            
+                <li><a href="https://www.joshka.net/projects">projects</a></li>
+            
+                <li><a href="https://github.com/joshka" target="_blank" rel="noopener noreferrer">github</a></li>
+            
+                <li><a href="https://hachyderm.io/@joshka" target="_blank" rel="noopener noreferrer">mastodon</a></li>
+            
+                <li><a href="https://soundcloud.com/joshka" target="_blank" rel="noopener noreferrer">soundcloud</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://www.joshka.net/junit-json-params/">Introducing JUnit JSON Params</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2018-08-27
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                :: tags:&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/java/">#Java</a>&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/software/">#Software</a></span>
+    
+
+        <div class="post-content">
+            <p>Yesterday, I released <a href="https://www.joshka.net/junit-json-params/">junit-json-params</a>, a small java
+library built on JUnit 5 that enables parameterizing unit tests with inline JSON and JSON resource
+files.</p>
+<span id="continue-reading"></span>
+<p>This is useful for writing tests where the information is structured. For example, given the
+following JSON document:</p>
+<p><strong>items.json:</strong></p>
+<pre data-lang="json" style="background-color:#2b303b;color:#c0c5ce;" class="language-json "><code class="language-json" data-lang="json"><span>[
+</span><span>  {
+</span><span>    &quot;</span><span style="color:#a3be8c;">city</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">Seattle</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">item</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">banana</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">price</span><span>&quot;: </span><span style="color:#d08770;">0.0
+</span><span>  },
+</span><span>  {
+</span><span>    &quot;</span><span style="color:#a3be8c;">city</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">NY</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">item</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">banana</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">price</span><span>&quot;: </span><span style="color:#d08770;">2.0
+</span><span>  }
+</span><span>]
+</span></code></pre>
+<p>We can expect the following tests all to succeed:</p>
+<pre data-lang="java" style="background-color:#2b303b;color:#c0c5ce;" class="language-java "><code class="language-java" data-lang="java"><span style="color:#b48ead;">import </span><span>net.joshka.junit.json.params.</span><span style="color:#ebcb8b;">JsonFileSource</span><span>;
+</span><span style="color:#b48ead;">import </span><span>org.junit.jupiter.params.</span><span style="color:#ebcb8b;">ParameterizedTest</span><span>;
+</span><span>
+</span><span style="color:#b48ead;">import </span><span>javax.json.</span><span style="color:#ebcb8b;">JsonObject</span><span>;
+</span><span>
+</span><span style="color:#b48ead;">import static </span><span>org.junit.jupiter.api.</span><span style="color:#ebcb8b;">Assertions</span><span>.</span><span style="color:#96b5b4;">assertEquals</span><span>;
+</span><span>
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">ExampleTests </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">ParameterizedTest
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">JsonSource</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">{&#39;key&#39;:&#39;value&#39;}</span><span>&quot;</span><span style="color:#eff1f5;">)
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">keyValue</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">JsonObject </span><span style="color:#bf616a;">json</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">assertEquals</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">value</span><span>&quot;</span><span style="color:#eff1f5;">, json.</span><span style="color:#bf616a;">getString</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">key</span><span>&quot;</span><span style="color:#eff1f5;">));
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">ParameterizedTest
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">JsonFileSource</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">resources </span><span>= &quot;</span><span style="color:#a3be8c;">/items.json</span><span>&quot;</span><span style="color:#eff1f5;">)
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">priceTests</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">JsonObject </span><span style="color:#bf616a;">json</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">String</span><span style="color:#eff1f5;"> city </span><span>=</span><span style="color:#eff1f5;"> json.</span><span style="color:#bf616a;">getString</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">city</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">String</span><span style="color:#eff1f5;"> item </span><span>=</span><span style="color:#eff1f5;"> json.</span><span style="color:#bf616a;">getString</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">item</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">double</span><span style="color:#eff1f5;"> price </span><span>=</span><span style="color:#eff1f5;"> json.</span><span style="color:#bf616a;">getJsonNumber</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">price</span><span>&quot;</span><span style="color:#eff1f5;">).</span><span style="color:#bf616a;">doubleValue</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">assertEquals</span><span style="color:#eff1f5;">(price, </span><span style="color:#bf616a;">price</span><span style="color:#eff1f5;">(city, item));
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private double </span><span style="color:#8fa1b3;">price</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">city</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">item</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span>!</span><span style="color:#eff1f5;">item.</span><span style="color:#bf616a;">equals</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">banana</span><span>&quot;</span><span style="color:#eff1f5;">)) {
+</span><span style="color:#eff1f5;">            </span><span style="color:#b48ead;">throw new </span><span style="color:#ebcb8b;">IllegalArgumentException</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">item</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">        }
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">switch </span><span style="color:#eff1f5;">(city) {
+</span><span style="color:#eff1f5;">            </span><span style="color:#b48ead;">case </span><span>&quot;</span><span style="color:#a3be8c;">Seattle</span><span>&quot;:
+</span><span style="color:#eff1f5;">                </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0.0</span><span style="color:#eff1f5;">;
+</span><span style="color:#eff1f5;">            </span><span style="color:#b48ead;">case </span><span>&quot;</span><span style="color:#a3be8c;">NY</span><span>&quot;:
+</span><span style="color:#eff1f5;">                </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">2.0</span><span style="color:#eff1f5;">;
+</span><span style="color:#eff1f5;">            </span><span style="color:#b48ead;">default</span><span>:
+</span><span style="color:#eff1f5;">                </span><span style="color:#b48ead;">throw new </span><span style="color:#ebcb8b;">IllegalArgumentException</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">city</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">        }
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>For more info see the <a href="https://github.com/joshka/junit-json-params">junit-json-params project on Github</a>.</p>
+<p>I'm hoping that this idea and future work on JUnit 5 might make it easy to make arguments by name
+work. E.g.:</p>
+<pre data-lang="java" style="background-color:#2b303b;color:#c0c5ce;" class="language-java "><code class="language-java" data-lang="java"><span>void </span><span style="color:#bf616a;">priceTests</span><span>(</span><span style="color:#ebcb8b;">String</span><span> city, </span><span style="color:#ebcb8b;">String</span><span> item, </span><span style="color:#b48ead;">double</span><span> price) {
+</span><span>  </span><span style="color:#65737e;">//...
+</span><span>}
+</span></code></pre>
+
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h">Thanks for reading! Read other posts?</span>
+                    <hr />
+                </div>
+                <div class="pagination__buttons">
+                        <span class="button previous">
+                            <a href="https://www.joshka.net/installing-dotnet-osx/">
+                                <span class="button__icon">←</span>&nbsp;
+                                <span class="button__text">Installing .NET Core on OSX</span>
+                            </a>
+                        </span>
+                    
+                    
+                        <span class="button next">
+                            <a href="https://www.joshka.net/pio-for-midi-with-raspberry-pi-pico/">
+                                <span class="button__text">Programmable IO (PIO) for MIDI with the Rasberry Pi Pico</span>&nbsp;
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    </div>
+            </div>
+        
+    </div>
+
+    </div>
+
+    
+    <footer class="footer">
+        <div class="footer__inner">
+                <div class="copyright">
+                        <span>© 
+    2025
+ Josh McKinney</span>
+                    <span class="copyright-theme">
+                        <span class="copyright-theme-sep">:: </span>
+                        Theme: <a href="https://github.com/pawroman/zola-theme-terminimal/">Terminimal</a> by pawroman
+                    </span>
+                </div>
+            </div>
+    </footer>
+    
+
+</div>
+</body>
+
+</html>

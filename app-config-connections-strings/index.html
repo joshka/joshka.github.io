@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>app.config and Dev Prod Test databases | Joshka.net</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://www.joshka.net/style.css">
+    <link rel="stylesheet" href="https://www.joshka.net/color/blue.css">
+
+    <link rel="stylesheet" href="https://www.joshka.net/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="app.config and Dev Prod Test databases | Joshka.net">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.joshka.net/app-config-connections-strings/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="app.config and Dev Prod Test databases | Joshka.net">
+    <meta property="twitter:domain" content="www.joshka.net">
+    <meta property="twitter:url" content="https://www.joshka.net/app-config-connections-strings/">
+
+                <link rel="alternate" type="application/atom+xml" title="Joshka.net Atom Feed" href="https://www.joshka.net/atom.xml" />
+    </head>
+
+<body class="">
+<div class="container">
+    
+    <header class="header">
+        <div class="header__inner">
+            <div class="header__logo">
+                    
+                <a href="https://www.joshka.net" style="text-decoration: none;">
+                    <div class="logo">
+                      
+                            Joshka.net
+                        
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://www.joshka.net">blog</a></li>
+            
+                <li><a href="https://www.joshka.net/archive">archive</a></li>
+            
+                <li><a href="https://www.joshka.net/about">about me</a></li>
+            
+                <li><a href="https://www.joshka.net/resume">resume</a></li>
+            
+                <li><a href="https://www.joshka.net/projects">projects</a></li>
+            
+                <li><a href="https://github.com/joshka" target="_blank" rel="noopener noreferrer">github</a></li>
+            
+                <li><a href="https://hachyderm.io/@joshka" target="_blank" rel="noopener noreferrer">mastodon</a></li>
+            
+                <li><a href="https://soundcloud.com/joshka" target="_blank" rel="noopener noreferrer">soundcloud</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://www.joshka.net/app-config-connections-strings/">app.config and Dev Prod Test databases</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2006-09-05
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                :: tags:&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/software/">#Software</a></span>
+    
+
+        <div class="post-content">
+            <p>In well designed enterprise apps, it is often the case that your application will run in multiple
+environments, and against different databases (Development, Test, and Production). This can lead to
+issues when it comes to storing connections strings.</p>
+<span id="continue-reading"></span>
+<p>Using Visual Studio 2003, there was an option to override your application config file as described
+by <a href="http://stephenchu.blogspot.com/2005/05/dynamic-deployment-config-settings.html">Stephen Chu's
+post</a>. I couldn't
+get this setting to work in Visual Studio 2005, and I assume it is deprecated as MSDN the seems to
+have very little documentation about the setting One way I managed to find around it is to add
+something similar to the following in your .proj file (.csproj, .vbproj, ...)</p>
+<pre data-lang="xml" style="background-color:#2b303b;color:#c0c5ce;" class="language-xml "><code class="language-xml" data-lang="xml"><span>&lt;</span><span style="color:#bf616a;">Project</span><span>&gt;
+</span><span>  ...
+</span><span>  &lt;</span><span style="color:#bf616a;">Import </span><span style="color:#d08770;">Project</span><span>=&quot;</span><span style="color:#a3be8c;">$(MSBuildBinPath)\Microsoft.VisualBasic.targets</span><span>&quot; /&gt;
+</span><span>  &lt;</span><span style="color:#bf616a;">Target </span><span style="color:#d08770;">Name</span><span>=&quot;</span><span style="color:#a3be8c;">BeforeBuild</span><span>&quot;&gt;
+</span><span>    &lt;</span><span style="color:#bf616a;">CreateProperty </span><span style="color:#d08770;">Value</span><span>=&quot;</span><span style="color:#a3be8c;">app.debug.config</span><span>&quot; </span><span style="color:#d08770;">Condition</span><span>=&quot;</span><span style="color:#a3be8c;"> ‘$(Configuration)|$(Platform)’ == ‘Dev|AnyCPU’ </span><span>&quot;&gt;
+</span><span>      &lt;</span><span style="color:#bf616a;">Output </span><span style="color:#d08770;">TaskParameter</span><span>=&quot;</span><span style="color:#a3be8c;">Value</span><span>&quot; </span><span style="color:#d08770;">PropertyName</span><span>=&quot;</span><span style="color:#a3be8c;">AppConfig</span><span>&quot; /&gt;
+</span><span>    &lt;/</span><span style="color:#bf616a;">CreateProperty</span><span>&gt;
+</span><span>    &lt;</span><span style="color:#bf616a;">CreateProperty </span><span style="color:#d08770;">Value</span><span>=&quot;</span><span style="color:#a3be8c;">app.test.config</span><span>&quot; </span><span style="color:#d08770;">Condition</span><span>=&quot;</span><span style="color:#a3be8c;">‘$(AppConfig)’==” and ‘$(Configuration)|$(Platform)’ == ‘Test|AnyCPU’ </span><span>&quot;&gt;
+</span><span>      &lt;</span><span style="color:#bf616a;">Output </span><span style="color:#d08770;">TaskParameter</span><span>=&quot;</span><span style="color:#a3be8c;">Value</span><span>&quot; </span><span style="color:#d08770;">PropertyName</span><span>=&quot;</span><span style="color:#a3be8c;">AppConfig</span><span>&quot; /&gt;
+</span><span>    &lt;/</span><span style="color:#bf616a;">CreateProperty</span><span>&gt;
+</span><span>    &lt;</span><span style="color:#bf616a;">CreateProperty </span><span style="color:#d08770;">Value</span><span>=&quot;</span><span style="color:#a3be8c;">app.prod.config</span><span>&quot; </span><span style="color:#d08770;">Condition</span><span>=&quot;</span><span style="color:#a3be8c;">‘$(AppConfig)’==” and ‘$(Configuration)|$(Platform)’ == ‘Prod|AnyCPU’ </span><span>&quot;&gt;
+</span><span>      &lt;</span><span style="color:#bf616a;">Output </span><span style="color:#d08770;">TaskParameter</span><span>=&quot;</span><span style="color:#a3be8c;">Value</span><span>&quot; </span><span style="color:#d08770;">PropertyName</span><span>=&quot;</span><span style="color:#a3be8c;">AppConfig</span><span>&quot; /&gt;
+</span><span>    &lt;/</span><span style="color:#bf616a;">CreateProperty</span><span>&gt;
+</span><span>    &lt;</span><span style="color:#bf616a;">CreateProperty </span><span style="color:#d08770;">Value</span><span>=&quot;</span><span style="color:#a3be8c;">app.config</span><span>&quot; </span><span style="color:#d08770;">Condition</span><span>=&quot;</span><span style="color:#a3be8c;">‘$(AppConfig)’==”</span><span>&quot;&gt;
+</span><span>      &lt;</span><span style="color:#bf616a;">Output </span><span style="color:#d08770;">TaskParameter</span><span>=&quot;</span><span style="color:#a3be8c;">Value</span><span>&quot; </span><span style="color:#d08770;">PropertyName</span><span>=&quot;</span><span style="color:#a3be8c;">AppConfig</span><span>&quot; /&gt;
+</span><span>    &lt;/</span><span style="color:#bf616a;">CreateProperty</span><span>&gt;
+</span><span>  &lt;/</span><span style="color:#bf616a;">Target</span><span>&gt;
+</span><span>&lt;/</span><span style="color:#bf616a;">Project</span><span>&gt;
+</span></code></pre>
+<p>This basically sets the <code>$(AppConfig)</code> variable to something sane (depending on your chosen
+configuration). When the <code>_CopyAppConfigFile</code> target (see Microsoft.Common.targets) runs it copies
+this file to the output directory.</p>
+<p>An alternative would be to write a new task to replace <code>_CopyAppConfigFile</code> and import it.</p>
+
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h">Thanks for reading! Read other posts?</span>
+                    <hr />
+                </div>
+                <div class="pagination__buttons">
+                        <span class="button previous">
+                            <a href="https://www.joshka.net/goulds-bookstore/">
+                                <span class="button__icon">←</span>&nbsp;
+                                <span class="button__text">Goulds Bookstore</span>
+                            </a>
+                        </span>
+                    
+                    
+                        <span class="button next">
+                            <a href="https://www.joshka.net/detecting-corrupt-downloads/">
+                                <span class="button__text">Detecting and Preventing Corrupt Software Downloads</span>&nbsp;
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    </div>
+            </div>
+        
+    </div>
+
+    </div>
+
+    
+    <footer class="footer">
+        <div class="footer__inner">
+                <div class="copyright">
+                        <span>© 
+    2025
+ Josh McKinney</span>
+                    <span class="copyright-theme">
+                        <span class="copyright-theme-sep">:: </span>
+                        Theme: <a href="https://github.com/pawroman/zola-theme-terminimal/">Terminimal</a> by pawroman
+                    </span>
+                </div>
+            </div>
+    </footer>
+    
+
+</div>
+</body>
+
+</html>

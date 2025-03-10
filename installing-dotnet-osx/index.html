@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Installing .NET Core on OSX | Joshka.net</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://www.joshka.net/style.css">
+    <link rel="stylesheet" href="https://www.joshka.net/color/blue.css">
+
+    <link rel="stylesheet" href="https://www.joshka.net/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="Installing .NET Core on OSX | Joshka.net">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.joshka.net/installing-dotnet-osx/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="Installing .NET Core on OSX | Joshka.net">
+    <meta property="twitter:domain" content="www.joshka.net">
+    <meta property="twitter:url" content="https://www.joshka.net/installing-dotnet-osx/">
+
+                <link rel="alternate" type="application/atom+xml" title="Joshka.net Atom Feed" href="https://www.joshka.net/atom.xml" />
+    </head>
+
+<body class="">
+<div class="container">
+    
+    <header class="header">
+        <div class="header__inner">
+            <div class="header__logo">
+                    
+                <a href="https://www.joshka.net" style="text-decoration: none;">
+                    <div class="logo">
+                      
+                            Joshka.net
+                        
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://www.joshka.net">blog</a></li>
+            
+                <li><a href="https://www.joshka.net/archive">archive</a></li>
+            
+                <li><a href="https://www.joshka.net/about">about me</a></li>
+            
+                <li><a href="https://www.joshka.net/resume">resume</a></li>
+            
+                <li><a href="https://www.joshka.net/projects">projects</a></li>
+            
+                <li><a href="https://github.com/joshka" target="_blank" rel="noopener noreferrer">github</a></li>
+            
+                <li><a href="https://hachyderm.io/@joshka" target="_blank" rel="noopener noreferrer">mastodon</a></li>
+            
+                <li><a href="https://soundcloud.com/joshka" target="_blank" rel="noopener noreferrer">soundcloud</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://www.joshka.net/installing-dotnet-osx/">Installing .NET Core on OSX</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2016-08-03
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                :: tags:&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/software/">#Software</a></span>
+    
+
+        <div class="post-content">
+            <p><strong>Note:</strong> this post contains  outdated instructions for a problem that occurred installing .NET core
+on OSX in 2016. <a href="https://github.com/dotnet/sdk/issues/4600">https://github.com/dotnet/sdk/issues/4600</a> suggests that you can now install dotnet
+core on macOS by running <code>brew install dotnet</code>. The instructions at
+<a href="https://learn.microsoft.com/en-us/dotnet/core/install/macos">https://learn.microsoft.com/en-us/dotnet/core/install/macos</a> are also worth reading rather than
+this post.</p>
+<span id="continue-reading"></span>
+<p>The easiest way to install <a href="https://www.microsoft.com/net/core#macos">.NET Core</a> on OSX is a little
+different than the way currently suggested at the official site. I suggest using
+<a href="http://brew.sh">Homebrew</a>, and <a href="http://caskroom.io">Homebrew Cask</a>.</p>
+<h2 id="instructions">Instructions</h2>
+<p>If you have not already installed Homebrew, install it.</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">/usr/bin/ruby -e </span><span>&quot;$</span><span style="color:#a3be8c;">(</span><span style="color:#bf616a;">curl -fsSL</span><span style="color:#a3be8c;"> https://raw.githubusercontent.com/Homebrew/install/master/install)</span><span>&quot;
+</span></code></pre>
+<p>Install dotnet using caskroom. This will also automatically install openssl if it's not already
+installed.</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">brew</span><span> update
+</span><span style="color:#bf616a;">brew</span><span> tap caskroom/cask
+</span><span style="color:#bf616a;">brew</span><span> cask install dotnet
+</span></code></pre>
+<p>Note: this will work completely once
+<a href="https://github.com/caskroom/homebrew-cask/pull/23854">homebrew-cask#23854</a> is merged. Until then,
+follow the part of instructions that link the 1.0.0 versions of openssl to your <code>/usr/local/lib</code>
+folder.</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">ln -s</span><span> /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/
+</span><span style="color:#bf616a;">ln -s</span><span> /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/
+</span></code></pre>
+<p><strong>Update 2016-08-18:</strong> replaced rpath with linking method
+(<a href="https://github.com/joshka/joshka.github.io/commit/fed667f640251b74a4cbb92d446136d75e3fe95e">diff</a>)</p>
+
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h">Thanks for reading! Read other posts?</span>
+                    <hr />
+                </div>
+                <div class="pagination__buttons">
+                        <span class="button previous">
+                            <a href="https://www.joshka.net/my-geek-origin-story/">
+                                <span class="button__icon">←</span>&nbsp;
+                                <span class="button__text">My Geek Origin Story</span>
+                            </a>
+                        </span>
+                    
+                    
+                        <span class="button next">
+                            <a href="https://www.joshka.net/junit-json-params/">
+                                <span class="button__text">Introducing JUnit JSON Params</span>&nbsp;
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    </div>
+            </div>
+        
+    </div>
+
+    </div>
+
+    
+    <footer class="footer">
+        <div class="footer__inner">
+                <div class="copyright">
+                        <span>© 
+    2025
+ Josh McKinney</span>
+                    <span class="copyright-theme">
+                        <span class="copyright-theme-sep">:: </span>
+                        Theme: <a href="https://github.com/pawroman/zola-theme-terminimal/">Terminimal</a> by pawroman
+                    </span>
+                </div>
+            </div>
+    </footer>
+    
+
+</div>
+</body>
+
+</html>

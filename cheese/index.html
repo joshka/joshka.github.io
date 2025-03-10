@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>The Moon is made of Cheese | Joshka.net</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://www.joshka.net/style.css">
+    <link rel="stylesheet" href="https://www.joshka.net/color/blue.css">
+
+    <link rel="stylesheet" href="https://www.joshka.net/font-hack-subset.css">
+
+    <meta name="description" content="">
+
+    <meta property="og:description" content="">
+    <meta property="og:title" content="The Moon is made of Cheese | Joshka.net">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.joshka.net/cheese/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="The Moon is made of Cheese | Joshka.net">
+    <meta property="twitter:domain" content="www.joshka.net">
+    <meta property="twitter:url" content="https://www.joshka.net/cheese/">
+
+                <link rel="alternate" type="application/atom+xml" title="Joshka.net Atom Feed" href="https://www.joshka.net/atom.xml" />
+    </head>
+
+<body class="">
+<div class="container">
+    
+    <header class="header">
+        <div class="header__inner">
+            <div class="header__logo">
+                    
+                <a href="https://www.joshka.net" style="text-decoration: none;">
+                    <div class="logo">
+                      
+                            Joshka.net
+                        
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://www.joshka.net">blog</a></li>
+            
+                <li><a href="https://www.joshka.net/archive">archive</a></li>
+            
+                <li><a href="https://www.joshka.net/about">about me</a></li>
+            
+                <li><a href="https://www.joshka.net/resume">resume</a></li>
+            
+                <li><a href="https://www.joshka.net/projects">projects</a></li>
+            
+                <li><a href="https://github.com/joshka" target="_blank" rel="noopener noreferrer">github</a></li>
+            
+                <li><a href="https://hachyderm.io/@joshka" target="_blank" rel="noopener noreferrer">mastodon</a></li>
+            
+                <li><a href="https://soundcloud.com/joshka" target="_blank" rel="noopener noreferrer">soundcloud</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+    <div class="post">
+        
+    <h1 class="post-title"><a href="https://www.joshka.net/cheese/">The Moon is made of Cheese</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2023-06-05
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                :: tags:&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/chatgpt/">#ChatGPT</a>&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/llms/">#LLMs</a>&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/openai/">#OpenAI</a></span>
+    
+
+        <div class="post-content">
+            <p>Lately, we've seen a significant rise in articles casting doubt on the utility of Large Language
+Models (LLMs) like ChatGPT for specific tasks. These articles tend to anchor their conclusions on
+isolated experiments, generally an inadequate and potentially misleading approach due to the
+intrinsic randomness characterizing the outputs of LLMs. Instead, it's crucial this evaluation
+doesn't rely on a solitary experiment. Multiple trials and a deep understanding of the probabilities
+involved in different outcomes can provide a much more accurate reflection of LLMs' overall
+performance.</p>
+<span id="continue-reading"></span>
+<p>To shed light on the rampant misinterpretation issue, let's employ a practical approach using GPT
+3.5. Imagine we prompt this model to complete the phrase "The Moon is made of." We'll use the
+<code>text-davinci-003</code> model in the API playground, capping the output at just one token, and display
+the probabilities. This test exposes the variable nature of the model's results.</p>
+<p><img src="https://www.joshka.net/cheese/the-moon.png" alt="Screenshot of &quot;The Moon Is Made of Rock&quot; in the OpenAI Playground" /></p>
+<p>The ability of GPT's completion models to display the probabilities for each potential word in a
+completion is a compelling argument against relying on single experiments for the evaluation of
+these models. A look at the screenshot highlights that, interestingly, the model selects the word
+"cheese" to complete the sentence for around 48% of the attempts, conversely choosing "rock" a mere
+32% of the time.</p>
+<p>Let's consider "Green," which pops up 4% of the time, but almost invariably leads to the word
+"cheese." This situation creates an amusingly erroneous scenario where over half of the sentence
+completions would have us sending a team of Ritz Cracker-wielding astronauts to the Moon to harvest
+this spurious dairy product. It's a humorous illustration but underscores the point – multiple
+output examination is crucial when working with LLMs.</p>
+<p>While the previous example demonstrated the frequent but incorrect outcome ("Cheese"), this issue
+may also arise with outcomes that are technically correct. For example, when we query "The president
+in 2017 was", the model answers with "Donald" in 76% of cases and "Barack" in 17% of cases. This
+discrepancy is likely due to Trump's inauguration taking place on January 20th, 2017.</p>
+<p>Every word in the output can have this sort of problem. This isn't exactly controversial; it's
+simply how LLMs work. However, it does show that drawing conclusions from a single conversation
+without multiple tests can be misleading.</p>
+<p>To carry out more accurate experiments, you can use the playground and API tools to tweak settings
+like temperature and top p, which influence the output's "spiciness". Remember, a little 'spiciness'
+can be fun, but too much can leave you reaching for a glass of milk to cool down. The same goes for
+LLM outputs. However, these options aren't available in the ChatGPT web UI that most users access,
+emphasizing the importance of multiple tests. Check out the <a href="https://platform.openai.com/docs/api-reference/completions/create#completions/create-temperature">OpenAI API docs</a> for more information.</p>
+<p>The Chat oriented models tend to return the correct result for the moon prompt, but in general this
+problem still presents often. Unfortunately the Chat versions of the models in the API do not show
+the probabilities of words to be able to give a good example of this.</p>
+<p>When assessing the performance of ChatGPT or other LLMs, it's essential to remember that their
+outputs can be random, so conducting multiple tests gives a better understanding of their true
+abilities. Trusting single experiments can lead to wrong conclusions and weaken the analysis. So,
+whether you're reading or writing about LLMs, always double-check the experiments and make sure that
+several tests back up any claims made.</p>
+<p>In conclusion, don't let your evaluation of LLMs be eclipsed by a single test – multiple tests are
+the key to a well-rounded understanding.</p>
+
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h">Thanks for reading! Read other posts?</span>
+                    <hr />
+                </div>
+                <div class="pagination__buttons">
+                        <span class="button previous">
+                            <a href="https://www.joshka.net/chatgpt-memes/">
+                                <span class="button__icon">←</span>&nbsp;
+                                <span class="button__text">ChatGPT Memes</span>
+                            </a>
+                        </span>
+                    
+                    
+                        <span class="button next">
+                            <a href="https://www.joshka.net/ai-article-checklist/">
+                                <span class="button__text">AI Article Checklist</span>&nbsp;
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    </div>
+            </div>
+        
+    </div>
+
+    </div>
+
+    
+    <footer class="footer">
+        <div class="footer__inner">
+                <div class="copyright">
+                        <span>© 
+    2025
+ Josh McKinney</span>
+                    <span class="copyright-theme">
+                        <span class="copyright-theme-sep">:: </span>
+                        Theme: <a href="https://github.com/pawroman/zola-theme-terminimal/">Terminimal</a> by pawroman
+                    </span>
+                </div>
+            </div>
+    </footer>
+    
+
+</div>
+</body>
+
+</html>

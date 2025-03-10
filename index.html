@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Joshka.net</title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="robots" content="noodp"/>
+
+    <link rel="stylesheet" href="https://www.joshka.net/style.css">
+    <link rel="stylesheet" href="https://www.joshka.net/color/blue.css">
+
+    <link rel="stylesheet" href="https://www.joshka.net/font-hack-subset.css">
+
+    <meta name="description" content="Josh McKinney's personal website">
+
+    <meta property="og:description" content="Josh McKinney's personal website">
+    <meta property="og:title" content="Joshka.net">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.joshka.net/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Josh McKinney's personal website">
+    <meta name="twitter:title" content="Joshka.net">
+    <meta property="twitter:domain" content="www.joshka.net">
+    <meta property="twitter:url" content="https://www.joshka.net/">
+
+                <link rel="alternate" type="application/atom+xml" title="Joshka.net Atom Feed" href="https://www.joshka.net/atom.xml" />
+    </head>
+
+<body class="">
+<div class="container">
+    
+    <header class="header">
+        <div class="header__inner">
+            <div class="header__logo">
+                    
+                <a href="https://www.joshka.net" style="text-decoration: none;">
+                    <div class="logo">
+                      
+                            Joshka.net
+                        
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        
+        
+                <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active"><a href="https://www.joshka.net">blog</a></li>
+            
+                <li><a href="https://www.joshka.net/archive">archive</a></li>
+            
+                <li><a href="https://www.joshka.net/about">about me</a></li>
+            
+                <li><a href="https://www.joshka.net/resume">resume</a></li>
+            
+                <li><a href="https://www.joshka.net/projects">projects</a></li>
+            
+                <li><a href="https://github.com/joshka" target="_blank" rel="noopener noreferrer">github</a></li>
+            
+                <li><a href="https://hachyderm.io/@joshka" target="_blank" rel="noopener noreferrer">mastodon</a></li>
+            
+                <li><a href="https://soundcloud.com/joshka" target="_blank" rel="noopener noreferrer">soundcloud</a></li>
+            </ul>
+        </nav>
+    
+    
+        
+    </header>
+    
+
+    <div class="content">
+        
+        <div class="posts">
+                <div class="post on-list">
+                    
+    <h1 class="post-title"><a href="https://www.joshka.net/axum-sqlx-queries-pattern/">An ergonomic pattern for SQLx queries in Axum</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2025-03-09
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                :: tags:&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/rust/">#Rust</a>&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/software/">#Software</a></span>
+    
+
+
+                    
+        <div class="post-content">
+            <p>Axum is the most popular web framework in Rust at the time of writing. In this post, I'll show an
+easy and ergonomic pattern for connecting to a database using SQLx and Axum.</p>
+<p>This is a small response to a question on <a href="https://www.reddit.com/r/rust/comments/1j76nhm/comment/mgy2ptm/?utm_source=share&amp;utm_medium=web3x&amp;utm_name=web3xcss&amp;utm_term=1&amp;utm_content=share_button">a reddit thread about how to structure SQLx queries in
+Axum</a>.
+The pattern I'll show here is not the only way to do it, but it's one that I've found to be simple
+and effective.</p>
+<p>TL;DR: Store the database pool in your application state, create a struct to hold your queries, and
+use the <code>FromRef</code> trait to simplify the interaction between your handlers and the database.</p>
+        </div>
+        <div>
+            <!-- &#xFE0E; -- force text style - some devices render this as emoji -->
+            <a class="read-more button" href="https://www.joshka.net/axum-sqlx-queries-pattern/">
+                <span class="button__text">Read more</span>&nbsp;
+                <span class="button__icon">&#8617;&#xFE0E;</span>
+            </a>
+        </div>
+    
+
+                </div>
+            
+                <div class="post on-list">
+                    
+    <h1 class="post-title"><a href="https://www.joshka.net/thunderbolt-4-docks/">Thunderbolt 4 Dock Comparison</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2023-06-15
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                :: tags:&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/hardware/">#Hardware</a></span>
+    
+
+
+                    
+        <div class="post-content">
+            <p>Recently, while searching for a Thunderbolt 4 Dock, I found myself in a sea of data, but with no
+detailed comparison table to help. Hence, I decided to create one myself.</p>
+        </div>
+        <div>
+            <!-- &#xFE0E; -- force text style - some devices render this as emoji -->
+            <a class="read-more button" href="https://www.joshka.net/thunderbolt-4-docks/">
+                <span class="button__text">Read more</span>&nbsp;
+                <span class="button__icon">&#8617;&#xFE0E;</span>
+            </a>
+        </div>
+    
+
+                </div>
+            
+                <div class="post on-list">
+                    
+    <h1 class="post-title"><a href="https://www.joshka.net/ai-article-checklist/">AI Article Checklist</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2023-06-06
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                :: tags:&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/llms/">#LLMs</a></span>
+    
+
+
+                    
+        <div class="post-content">
+            <p>I remember the early 2000s, a time marked by heated discussions in Slashdot comments and perhaps
+even earlier on Usenet. The topic of interest? Articles presenting possible solutions to fight spam.
+Accompanying these articles, a popular <a href="https://craphound.com/spamsolutions.txt">checklist</a> was
+often shared. Now, in the 2020s, we're seeing a similar phenomenon with articles questioning the
+usefulness of LLMs in software writing. So, I decided to dust off this old spam checklist and
+repurpose it to the modern age.</p>
+<p>Your article critiquing using AI tools for software development is...</p>
+        </div>
+        <div>
+            <!-- &#xFE0E; -- force text style - some devices render this as emoji -->
+            <a class="read-more button" href="https://www.joshka.net/ai-article-checklist/">
+                <span class="button__text">Read more</span>&nbsp;
+                <span class="button__icon">&#8617;&#xFE0E;</span>
+            </a>
+        </div>
+    
+
+                </div>
+            
+                <div class="post on-list">
+                    
+    <h1 class="post-title"><a href="https://www.joshka.net/cheese/">The Moon is made of Cheese</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2023-06-05
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                :: tags:&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/chatgpt/">#ChatGPT</a>&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/llms/">#LLMs</a>&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/openai/">#OpenAI</a></span>
+    
+
+
+                    
+        <div class="post-content">
+            <p>Lately, we've seen a significant rise in articles casting doubt on the utility of Large Language
+Models (LLMs) like ChatGPT for specific tasks. These articles tend to anchor their conclusions on
+isolated experiments, generally an inadequate and potentially misleading approach due to the
+intrinsic randomness characterizing the outputs of LLMs. Instead, it's crucial this evaluation
+doesn't rely on a solitary experiment. Multiple trials and a deep understanding of the probabilities
+involved in different outcomes can provide a much more accurate reflection of LLMs' overall
+performance.</p>
+        </div>
+        <div>
+            <!-- &#xFE0E; -- force text style - some devices render this as emoji -->
+            <a class="read-more button" href="https://www.joshka.net/cheese/">
+                <span class="button__text">Read more</span>&nbsp;
+                <span class="button__icon">&#8617;&#xFE0E;</span>
+            </a>
+        </div>
+    
+
+                </div>
+            
+                <div class="post on-list">
+                    
+    <h1 class="post-title"><a href="https://www.joshka.net/chatgpt-memes/">ChatGPT Memes</a></h1>
+    <div class="post-meta-inline">
+        
+    <span class="post-date">
+            2023-01-25
+        </span>
+
+    </div>
+
+    
+        <span class="post-tags-inline">
+                :: tags:&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/chatgpt/">#ChatGPT</a>&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/midjourney/">#Midjourney</a>&nbsp;
+                <a class="post-tag" href="https://www.joshka.net/tags/openai/">#OpenAI</a></span>
+    
+
+
+                    
+        <div class="post-content">
+            <p>I was curious about how ChatGPT would go with creating this era's main cultural output, memes after
+reading <a href="https://news.ycombinator.com/item?id=34516204">a comment by @jeisc on Hacker news</a>:</p>
+<blockquote>
+<p>Does anyone here really think that AI will produce a new "Jungle Book" by Kipling or a new "Mona
+Lisa" by Da Vinci or a new "Requiem" by Mozart" which could even have a remote possibility of
+becoming cultural icon and reference? And is that a goal or event that the spectators are waiting
+for? And if it occurs what would it infer about human cultural evolution?</p>
+</blockquote>
+        </div>
+        <div>
+            <!-- &#xFE0E; -- force text style - some devices render this as emoji -->
+            <a class="read-more button" href="https://www.joshka.net/chatgpt-memes/">
+                <span class="button__text">Read more</span>&nbsp;
+                <span class="button__icon">&#8617;&#xFE0E;</span>
+            </a>
+        </div>
+    
+
+                </div>
+            <div class="pagination">
+                <div class="pagination__buttons">
+                    <span class="button next">
+                        <a href="https://www.joshka.net/page/2/">
+                            <span class="button__text">Older posts</span>&nbsp;
+                            <span class="button__icon">→</span>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    
+    <footer class="footer">
+        <div class="footer__inner">
+                <div class="copyright">
+                        <span>© 
+    2025
+ Josh McKinney</span>
+                    <span class="copyright-theme">
+                        <span class="copyright-theme-sep">:: </span>
+                        Theme: <a href="https://github.com/pawroman/zola-theme-terminimal/">Terminimal</a> by pawroman
+                    </span>
+                </div>
+            </div>
+    </footer>
+    
+
+</div>
+</body>
+
+</html>
