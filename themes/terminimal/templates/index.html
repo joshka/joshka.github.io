@@ -11,19 +11,17 @@
     <title>{%- block title %}{{ config.title }}{% endblock title -%}</title>
     {{ head_macros::head(config=config) }}
 
-    {%- if config.generate_feeds %}
-    {%- if "rss" in config.feed_filename %}
-    {% set feed_type = 'rss+xml' %}
-    {%- else %}
-    {% set feed_type = 'atom+xml' %}
-    {% endif -%}
-    <link rel="alternate" type="application/{{ feed_type }}" title="RSS"
-        href="{{ get_url(path=config.feed_filename) | safe }}">
+    {%- if config.generate_feed %}
+        {%- if "rss" in config.feed_filename %}
+            {% set feed_type = 'rss+xml' %}
+        {%- else %}
+            {% set feed_type = 'atom+xml' %}
+        {% endif -%}
+        <link rel="alternate" type="application/{{ feed_type }}" title="RSS" href="{{ get_url(path=config.feed_filename) | safe }}">
     {% endif -%}
 
     {%- if config.extra.favicon %}
-    <link rel="shortcut icon" type="{{ config.extra.favicon_mimetype | default(value=" image/x-icon") | safe }}"
-        href="{{ config.extra.favicon | safe }}">
+        <link rel="shortcut icon" type="{{ config.extra.favicon_mimetype | default(value="image/x-icon") | safe }}" href="{{ config.extra.favicon | safe }}">
     {% endif -%}
 
     {%- block extra_head %}
@@ -31,86 +29,86 @@
 </head>
 
 <body class="">
-    <div class="container">
-        {% block header %}
-        <header class="header">
-            <div class="header__inner">
-                <div class="header__logo">
-                    {%- if config.extra.logo_home_link %}
+<div class="container">
+    {% block header %}
+    <header class="header">
+        <div class="header__inner">
+            <div class="header__logo">
+                {%- if config.extra.logo_home_link %}
                     {% set logo_link = config.extra.logo_home_link %}
-                    {% else %}
-                    {% set logo_link = config.base_url %}
-                    {% endif -%}
-                    <a href="{{ logo_link | safe }}" style="text-decoration: none;">
-                        <div class="logo">
-                            {% block logo_content %}
-                            {%- if config.extra.logo_text %}
-                            {{ config.extra.logo_text }}
-                            {% else %}
-                            Terminimal theme
-                            {% endif -%}
-                            {% endblock logo_content %}
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            {% block header_menu %}
-            {{ menu_macros::menu(config=config, current_path=current_path) }}
-            {% endblock header_menu %}
-        </header>
-        {% endblock header %}
-
-        <div class="content">
-            {% block content %}
-            <div class="posts">
-                {%- if paginator %}
-                {%- set show_pages = paginator.pages -%}
                 {% else %}
-                {%- set show_pages = section.pages -%}
+                    {% set logo_link = config.base_url %}
                 {% endif -%}
+                <a href="{{ logo_link | safe }}" style="text-decoration: none;">
+                    <div class="logo">
+                      {% block logo_content %}
+                        {%- if config.extra.logo_text %}
+                            {{ config.extra.logo_text }}
+                        {% else %}
+                            Terminimal theme
+                        {% endif -%}
+                        {% endblock logo_content %}
+                    </div>
+                </a>
+            </div>
+        </div>
 
-                {%- for page in show_pages %}
+        {% block header_menu %}
+        {{ menu_macros::menu(config=config, current_path=current_path) }}
+        {% endblock header_menu %}
+    </header>
+    {% endblock header %}
+
+    <div class="content">
+        {% block content %}
+        <div class="posts">
+            {%- if paginator %}
+                {%- set show_pages = paginator.pages -%}
+            {% else %}
+                {%- set show_pages = section.pages -%}
+            {% endif -%}
+
+            {%- for page in show_pages %}
                 <div class="post on-list">
                     {{ post_macros::header(page=page) }}
                     {{ post_macros::content(page=page, summary=true) }}
                 </div>
-                {% endfor -%}
-                <div class="pagination">
-                    <div class="pagination__buttons">
-                        {%- if paginator.previous %}
-                        <span class="button previous">
-                            <a href="{{ paginator.previous | safe }}">
-                                <span class="button__icon">←</span>&nbsp;
-                                <span class="button__text">Newer posts</span>
-                            </a>
-                        </span>
-                        {% endif -%}
-                        {%- if paginator.next %}
-                        <span class="button next">
-                            <a href="{{ paginator.next | safe }}">
-                                <span class="button__text">Older posts</span>&nbsp;
-                                <span class="button__icon">→</span>
-                            </a>
-                        </span>
-                        {% endif -%}
-                    </div>
+            {% endfor -%}
+            <div class="pagination">
+                <div class="pagination__buttons">
+                {%- if paginator.previous %}
+                    <span class="button previous">
+                        <a href="{{ paginator.previous | safe }}">
+                            <span class="button__icon">←</span>&nbsp;
+                            <span class="button__text">Newer posts</span>
+                        </a>
+                    </span>
+                {% endif -%}
+                {%- if paginator.next %}
+                    <span class="button next">
+                        <a href="{{ paginator.next | safe }}">
+                            <span class="button__text">Older posts</span>&nbsp;
+                            <span class="button__icon">→</span>
+                        </a>
+                    </span>
+                {% endif -%}
                 </div>
             </div>
-            {% endblock content %}
         </div>
+        {% endblock content %}
+    </div>
 
-        {% block footer %}
-        <footer class="footer">
-            <div class="footer__inner">
-                {%- if config.extra.copyright_html %}
+    {% block footer %}
+    <footer class="footer">
+        <div class="footer__inner">
+            {%- if config.extra.copyright_html %}
                 <div class="copyright copyright--user">{{ config.extra.copyright_html | safe }}</div>
-                {% else %}
+            {% else %}
                 <div class="copyright">
                     {%- if config.extra.author %}
-                    <span>© {{ date_macros::now_year() }} {{ config.extra.author }}</span>
+                        <span>© {{ date_macros::now_year() }} {{ config.extra.author }}</span>
                     {% else %}
-                    <span>© {{ date_macros::now_year() }} Powered by <a href="https://www.getzola.org/">Zola</a></span>
+                        <span>© {{ date_macros::now_year() }} Powered by <a href="https://www.getzola.org/">Zola</a></span>
                     {% endif -%}
 
                     <span class="copyright-theme">
@@ -118,14 +116,14 @@
                         Theme: <a href="https://github.com/pawroman/zola-theme-terminimal/">Terminimal</a> by pawroman
                     </span>
                 </div>
-                {% endif -%}
-            </div>
-        </footer>
-        {% endblock footer %}
+            {% endif -%}
+        </div>
+    </footer>
+    {% endblock footer %}
 
-    </div>
-    {%- block extra_body %}
-    {% endblock extra_body -%}
+</div>
+{%- block extra_body %}
+{% endblock extra_body -%}
 </body>
 
 </html>
