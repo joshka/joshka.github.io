@@ -20,11 +20,12 @@ generate_feeds = true
 [markdown]
 
 [markdown.highlighting]
-theme = "aardvark-ink"
-extra_themes = ["highlighting/aardvark-ink.json"]
+dark_theme = "aardvark-ink"
+light_theme = "aardvark-paper"
+extra_themes = ["highlighting/aardvark-ink.json", "highlighting/aardvark-paper.json"]
 
 [extra]
-logo_text = "Joshka.net"
+logo_text = "joshka.net"
 author = "Josh McKinney"
 
 # $BASE_URL is replaced with base_url; newtab opens the link in a new tab

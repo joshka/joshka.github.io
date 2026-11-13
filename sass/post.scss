@@ -36,23 +36,29 @@
   }
 
   &-title {
-    --border: 2px dashed var(--accent);
     position: relative;
-    color: var(--accent);
-    margin: 0 0 15px;
-    padding-bottom: 15px;
-    border-bottom: var(--border);
-    font-weight: normal;
+    color: var(--color);
+    margin: 0 0 10px;
+    font-weight: bold;
 
     a {
       text-decoration: none;
+
+      &:hover {
+        color: var(--accent);
+      }
     }
   }
 
   %tags {
     margin-bottom: 20px;
     font-size: 1rem;
-    opacity: .5;
+    color: var(--light-color-secondary);
+
+    a {
+      color: var(--tag-color);
+      text-decoration: none;
+    }
   }
 
   &-tags {
@@ -91,10 +97,10 @@
     list-style: none;
 
     li:before {
-      content: '►';
+      content: '–';
       position: absolute;
       left: -20px;
-      color: var(--accent);
+      color: var(--accent-alpha-70);
     }
   }
 }
@@ -130,6 +136,77 @@
   }
 
   .post-tag {
-    text-decoration: underline;
+    color: var(--tag-color);
+  }
+}
+
+.post-table {
+  table-layout: auto;
+  margin: 0;
+
+  &, th, td {
+    border: none;
+    padding: 0;
+  }
+
+  tr {
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  td {
+    padding: 14px 0;
+    vertical-align: baseline;
+  }
+
+  &__date {
+    color: var(--light-color-secondary);
+    white-space: nowrap;
+    padding-right: 2ch !important;
+  }
+
+  &__title a {
+    color: var(--color);
+    text-decoration: none;
+    font-weight: bold;
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+
+  &__description {
+    display: block;
+    margin-top: 4px;
+    color: var(--light-color-secondary);
+    font-size: .9rem;
+  }
+
+  &__tags {
+    width: 24ch;
+    padding-left: 2ch !important;
+    font-size: .9rem;
+
+    .post-tag {
+      color: var(--tag-color);
+      text-decoration: none;
+      white-space: nowrap;
+
+      &:not(:last-child) {
+        margin-right: 1ch;
+      }
+    }
+  }
+
+  @media (max-width: $phone-max-width) {
+    tr {
+      display: block;
+      padding: 12px 0;
+    }
+
+    td {
+      display: block;
+      padding: 2px 0 !important;
+      text-align: left;
+    }
   }
 }

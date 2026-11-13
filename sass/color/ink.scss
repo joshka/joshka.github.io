@@ -1,5 +1,7 @@
-// Ink/slate palette, after the Aardvark Deep T3 Code theme
+// Ink/slate palette, after the Aardvark Deep T3 Code theme, with a paper variant for light mode
 :root {
+  color-scheme: dark light;
+
   --accent: #76a8f2;
   --accent-alpha-70: rgba(118, 168, 242, .7);
   --accent-alpha-20: rgba(118, 168, 242, .2);
@@ -9,6 +11,22 @@
   --border-color: #232b36;
   --light-color-secondary: #8f98ab;
   --code-background: #10151f;
+  --tag-color: #52c4c0;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --accent: #2464c0;
+    --accent-alpha-70: rgba(36, 100, 192, .8);
+    --accent-alpha-20: rgba(36, 100, 192, .12);
+
+    --background: #f7f8fa;
+    --color: #1d2330;
+    --border-color: #d5dae3;
+    --light-color-secondary: #5a6377;
+    --code-background: #eef1f5;
+    --tag-color: #1a7a77;
+  }
 }
 
 pre.giallo {

@@ -7,16 +7,22 @@
 {% endcomponent post_header %}
 
 {% component post_list(pages) %}
-<ul>
+<table class="post-table">
 {%- for page in [p for p in pages if not p.draft] %}
-    <li class="post-list">
-        <a href="{{ page.permalink | safe }}">
-            <span class="post-date">{{ page.date }}</span>
-            :: <span class="post-list-title">{{ page.title }}</span></a>
-        {{ <tags page={page} short={true} /> }}
-    </li>
+    <tr>
+        <td class="post-table__date">{{ page.date | date(format="%Y-%m-%d") }}</td>
+        <td class="post-table__title">
+            <a href="{{ page.permalink | safe }}">{{ page.title }}</a>
+            {%- if page.description %}<span class="post-table__description">{{ page.description }}</span>{% endif %}
+        </td>
+        <td class="post-table__tags">
+            {%- for tag in (page.taxonomies?.tags or []) | sort | unique %}
+            <a class="post-tag" href="{{ get_taxonomy_url(kind='tags', term=tag) | safe }}">#{{ tag }}</a>
+            {%- endfor %}
+        </td>
+    </tr>
 {%- endfor %}
-</ul>
+</table>
 {% endcomponent post_list %}
 
 {% component tags(page, short=false) %}

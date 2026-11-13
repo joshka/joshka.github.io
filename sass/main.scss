@@ -13,7 +13,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: Hack, DejaVu Sans Mono, Monaco, Consolas, Ubuntu Mono, monospace;
+  font-family: 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
   font-size: 1rem;
   line-height: 1.54;
   background-color: var(--background);
@@ -118,7 +118,7 @@ figure {
 }
 
 code {
-  font-family: Hack, DejaVu Sans Mono, Monaco, Consolas, Ubuntu Mono, monospace;
+  font-family: 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
   font-feature-settings: normal;
   background: var(--accent-alpha-20);
   padding: 1px 6px;
@@ -127,12 +127,12 @@ code {
 }
 
 pre {
-  font-family: Hack, DejaVu Sans Mono, Monaco, Consolas, Ubuntu Mono, monospace;
+  font-family: 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
   padding: 20px;
   font-size: .95rem;
   overflow: auto;
-  border-top: 1px solid rgba(255, 255, 255, .1);
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 
   @media (max-width: $phone-max-width) {
     white-space: pre-wrap;
