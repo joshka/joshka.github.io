@@ -1,0 +1,16 @@
+// Ink/slate palette, after the Aardvark Deep T3 Code theme
+:root {
+  --accent: #76a8f2;
+  --accent-alpha-70: rgba(118, 168, 242, .7);
+  --accent-alpha-20: rgba(118, 168, 242, .2);
+
+  --background: #0a0e17;
+  --color: #eef0f5;
+  --border-color: #232b36;
+  --light-color-secondary: #8f98ab;
+  --code-background: #10151f;
+}
+
+pre.giallo {
+  border: 1px solid var(--border-color);
+}

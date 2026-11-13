@@ -20,7 +20,8 @@ generate_feeds = true
 [markdown]
 
 [markdown.highlighting]
-theme = "github-dark"
+theme = "aardvark-ink"
+extra_themes = ["highlighting/aardvark-ink.json"]
 
 [extra]
 logo_text = "Joshka.net"
