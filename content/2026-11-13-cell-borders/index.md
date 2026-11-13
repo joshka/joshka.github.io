@@ -32,8 +32,7 @@ Rio][raphamorim/rio#1947] before that), and
 I've built demo apps for it with Ratatui. I'd like feedback from
 terminal and TUI authors.
 
-[![A tiling window manager demo built with Ratatui, using cell borders for panes, tabs, form
-fields and buttons](panes.png)](panes.png)
+[![A tiling window manager demo built with Ratatui, using cell borders for panes, tabs, form fields and buttons](panes.png)](panes.png)
 
 <!-- more -->
 
@@ -62,8 +61,7 @@ attribute instead, and the checkbox and buttons turn into brackets.
 
 The settings form, with cell borders and then with the box-drawing fallback:
 
-[![A form with underlined text fields, a checkbox and rounded buttons drawn with cell
-borders](zoom-form.png)](zoom-form.png)
+[![A form with underlined text fields, a checkbox and rounded buttons drawn with cell borders](zoom-form.png)](zoom-form.png)
 
 [![The same form with the underline attribute and bracketed buttons](zoom-form-box.png)](zoom-form-box.png)
 
@@ -148,11 +146,9 @@ need them.
 
 ### Styles and joints
 
-[![The gallery script showing solid, double, dashed and dotted lines, rounded corners, forks and
-junctions](styles.png)](styles.png)
+[![The gallery script showing solid, double, dashed and dotted lines, rounded corners, forks and junctions](styles.png)](styles.png)
 
-[![Rounded panels with and without an outside fill color. The first has square patches of
-background at its corners](zoom-outside.png)](zoom-outside.png)
+[![Rounded panels with and without an outside fill color. The first has square patches of background at its corners](zoom-outside.png)](zoom-outside.png)
 
 Lines can be solid, double, dashed or dotted. Each corner and center of a cell can be square or
 rounded, with a configurable radius and anti-aliased arcs. A rounded corner can name an outside
@@ -299,8 +295,7 @@ alternate cells and see where the edges are.
 The btop-style monitor from the chart screenshots is in the same branch. Given how much of it an AI
 wrote, I did briefly consider calling it bslop:
 
-[![The full btop-style monitor drawn with cell borders. The hostname is
-blurred](bslop.png)](bslop.png)
+[![The full btop-style monitor drawn with cell borders. The hostname is blurred](bslop.png)](bslop.png)
 
 To run it:
 

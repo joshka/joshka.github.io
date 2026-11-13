@@ -1,0 +1,24 @@
+{#- The active menu item is the one whose URL prefixes the current URL, or "blog" for everything else (posts) -#}
+{%- set items = [{...item, "url": item.url | replace(from="$BASE_URL", to=config.base_url)} for item in config.extra.menu_items] -%}
+{%- set url = current_url or "" -%}
+{%- set matches = [i.url for i in items if i.url != config.base_url and url is starting_with(pat=i.url)] -%}
+{%- set active = (matches[-1] if matches else config.base_url) if url else none -%}
+<header class="header">
+    <div class="header__inner">
+        <div class="header__logo">
+            <a href="{{ config.base_url | safe }}" style="text-decoration: none;">
+                <div class="logo">{{ config.extra.logo_text }}</div>
+            </a>
+        </div>
+    </div>
+
+    <nav class="menu">
+        <ul class="menu__inner">
+        {%- for item in items %}
+            <li {%- if item.url == active %} class="active" {%- endif %}>
+                <a href="{{ item.url | safe }}" {%- if item.newtab %} target="_blank" rel="noopener noreferrer" {%- endif %}>{{ item.name | safe }}</a>
+            </li>
+        {%- endfor %}
+        </ul>
+    </nav>
+</header>

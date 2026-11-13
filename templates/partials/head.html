@@ -1,0 +1,46 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="robots" content="noodp"/>
+
+<link rel="stylesheet" href="{{ get_url(path="style.css", trailing_slash=false) | safe }}">
+<link rel="stylesheet" href="{{ get_url(path="color/blue.css", trailing_slash=false) | safe }}">
+<link rel="stylesheet" href="{{ get_url(path="font-hack-subset.css", trailing_slash=false) | safe }}">
+
+{#- Open Graph and Twitter card metadata #}
+{%- if page is defined %}
+    {%- set permalink = page.permalink %}
+    {%- set description = page.description %}
+    {%- set type = "article" %}
+    {%- set og_image = page.extra?.og_image %}
+    {%- if og_image and page.colocated_path %}{% set og_image = page.path ~ og_image %}{% endif %}
+{%- elif term is defined %}
+    {%- set permalink = term.permalink %}
+    {%- set description = "All posts tagged " ~ term.name %}
+{%- elif taxonomy is defined %}
+    {%- set permalink = config.base_url ~ "/" ~ taxonomy.slug %}
+    {%- set description = "All " ~ taxonomy.name %}
+{%- elif section is defined %}
+    {%- set permalink = section.permalink %}
+    {%- set description = section.description or config.description %}
+{%- else %}
+    {%- set permalink = config.base_url %}
+    {%- set description = "Page not found" %}
+{%- endif %}
+<meta name="description" content="{{ description | safe }}">
+<meta property="og:description" content="{{ description | safe }}">
+<meta property="og:title" content="{{ title | safe }}">
+<meta property="og:type" content="{{ type or "website" }}">
+<meta property="og:url" content="{{ permalink | safe }}">
+{%- if og_image %}
+<meta property="og:image" content="{{ get_url(path=og_image) }}">
+<meta name="twitter:image" content="{{ get_url(path=og_image) }}">
+{%- endif %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="{{ description | safe }}">
+<meta name="twitter:title" content="{{ title | safe }}">
+<meta property="twitter:domain" content="{{ config.base_url | replace(from="https://", to="") }}">
+<meta property="twitter:url" content="{{ permalink | safe }}">
+
+{%- for feed in config.feed_filenames %}
+<link rel="alternate" type="application/atom+xml" title="{{ config.title }} Atom Feed" href="{{ get_url(path=feed, trailing_slash=false, lang=lang) | safe }}" />
+{%- endfor %}

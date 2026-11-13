@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="post">
+    <h1 class="post-title">{{ page.title }}</h1>
+    {%- set blog = get_section(path="_index.md") %}
+    {{ <post_list pages={blog.pages} /> }}
+</div>
+{% endblock content %}

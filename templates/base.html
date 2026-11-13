@@ -1,0 +1,33 @@
+{%- if page is defined -%}
+    {%- set label = page.title -%}
+{%- elif term is defined -%}
+    {%- set label = "Tag: " ~ term.name -%}
+{%- elif taxonomy is defined -%}
+    {%- set label = "Tags" -%}
+{%- elif section is defined -%}
+    {%- set label = section.title -%}
+{%- else -%}
+    {%- set label = "404" -%}
+{%- endif -%}
+{%- set title = label ~ " | " ~ config.title if label else config.title -%}
+<!DOCTYPE html>
+<html lang="{{ config.default_language or "en" }}">
+
+<head>
+    <title>{{ title }}</title>
+    {% include "partials/head.html" %}
+</head>
+
+<body class="">
+<div class="container">
+    {% include "partials/header.html" %}
+
+    <div class="content">
+        {% block content %}{% endblock content %}
+    </div>
+
+    {% include "partials/footer.html" %}
+</div>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+{% component post_header(page) %}
+<h1 class="post-title"><a href="{{ page.permalink | safe }}">{{ page.title }}</a></h1>
+<div class="post-meta-inline">
+    <span class="post-date">{{ page.date | date(format="%Y-%m-%d") if page.date else "" }}</span>
+</div>
+{{ <tags page={page} /> }}
+{% endcomponent post_header %}
+
+{% component post_list(pages) %}
+<ul>
+{%- for page in [p for p in pages if not p.draft] %}
+    <li class="post-list">
+        <a href="{{ page.permalink | safe }}">
+            <span class="post-date">{{ page.date }}</span>
+            :: <span class="post-list-title">{{ page.title }}</span></a>
+        {{ <tags page={page} short={true} /> }}
+    </li>
+{%- endfor %}
+</ul>
+{% endcomponent post_list %}
+
+{% component tags(page, short=false) %}
+{%- set tags = page.taxonomies?.tags %}
+{%- if tags %}
+<span class="post-tags-inline">
+    {%- if short %} :: {% else %} :: tags:&nbsp; {% endif %}
+    {%- for tag in tags | sort | unique %}
+        <a class="post-tag" href="{{ get_taxonomy_url(kind='tags', term=tag) | safe }}">#{{ tag }}</a>
+        {%- if not loop.last %}{{ "," if short else "&nbsp;" | safe }}{% endif -%}
+    {% endfor -%}
+</span>
+{%- endif %}
+{% endcomponent tags %}
+
+{#- Used from markdown, e.g. {{ <image src="..." base_url={config.base_url} /> }} -#}
+{% component image(src, base_url, alt="", position="center", style="") %}
+{%- set src = src if src is starting_with(pat="http") else base_url ~ src -%}
+<img src="{{ src | safe }}"{% if alt %} alt="{{ alt }}"{% endif %} class="{{ position }}" {%- if style %} style="{{ style | safe }}" {%- endif %} decoding="async" loading="lazy"/>
+{% endcomponent image %}
+
+{% component figure(src, alt="", position="center", style="", caption="", caption_position="center", caption_style="") %}
+<figure class="{{ position }}">
+    <img src="{{ src | safe }}"{% if alt %} alt="{{ alt }}"{% endif %}{% if style %} style="{{ style }}"{% endif %} decoding="async" loading="lazy"/>
+    {%- if caption %}
+    <figcaption class="{{ caption_position }}"{% if caption_style %} style="{{ caption_style | safe }}"{% endif %}>{{ caption | markdown() | safe }}</figcaption>
+    {%- endif %}
+</figure>
+{% endcomponent figure %}
