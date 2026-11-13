@@ -2,9 +2,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <meta name="robots" content="noodp"/>
 
-<link rel="stylesheet" href="{{ get_url(path="style.css", trailing_slash=false) | safe }}">
-<link rel="stylesheet" href="{{ get_url(path="color/ink.css", trailing_slash=false) | safe }}">
-<link rel="stylesheet" href="{{ get_url(path="fonts.css", trailing_slash=false) | safe }}">
+<link rel="stylesheet" href="{{ get_url(path="style.css", trailing_slash=false, cachebust=true) | safe }}">
+<link rel="stylesheet" href="{{ get_url(path="color/ink.css", trailing_slash=false, cachebust=true) | safe }}">
+<link rel="stylesheet" href="{{ get_url(path="fonts.css", trailing_slash=false, cachebust=true) | safe }}">
 
 {#- Open Graph and Twitter card metadata #}
 {%- if page is defined %}
