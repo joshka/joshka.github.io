@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="post">
+    <h1 class="post-title">{{ page.title }}</h1>
+    <div class="post-content">
+        {{ page.content | safe }}
+
+        {%- set stats = load_data(path="data/projects.json") %}
+        {%- set r = page.extra.ratatui %}
+        {%- set rd = stats[r.name] %}
+        <div class="project-hero">
+            {%- if rd?.image %}
+            <a class="project-image" href="{{ r.url | safe }}"><img src="{{ get_url(path=rd.image) | safe }}" alt="{{ r.name }}"></a>
+            {%- endif %}
+            <div class="project-body">
+                <h2><a href="{{ r.url | safe }}">{{ r.name }}</a><span class="project-version">v{{ rd.version }}</span></h2>
+                <p>{{ r.summary }} {{ r.intro }}</p>
+                {%- if r?.highlights %}
+                <ul class="project-highlights">
+                    {%- for h in r.highlights %}
+                    <li>{{ h | markdown(inline=true) | safe }}</li>
+                    {%- endfor %}
+                </ul>
+                {%- endif %}
+                <div class="project-stats">
+                    <span><b>{{ rd.downloads_floor }}</b>crates.io downloads</span>
+                    <span><b>{{ rd.stars_floor }}</b>GitHub stars</span>
+                </div>
+                <div class="project-links">
+                    <a href="{{ r.url | safe }}"><span class="icon" style="--icon: url({{ get_url(path='icons/globe.svg') | safe }})"></span>ratatui.rs</a>
+                    <a href="{{ r.repo | safe }}"><span class="icon" style="--icon: url({{ get_url(path='icons/github.svg') | safe }})"></span>repo</a>
+                    <a href="https://crates.io/crates/{{ r.crate }}"><span class="icon" style="--icon: url({{ get_url(path='icons/package.svg') | safe }})"></span>crate</a>
+                </div>
+            </div>
+        </div>
+
+        {%- for group in page.extra.groups %}
+        <h2>{{ group.title }}</h2>
+        {%- if group?.intro %}<p>{{ group.intro | markdown(inline=true) | safe }}</p>{% endif %}
+        {%- if group?.cards %}
+        <div class="project-grid{% if group?.columns == 2 %} project-grid--2{% endif %}">
+            {%- for card in group.cards %}{{ <project_card card={card} stats={stats} /> }}{% endfor %}
+        </div>
+        {%- endif %}
+        {%- if group?.chips %}
+        <div class="project-chips">
+            {%- for name in group.chips %}
+            <a href="https://crates.io/crates/{{ name }}">{{ name }}</a>
+            {%- endfor %}
+        </div>
+        {%- endif %}
+        {%- endfor %}
+    </div>
+</div>
+<script>
+  // Play demo videos only while on screen, and not at all when the reader prefers reduced motion.
+  (() => {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const observer = new IntersectionObserver((entries) => {
+      for (const { target, isIntersecting } of entries) {
+        if (isIntersecting) target.play().catch(() => {});
+        else target.pause();
+      }
+    }, { rootMargin: "200px" });
+    document.querySelectorAll("video[data-autoplay]").forEach((v) => observer.observe(v));
+  })();
+</script>
+{% endblock content %}

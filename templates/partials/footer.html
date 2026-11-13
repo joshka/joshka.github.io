@@ -3,5 +3,12 @@
         <div class="copyright">
             <span>© {{ now() | date(format="%Y") }} {{ config.extra.author }}</span>
         </div>
+        <ul class="footer__links">
+            <li><a href="{{ get_url(path='atom.xml', trailing_slash=false) | safe }}">rss</a></li>
+            <li><a href="mailto:resume.2026@joshka.net">email</a></li>
+            {%- for item in config.extra.menu_items %}{% if item?.external %}
+            <li><a href="{{ item.url | safe }}" rel="noopener noreferrer">{{ item.name }}</a></li>
+            {%- endif %}{% endfor %}
+        </ul>
     </div>
 </footer>

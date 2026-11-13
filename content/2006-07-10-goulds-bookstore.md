@@ -1,5 +1,6 @@
 +++
 title = "Goulds Bookstore"
+description = "Finding Goulds, a huge second-hand bookstore in Newtown, and the books I picked up there."
 date = "2006-07-10T11:17:00+10:00"
 [taxonomies]
 tags = ["Life"]

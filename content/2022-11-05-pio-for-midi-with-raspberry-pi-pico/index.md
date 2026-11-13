@@ -1,5 +1,6 @@
 +++
-title = "Programmable IO (PIO) for MIDI with the Rasberry Pi Pico"
+title = "Programmable IO (PIO) for MIDI with the Raspberry Pi Pico"
+description = "Using the Raspberry Pi Pico's programmable IO to build a MIDI thru box with up to 25 outputs."
 [taxonomies]
 tags = ["Raspberry Pi", "MIDI"]
 +++
@@ -34,7 +35,7 @@ have a neat feature to avoid having to bitbang a protocol - Programmable IO (PIO
 ## PIO
 
 The Raspberry Pi Pico provides 8 programmable state machines that run at a fractional multiple of
-the main clock and allow us to offload input / ouput tasks from the CPU. Each machine is controlled
+the main clock and allow us to offload input / output tasks from the CPU. Each machine is controlled
 by a very small instruction set with only 32 instruction slots per machine. Programs written for PIO
 can access and control any of the GPIO pins on the Pico.
 
@@ -47,7 +48,7 @@ can access and control any of the GPIO pins on the Pico.
 >
 > -- the [MIDI DIN Electrical Specification]
 
-[MIDI DIN Electrical Specification]: https://www.midi.org/specifications-old/item/midi-din-electrical-specification
+[MIDI DIN Electrical Specification]: https://web.archive.org/web/20190405211144/https://www.midi.org/specifications-old/item/midi-din-electrical-specification
 
 ## Raspberry Pi Pico UART
 

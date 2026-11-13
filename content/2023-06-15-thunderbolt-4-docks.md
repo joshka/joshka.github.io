@@ -1,5 +1,6 @@
 +++
 title = "Thunderbolt 4 Dock Comparison"
+description = "A comparison table of Thunderbolt 4 docks: ports, displays, charging, price and warranty."
 date = "2023-06-15T19:35:00-07:00"
 [taxonomies]
 tags = ["Hardware"]
@@ -10,7 +11,7 @@ detailed comparison table to help. Hence, I decided to create one myself.
 
 <!-- more -->
 
-<div style="width:100vw;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;position:relative">
+<div class="table-scroll">
 
 Name | TB Ports | Host TB Port | Ethernet | USB-C 3.2Gen2 | USB-A 3.2Gen2 | USB 2.0 | Display Ports | Monitor Support | RRP | Sale | Laptop Power | Audio | SD | Power Brick | Warranty | Notes
 ---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---

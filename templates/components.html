@@ -52,3 +52,43 @@
     {%- endif %}
 </figure>
 {% endcomponent figure %}
+
+{% component project_card(card, stats) %}
+{%- set d = stats[card.name] if card.name in stats else {} %}
+<div class="project-card">
+    {%- if d?.image %}
+    <a class="project-image" href="{{ (card?.url or card.repo) | safe }}" tabindex="-1" aria-hidden="true">
+        {%- if d.image is ending_with(pat=".mp4") %}
+        <video src="{{ get_url(path=d.image) | safe }}" muted loop playsinline preload="metadata" data-autoplay></video>
+        {%- else %}
+        <img src="{{ get_url(path=d.image) | safe }}" alt="{{ card.name }}" loading="lazy">
+        {%- endif %}
+    </a>
+    {%- endif %}
+    <div class="project-body">
+        <h3>
+            <a href="{{ (card?.url or card.repo) | safe }}">{{ card.name }}</a>
+            {%- if card?.wip %}<span class="project-tag">wip</span>{% endif %}
+            {%- if d?.version %}<span class="project-version">v{{ d.version }}</span>{% endif %}
+        </h3>
+        <p>{{ card.summary }}</p>
+        <div class="project-links">
+            {%- if card?.url %}<a href="{{ card.url | safe }}"><span class="icon" style="--icon: url({{ get_url(path='icons/globe.svg') | safe }})"></span>site</a>{% endif %}
+            {%- if card?.repo %}<a href="{{ card.repo | safe }}"><span class="icon" style="--icon: url({{ get_url(path='icons/github.svg') | safe }})"></span>{% if d?.stars_short %}★ {{ d.stars_short }}{% else %}repo{% endif %}</a>{% endif %}
+            {%- if card?.crate %}<a href="https://crates.io/crates/{{ card.crate }}"><span class="icon" style="--icon: url({{ get_url(path='icons/package.svg') | safe }})"></span>{% if d?.downloads_short %}{{ d.downloads_short }} downloads{% else %}crate{% endif %}</a>{% endif %}
+        </div>
+    </div>
+</div>
+{% endcomponent project_card %}
+
+{% component building() %}
+<nav class="home-strip">
+    <span>building:</span>
+    <a href="https://ratatui.rs">ratatui</a>
+    <a href="/betamax/">betamax</a>
+    <a href="/jk/">jk</a>
+    <a href="/ratatui-diff/">ratatui-diff</a>
+    <a href="/practice/">practice</a>
+    <a href="/projects/">all projects →</a>
+</nav>
+{% endcomponent building %}

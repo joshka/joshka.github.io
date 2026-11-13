@@ -10,6 +10,20 @@ html {
   box-sizing: inherit;
 }
 
+// Type scale: each step is roughly 1.25x the one below. Nothing renders smaller than --text-xs.
+:root {
+  --text-xs: .8rem;
+  --text-sm: .9rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --weight-heading: 600;
+
+  // Comfortable line length for prose; wide content (code, tables, images, card grids) uses the full frame
+  --measure: 76ch;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -31,24 +45,25 @@ body {
 h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
-  font-weight: bold;
+  font-weight: var(--weight-heading);
   line-height: 1.3;
 }
 
 h1 {
-  font-size: 1.4rem;
+  font-size: var(--text-2xl);
+  line-height: 1.2;
 }
 
 h2 {
-  font-size: 1.3rem;
+  font-size: var(--text-xl);
 }
 
 h3 {
-  font-size: 1.2rem;
+  font-size: var(--text-lg);
 }
 
 h4, h5, h6 {
-  font-size: 1.15rem;
+  font-size: var(--text-base);
 }
 
 
@@ -97,7 +112,7 @@ figure {
   }
 
   figcaption {
-    font-size: 14px;
+    font-size: var(--text-sm);
     padding: 5px 10px;
     margin-top: 5px;
     background: var(--accent);
@@ -123,13 +138,13 @@ code {
   background: var(--accent-alpha-20);
   padding: 1px 6px;
   margin: 0 2px;
-  font-size: .95rem;
+  font-size: var(--text-sm);
 }
 
 pre {
   font-family: 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
   padding: 20px;
-  font-size: .95rem;
+  font-size: var(--text-sm);
   overflow: auto;
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
@@ -202,6 +217,17 @@ th {
   color: var(--accent);
 }
 
+// Wrap tables too wide for the frame so they scroll instead of overflowing the page
+.table-scroll {
+  overflow-x: auto;
+
+  table {
+    table-layout: auto;
+    min-width: 1400px;
+    font-size: var(--text-sm);
+  }
+}
+
 ul, ol {
   margin-left: 30px;
   padding: 0;
@@ -223,7 +249,7 @@ ol ol {
   display: flex;
   flex-direction: column;
   padding: 40px;
-  max-width: 864px;
+  max-width: 1200px;
   min-height: 100vh;
   margin: 0 auto;
 
@@ -243,6 +269,93 @@ hr {
   height: 1px;
 }
 
-.hidden {
-  display: none;
+.post-content > :is(p, ul, ol, dl, blockquote, h1, h2, h3, h4, h5, h6):not(:has(img, video, picture)),
+.post-title,
+.intro p {
+  max-width: var(--measure);
+}
+
+// Print: a clean document (mainly for the resume). Site chrome, the consulting cards and colours go.
+@media print {
+  :root {
+    --background: #fff;
+    --color: #000;
+    --light-color-secondary: #444;
+    --accent: #000;
+    --border-color: #ccc;
+    --card-shadow: none;
+    --accent-alpha-70: #666;
+  }
+
+  @page {
+    margin: 14mm 16mm;
+  }
+
+  body {
+    font-size: 9.5pt;
+    line-height: 1.4;
+  }
+
+  .header,
+  .home-strip,
+  .footer,
+  #consulting-engagements,
+  #consulting-engagements + .project-grid {
+    display: none;
+  }
+
+  .container {
+    padding: 0;
+    max-width: none;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  h2 {
+    margin: 14pt 0 4pt;
+    font-size: 13pt;
+  }
+
+  h3 {
+    margin: 10pt 0 2pt;
+    font-size: 11pt;
+    break-after: avoid;
+  }
+
+  ul li {
+    break-inside: avoid;
+  }
+
+  .post-content > :is(p, ul, ol) {
+    max-width: none;
+  }
+
+  // `body` prefix outranks the screen rules in projects.scss, which loads later
+  body .resume-header {
+    margin-bottom: 10pt;
+
+    .project-meta {
+      display: none;
+    }
+
+    .post-title {
+      font-size: 20pt;
+    }
+
+    &__lead {
+      font-size: 11pt;
+    }
+
+    &__contact {
+      font-size: 9pt;
+    }
+  }
+
+  body .resume-role {
+    margin: 0 0 4pt;
+    font-size: 9pt;
+  }
 }

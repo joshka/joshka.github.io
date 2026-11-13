@@ -1,5 +1,6 @@
 +++
 title = "AI Article Checklist"
+description = "The old spam-solutions checklist, repurposed for articles critiquing AI coding tools."
 date = "2023-06-06T15:45:00-08:00"
 [taxonomies]
 tags = ["LLMs"]

@@ -4,11 +4,15 @@ on:
   push:
     branches:
     - main
+  # Pushes made with GITHUB_TOKEN don't trigger workflows, so deploy after each stats refresh
+  workflow_run:
+    workflows: ["Refresh project stats"]
+    types: [completed]
 jobs:
   build:
     name: Deploy site
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event.workflow_run.conclusion == 'success')
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2

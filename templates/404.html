@@ -3,6 +3,10 @@
 {% block content %}
 <div class="post">
     <h1 class="post-title">Lost?</h1>
-    <p>This page does not exist.</p>
+    <div class="post-content">
+        <p>This page doesn't exist. Try the <a href="{{ config.base_url | safe }}">home page</a>,
+        <a href="{{ get_url(path='writing') | safe }}">all posts</a>, or
+        <a href="{{ get_url(path='projects') | safe }}">projects</a>.</p>
+    </div>
 </div>
 {% endblock content %}

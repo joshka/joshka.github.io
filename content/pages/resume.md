@@ -1,128 +1,123 @@
 +++
 title = "Resume"
 path = "resume"
+template = "resume.html"
+description = "Josh McKinney: software engineer for backend, platform, security, and developer tooling. OpenAI (Codex), Amazon/AWS security, Ratatui co-maintainer."
+
+[extra]
+og_image = "og/resume.png"
+engagements = [
+    { years = "2015–16", client = "State of Tennessee", work = "Led development of the budget system managing the State's $32B annual budget, integrated with PeopleSoft", stack = "C#, SQL Server, SSAS, BIDS" },
+    { years = "2014–15", client = "Victorian Dept of Health and Human Services", work = "Shipped features and fixes for a government budget management system", stack = "ASP.NET, VB.NET, JavaScript" },
+    { years = "2014", client = "Readify", work = "Replaced a legacy Dynamics CRM system with CRM Online integrated with billing and internal processes", stack = "ASP.NET MVC, Azure, MYOB API" },
+    { years = "2014", client = "iCareHealth", work = "Built reporting for an aged care facility management system", stack = "SQL Server, SSAS, SSRS" },
+    { years = "2013", client = "UniSuper", work = "Integrated Sitecore with internal systems, enabling the launch of the customer-facing website", stack = "ASP.NET, WCF, Sitecore" },
+    { years = "2012–13", client = "VivaTags", work = "Built front and back end for a mobile payments platform; co-inventor on its patent application", stack = "ASP.NET MVC, Azure, JavaScript" },
+    { years = "2012", client = "Webjet", work = "Built the UI for one of the first Australian Windows 8 Store apps", stack = "C#, XAML" },
+    { years = "2011", client = "Fiserv / Westpac", work = "Built a mobile single-page banking application", stack = "ASP.NET MVC, KnockoutJS" },
+    { years = "2010–11", client = "Australian Taxation Office", work = "Led TFS adoption and built tooling to fit it into enterprise configuration management", stack = "C#, Java, TFS, Build Forge" },
+    { years = "2010", client = "Australian Fisheries Management Authority", work = "Diagnosed performance problems, mentored staff, and planned the TFS rollout", stack = "VB.NET, Oracle, TFS" },
+    { years = "2010", client = "COIN / Macquarie Bank", work = "Cut brokerage tracking queries from 4+ hours to under 10 seconds", stack = "ASP.NET, SQL Server" },
+    { years = "2009", client = "Government of Vanuatu", work = "Redesigned the national budget management system and trained the onsite team", stack = "BIDS, C#, SQL Server" },
+    { years = "2008", client = "Institut d'émission des départements d'outre-mer (IEDOM)", work = "Migrated BIDS to Oracle Database, rolled out budget entry, and trained partner consultants", stack = "BIDS, C#, Oracle Database" },
+    { years = "2006", client = "ANU School of Biology", work = "Built software monitoring a microphone array to detect cricket signalling patterns", stack = "C#, WinForms, hardware I/O" },
+    { years = "2005", client = "Australian Customs Service", work = "Extended the anti-dumping and countervailing case database", stack = "Access, VBA, SQL" },
+    { years = "2004–05", client = "National Occupational Health and Safety Commission", work = "Built the Dangerous Goods Ready Reckoner placarding app", stack = "JavaScript, HTML" },
+    { years = "2004", client = "Fisheries Research and Development Corporation", work = "Fixed and deployed the FishBase grant management system", stack = "Access, VBA, SQL" },
+]
 +++
 
-Available to interview for positions in Seattle WA and remote. Please email <resume.2023@joshka.net>
-for a PDF or Word version of this resume.
-
-Senior Software Development Engineer with over 16 years’ experience leading teams, delivering,
-maintaining, operating, and supporting software applications and systems. Broad knowledge of .NET,
-Java, and AWS based development for websites and backend services. Deep understanding of building
-secure and resilient software, infrastructure, developer tools, and large-scale services.
-
-I spent the last 5 years working at Amazon and AWS as a developer specializing in security services
-managing permissions, access control, authorization, authentication, and service-to-service
-communication security.
-
-Prior to this, I worked with Performa Software at the Tennessee Department of Finance to deliver a
-budget management system to control the state's $32B annual budget process.
-
-As a consultant in previous positions, I delivered many [Projects for government and private
-clients](/projects).
-
-## Skills
-
-* Software Consulting / Strategy / Team Leadership / Training
-* Agile / Devops / Scrum
-* Information Security / TLS / OAuth / OpenID Connect / JWT
-* Docker / Linux / Network / Infrastructure / Firewalls
-* Java / JaxRS / Perl / Python / Ruby / Shell / SQL / C / JavaScript
-* C# / VB.NET / Visual Studio / ASP.NET / ASP.NET MVC
-* AWS / DynamoDB / EC2 / ECS / ElasticSearch / IAM / Lambda / S3
-* SQL Server / Oracle / SSAS / DAX / MDX / PostgreSQL
-* LINQ / Entity Framework / Hibernate and NHibernate ORMs
-* WCF / Web Services / WPF / XAML / XML / HTML
-* TFS / Git / Mercurial
+Software engineer with 20+ years of experience across backend, platform, security, and developer
+tooling. Built and operated authentication, authorization, and service-to-service security systems
+at Amazon/AWS; shipped AI developer tooling on OpenAI's Codex; co-maintainer of
+[Ratatui](https://ratatui.rs), the standard Rust terminal UI library. I
+work best on systems other engineers depend on, where correctness, maintainability, and developer
+experience all matter.
 
 ## Experience
 
-### Amazon and AWS (2017-2022) / Software Development Engineer / Seattle WA
+### OpenAI (Codex)
 
-* Designed, architected, integrated, implemented, and maintained infosec websites, services,
-  libraries, and related developer tools
-* 24/7 on-call and operations for three critical Tier-0 / Tier-1 internal systems
-* Advised managers and director on scoping, strategy, vision, tradeoffs, and risk analysis
-* Performed security assessments of legacy and new systems.
-* Ran internal customer office hours for system integration support
-* Presented talks on developer tools, libraries, and security topics at internal conferences
-* Mentored junior developers and interns resulting in 2 successful post-internship offers
-* As a tech lead, built and operated a new OAuth / OpenID authentication and authorization service
-  securing 80K+ inter-service connections on 2.5M hosts, running at 15K TPS peak
-* Created and maintained devops pipelines, ops queues, team standards, infrastructure
-* Wrote documentation and training for developers and non-technical employees
-* Provided critical feedback and advice addressing security gaps in a draft IETF OAuth standard
-* Maintained a rule-based access system controlling 3M+ employees, 1M+ groups, 2M+ resources
-* Designed and implemented new and updated integrations with PeopleSoft, LDAP, ElasticSearch
-* Planned and executed critical peak season operations to prevent overload and downtime
-* Maintained and implemented features on a hierarchical resource permissions website and service
-  managing tens of millions of resources
+<p class="resume-role">Member of Technical Staff · Oct 2025 – Mar 2026 · Seattle WA</p>
 
-### Performa Software (2015-16) / Senior Application Analyst / Melbourne Australia, Nashville TN
+* Worked on Codex, OpenAI's AI coding agent, across the Rust terminal UI, auth/login, client
+  connectivity, reliability, and developer workflow polish
+* Owned major terminal UI improvements: transcript rendering, scrolling, copy/selection, paste
+  handling, keyboard behavior, streaming performance, terminal compatibility, diagnostics, and
+  multi-agent navigation
+* Shipped custom CA support, logging, CI/Bazel reliability improvements, and snapshot-backed UI
+  tests; regular issue triage, PR review, and technical interviewing
 
-* Delivered a budget entry, analysis, and reporting system ([BEARS](https://home.bears.tn.gov)) to
-  manage the State of Tennessee’s $32 billion annual budget as lead developer on a small team
-* Captured and documented requirements, designed and implemented workflows and UI
-* Planned and built SQL Server and Analysis Services schemas, and SSRS reports
-* Integrated budget management system with PeopleSoft commitment control ledger APIs
-* Developed bug fixes for legacy budget management system for Victoria Department of Health
+### Ratatui
 
-### Readify (2010-14) / Senior Developer / Canberra, Melbourne, Sydney Australia
+<p class="resume-role">Open Source Maintainer · 2023 – Present · Seattle WA</p>
 
-* Consulted as a developer on over 30 government and private projects
-* Developed frontends and backends for ASP.NET websites, systems, and Windows Applications
-* Maintained legacy systems with ramp up time measured in days to productive contribution
-* Designed schemas, queries, and reports for SQL Server and Oracle databases
-* Analyzed and fixed performance problems. Reduced a customer’s query from 4+ hours to <10s
-* Integrated websites and systems with a variety of CRM, ERP, CMS, SOA and CI/CD products
-* Installed and supported Microsoft technologies (SQL Server / SQL / Microsoft CRM / TFS / Azure)
-* Trained teams and organizations on devops and agile practices using Team Foundation Server
+* Co-maintainer of Ratatui, the standard Rust terminal UI library: 23k+ GitHub stars, 70M+
+  crates.io downloads, 6,900+ reverse dependencies, 15k+ dependent repositories (including OpenAI
+  Codex)
+* Day-to-day maintainer work: API design and review, contributor PR review, releases, issue
+  triage, documentation and the ratatui.rs site, and community support
+* Helped grow the contributor community and the maintainer team; maintain the crates Ratatui
+  builds on (kasuari, instability, line-clipping)
+* See [projects](/projects/) for the widgets, libraries, and tools around it
 
-### Beacon IT (2007-09) / Software Developer / Canberra, Australia
+### Amazon and AWS
 
-* Developed and maintained proprietary business process management software
-* Implemented budget management systems, and user training for government and private clients
-* Created and led training courses, wrote documentation, and provided support for customers
-* Delivered SQL Server to Oracle migration and product training for international clients
+<p class="resume-role">Senior Software Development Engineer · 2017 – 2022 · Seattle WA</p>
 
-### Pharmacy Guild of Australia (2006) / Database Officer / Canberra, Australia
+* Tech lead for a new OAuth / OpenID Connect authentication and authorization service securing 80K+
+  inter-service connections across 2.5M hosts at 15K TPS peak
+* Maintained a rule-based access-control system governing 3M+ employees, 1M+ groups, and 2M+
+  resources, plus a hierarchical resource-permissions service managing tens of millions of
+  resources
+* Provided critical feedback addressing security gaps in a draft IETF OAuth standard; performed
+  security assessments of new and legacy systems
+* 24/7 on-call and operations for three Tier-0 / Tier-1 internal systems; planned and executed
+  peak-season operations to prevent overload and downtime
+* Advised managers and directors on scoping, strategy, and risk; ran integration office hours,
+  internal conference talks, and mentoring (2 intern conversions)
 
-* Migrated a legacy membership database from Access to an ASP.NET website with SQL Server
-* Developed integration with a proprietary document management system
-* Created Crystal Reports for membership queries
+### Performa Software
 
-### F1 Solutions Australia (2004-05) / Software Developer / Canberra, Australia
+<p class="resume-role">Senior Application Analyst · 2014 – 2016 · Nashville TN, Melbourne Australia</p>
 
-* Developed software as a consultant for many government and private projects
-* Maintained Access and SQL Server databases, creating new forms, queries, and reporting
-* Built and deployed ASP.NET and JavaScript SPA websites
-* Developed new features, migrations, integrations, user interfaces and reports
+* Lead developer delivering a budget entry, analysis, and reporting system
+  (BEARS) managing the State of Tennessee's $32B annual budget;
+  integrated with PeopleSoft commitment-control ledger APIs
+* Bug fixes and features on a budget management system for the Victorian Department of Health and
+  Human Services
 
-### Citadel Securix and eGlobal (2002-03) / Managed Security Services Operator / Canberra, Australia
+### Readify
 
-* Remotely monitored (24/7) and administerd network firewalls, VPNs, and Intrusion Detection Systems
-* Developed improvements on Perl based ticketing system (Request Tracker) to support and enhance
-  reporting and client workflows
-* CyberGuard / Check Point Firewall 1 / Novel BorderManager / PureSecure / RealSecure
+<p class="resume-role">Senior Developer · 2010 – 2014 · Canberra, Melbourne, Sydney Australia</p>
 
-### IEAust (Engineers Australia) (2001-02) / IT Support / Canberra, Australia
+* Consulted on 30+ government and private projects: backend systems, enterprise integration
+  (CRM/ERP/CMS/banking), performance work (cut a critical query from 4+ hours to <10s), and
+  agile/devops training
 
-* Integrated membership system with weekly newsletter emails using VBA and Novel Groupwise APIs
-* Miscellaneous IT support across the organisation.
+### Earlier roles
 
-### University of Canberra (2000-02) / Class Tutor and Student Resource Centre Tutor / Canberra, Australia
+<p class="resume-role">2001 – 2009 · Canberra Australia</p>
 
-* Class tutor for several first and second year university IT classes
-* Led class discussions on tutorial material.
-* Marked assignments and tests.
-* Tutored as a drop in Tutor at the Student Resource Centre in IT and Mathematics subjects
+* Software development and consulting for Australian government and enterprise clients (Beacon IT,
+  F1 Solutions, Pharmacy Guild of Australia)
+* 24/7 managed security services operations: firewalls, VPNs, IDS (Citadel Securix)
+* University IT class tutoring (University of Canberra)
 
-## Education
+## Skills
 
-### University of Canberra (2000-03) / Bachelor of Engineering / Canberra, Australia
+* **Languages:** Rust, Python, Java, C#/.NET, TypeScript/JavaScript, SQL, Shell
+* **Security/Auth:** OAuth 2.x, OpenID Connect, JWT, TLS/mTLS, IAM, access control and
+  authorization at scale, protocol/standards review
+* **Platform:** AWS (IAM, DynamoDB, EC2, ECS, Lambda, S3), distributed systems, operations and
+  on-call, CI/CD, Bazel, Docker, Linux
+* **Developer tooling:** CLI/terminal applications, API design, documentation, OSS maintainership,
+  contributor experience
 
-* 68 of 96 credit points towards degree majoring in Computer Engineering. Achieved a GPA 6.1/7.0
+## Education and recognition
 
-### MCSD Certification (2014)
-
-* MCSD: Application Lifecycle Management (MCP: 10162190)
+* University of Canberra, 2000–2003: Bachelor of Engineering (Computer Engineering), incomplete;
+  68 of 96 credit points, GPA 6.1/7.0
+* Co-inventor, US patent application [US20140025512A1](https://patents.google.com/patent/US20140025512A1/en):
+  Vendor portal and method of facilitating electronic commerce (VivaTags, 2014, abandoned)
+* MCSD: Application Lifecycle Management (2014)

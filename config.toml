@@ -30,20 +30,25 @@ author = "Josh McKinney"
 
 # $BASE_URL is replaced with base_url; newtab opens the link in a new tab
 menu_items = [
-    { name = "blog", url = "$BASE_URL" },
+    { name = "writing", url = "$BASE_URL/writing" },
 
     # tags should only be enabled if you have "tags" taxonomy
     # see documentation below for more details
     # { name = "tags", url = "$BASE_URL/tags" },
-    { name = "archive", url = "$BASE_URL/archive" },
-    { name = "about me", url = "$BASE_URL/about" },
+    { name = "about", url = "$BASE_URL/about" },
     { name = "resume", url = "$BASE_URL/resume" },
     { name = "projects", url = "$BASE_URL/projects" },
 
     # set newtab to true to make the link open in new tab
-    { name = "github", url = "https://github.com/joshka", newtab = true },
-    # { name = "linked-in", url = "https://linkedin.com/in/joshuamckinney", newtab = true },
-    { name = "mastodon", url = "https://hachyderm.io/@joshka", newtab = true },
-    { name = "soundcloud", url = "https://soundcloud.com/joshka", newtab = true },
+    { name = "github", icon = "github", url = "https://github.com/joshka", newtab = true, external = true },
+    { name = "linkedin", icon = "linkedin", url = "https://www.linkedin.com/in/joshka", newtab = true, external = true },
+    { name = "mastodon", icon = "mastodon", url = "https://hachyderm.io/@joshka", newtab = true, external = true },
+    { name = "bluesky", icon = "bluesky", url = "https://bsky.app/profile/joshka.net", newtab = true, external = true },
+    { name = "x", icon = "x", url = "https://x.com/joshuamck", newtab = true, external = true },
+    { name = "soundcloud", icon = "soundcloud", url = "https://soundcloud.com/joshka", newtab = true, external = true },
 
 ]
+
+[link_checker]
+# LinkedIn answers automated requests with status 999, so its links can't be checked
+skip_prefixes = ["https://www.linkedin.com/"]

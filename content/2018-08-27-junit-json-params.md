@@ -1,5 +1,6 @@
 +++
 title = "Introducing JUnit JSON Params"
+description = "A JUnit 5 library for parameterizing tests with inline JSON and JSON resource files."
 date = "2018-08-27T11:03:00-07:00"
 [taxonomies]
 tags = ["Software", "Java"]

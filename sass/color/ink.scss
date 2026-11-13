@@ -12,6 +12,10 @@
   --light-color-secondary: #8f98ab;
   --code-background: #10151f;
   --tag-color: #52c4c0;
+
+  --card-background: #121925;
+  --card-border: #2a3443;
+  --card-shadow: inset 0 1px 0 rgba(255, 255, 255, .05), 0 10px 30px -12px rgba(0, 0, 0, .7);
 }
 
 @media (prefers-color-scheme: light) {
@@ -26,6 +30,10 @@
     --light-color-secondary: #5a6377;
     --code-background: #eef1f5;
     --tag-color: #1a7a77;
+
+    --card-background: #ffffff;
+    --card-border: #dde2ea;
+    --card-shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 8px 24px -12px rgba(16, 24, 40, .18);
   }
 }
 

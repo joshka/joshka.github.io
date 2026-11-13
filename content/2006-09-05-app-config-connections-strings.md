@@ -1,5 +1,6 @@
 +++
 title = "app.config and Dev Prod Test databases"
+description = "Switching app.config connection strings between dev, test and prod databases in Visual Studio 2005 builds."
 date = "2006-09-05T17:19:00+10:00"
 [taxonomies]
 tags = ["Software"]

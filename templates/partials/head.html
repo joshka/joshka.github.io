@@ -1,10 +1,10 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noodp"/>
 
+<link rel="preload" href="{{ get_url(path="fonts/FiraCode-VF.woff2", trailing_slash=false) | safe }}" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ get_url(path="style.css", trailing_slash=false, cachebust=true) | safe }}">
-<link rel="stylesheet" href="{{ get_url(path="color/ink.css", trailing_slash=false, cachebust=true) | safe }}">
-<link rel="stylesheet" href="{{ get_url(path="fonts.css", trailing_slash=false, cachebust=true) | safe }}">
+<link rel="icon" href="{{ get_url(path="favicon.svg", trailing_slash=false) | safe }}" type="image/svg+xml">
 
 {#- Open Graph and Twitter card metadata #}
 {%- if page is defined %}
@@ -26,6 +26,8 @@
     {%- set permalink = config.base_url %}
     {%- set description = "Page not found" %}
 {%- endif %}
+{#- Pages without their own image share the home page card #}
+{%- set og_image = og_image or "og/home.png" %}
 <meta name="description" content="{{ description | safe }}">
 <meta property="og:description" content="{{ description | safe }}">
 <meta property="og:title" content="{{ title | safe }}">

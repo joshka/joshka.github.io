@@ -1,6 +1,5 @@
 +++
-# number of pages to paginate by
-paginate_by = 5
-
+title = "Josh McKinney"
+description = "Josh McKinney, software engineer: backend, platform, security, and developer tools. Ratatui co-maintainer; previously OpenAI (Codex) and Amazon/AWS."
 sort_by = "date"
 +++

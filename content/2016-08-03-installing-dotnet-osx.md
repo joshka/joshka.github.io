@@ -1,5 +1,6 @@
 +++
 title = "Installing .NET Core on OSX"
+description = "Installing .NET Core on OS X with Homebrew in 2016. Outdated now; links to current instructions."
 date = "2016-08-03T19:31:00-05:00"
 [taxonomies]
 tags = ["Software"]
@@ -13,7 +14,7 @@ this post.
 
 <!-- more -->
 
-The easiest way to install [.NET Core](https://www.microsoft.com/net/core#macos) on OSX is a little
+The easiest way to install [.NET Core](https://dotnet.microsoft.com/en-us/download) on OSX is a little
 different than the way currently suggested at the official site. I suggest using
 [Homebrew](http://brew.sh), and [Homebrew Cask](http://caskroom.io).
 

@@ -1,0 +1,180 @@
+{
+  "Ratatui": {
+    "pushed": "2026-11-12T17:50:08Z",
+    "stars": 23258,
+    "downloads": 70844368,
+    "version": "0.30.2",
+    "stars_short": "23.3k",
+    "stars_floor": "23k+",
+    "downloads_short": "70.8M",
+    "downloads_floor": "70M+",
+    "image": "projects/ratatui.webp"
+  },
+  "betamax": {
+    "pushed": "2026-11-12T12:42:30Z",
+    "stars": 44,
+    "downloads": 2243,
+    "version": "0.3.1",
+    "stars_short": "44",
+    "stars_floor": "44",
+    "downloads_short": "2.2k",
+    "downloads_floor": "2k+",
+    "image": "projects/betamax.webp"
+  },
+  "jk": {
+    "pushed": "2026-10-06T04:03:55Z",
+    "stars": 15,
+    "downloads": 4027,
+    "version": "0.2.7",
+    "stars_short": "15",
+    "stars_floor": "15",
+    "downloads_short": "4k",
+    "downloads_floor": "4k+",
+    "image": "projects/jk.webp"
+  },
+  "girt": {
+    "pushed": "2026-11-02T15:46:43Z",
+    "stars": 0,
+    "downloads": 2389,
+    "version": "0.18.0",
+    "stars_short": "0",
+    "stars_floor": "0",
+    "downloads_short": "2.4k",
+    "downloads_floor": "2k+",
+    "image": "projects/girt.webp"
+  },
+  "qwertty": {
+    "pushed": "2026-11-10T09:35:00Z",
+    "stars": 5,
+    "downloads": 2137,
+    "version": "0.1.6",
+    "stars_short": "5",
+    "stars_floor": "5",
+    "downloads_short": "2.1k",
+    "downloads_floor": "2k+",
+    "image": "projects/qwertty.webp"
+  },
+  "ratatui-diff": {
+    "pushed": "2026-11-13T04:15:06Z",
+    "stars": 11,
+    "stars_short": "11",
+    "stars_floor": "11",
+    "image": "projects/ratatui-diff.webp"
+  },
+  "tui-popup": {
+    "pushed": "2026-11-11T06:23:13Z",
+    "downloads": 1292236,
+    "version": "0.7.7",
+    "downloads_short": "1.3M",
+    "downloads_floor": "1M+",
+    "image": "projects/tui-popup.mp4"
+  },
+  "tui-scrollview": {
+    "pushed": "2026-11-11T06:23:13Z",
+    "downloads": 535864,
+    "version": "0.6.8",
+    "downloads_short": "535.9k",
+    "downloads_floor": "535k+",
+    "image": "projects/tui-scrollview.mp4"
+  },
+  "tui-scrollbar": {
+    "pushed": "2026-11-11T06:23:13Z",
+    "downloads": 1703974,
+    "version": "0.2.8",
+    "downloads_short": "1.7M",
+    "downloads_floor": "1M+",
+    "image": "projects/tui-scrollbar.mp4"
+  },
+  "tui-big-text": {
+    "pushed": "2026-11-11T06:23:13Z",
+    "downloads": 583819,
+    "version": "0.8.10",
+    "downloads_short": "583.8k",
+    "downloads_floor": "583k+",
+    "image": "projects/tui-big-text.mp4"
+  },
+  "tui-prompts": {
+    "pushed": "2026-11-11T06:23:13Z",
+    "downloads": 203264,
+    "version": "0.6.8",
+    "downloads_short": "203.3k",
+    "downloads_floor": "203k+",
+    "image": "projects/tui-prompts.mp4"
+  },
+  "tui-qrcode": {
+    "pushed": "2026-11-11T06:23:13Z",
+    "downloads": 58049,
+    "version": "0.2.7",
+    "downloads_short": "58k",
+    "downloads_floor": "58k+",
+    "image": "projects/tui-qrcode.mp4"
+  },
+  "tui-bar-graph": {
+    "pushed": "2026-11-11T06:23:13Z",
+    "downloads": 55687,
+    "version": "0.3.6",
+    "downloads_short": "55.7k",
+    "downloads_floor": "55k+",
+    "image": "projects/tui-bar-graph.mp4"
+  },
+  "tui-cards": {
+    "pushed": "2026-11-11T06:23:13Z",
+    "downloads": 42104,
+    "version": "0.3.6",
+    "downloads_short": "42.1k",
+    "downloads_floor": "42k+",
+    "image": "projects/tui-cards.mp4"
+  },
+  "tui-box-text": {
+    "pushed": "2026-11-11T06:23:13Z",
+    "downloads": 40640,
+    "version": "0.3.5",
+    "downloads_short": "40.6k",
+    "downloads_floor": "40k+",
+    "image": "projects/tui-box-text.mp4"
+  },
+  "tui-equalizer": {
+    "pushed": "2026-11-11T06:23:13Z",
+    "downloads": 23123,
+    "version": "0.2.4",
+    "downloads_short": "23.1k",
+    "downloads_floor": "23k+",
+    "image": "projects/tui-equalizer.mp4"
+  },
+  "tui-markdown": {
+    "pushed": "2026-11-09T15:43:10Z",
+    "stars": 118,
+    "downloads": 650482,
+    "version": "0.3.13",
+    "stars_short": "118",
+    "stars_floor": "118",
+    "downloads_short": "650.5k",
+    "downloads_floor": "650k+",
+    "image": "projects/tui-markdown.webp"
+  },
+  "Software Practices": {
+    "pushed": "2026-10-30T07:54:38Z",
+    "stars": 3,
+    "stars_short": "3",
+    "stars_floor": "3",
+    "image": "projects/software-practices.webp"
+  },
+  "TidySrc": {
+    "pushed": "2026-10-06T03:51:32Z",
+    "stars": 0,
+    "stars_short": "0",
+    "stars_floor": "0",
+    "image": "projects/tidysrc.webp"
+  },
+  "cargo-manifesto": {
+    "pushed": "2026-10-21T12:09:51Z",
+    "stars": 6,
+    "downloads": 65,
+    "version": "0.1.3",
+    "stars_short": "6",
+    "stars_floor": "6",
+    "downloads_short": "65",
+    "downloads_floor": "65",
+    "image": "projects/cargo-manifesto.webp"
+  }
+}

@@ -1,5 +1,6 @@
 +++
 title = "The Moon is made of Cheese"
+description = "Why judging an LLM from a single run misleads, shown by sampling GPT-3.5 completing \"The Moon is made of\"."
 subtitle = "The Importance of Multiple Tests in Evaluating LLMs"
 date = "2023-06-05T12:00:00-08:00"
 [taxonomies]
@@ -50,7 +51,7 @@ can be fun, but too much can leave you reaching for a glass of milk to cool down
 LLM outputs. However, these options aren't available in the ChatGPT web UI that most users access,
 emphasizing the importance of multiple tests. Check out the [OpenAI API docs] for more information.
 
-[OpenAI API docs]: https://platform.openai.com/docs/api-reference/completions/create#completions/create-temperature
+[OpenAI API docs]: https://platform.openai.com/docs/api-reference/completions/create
 
 The Chat oriented models tend to return the correct result for the moon prompt, but in general this
 problem still presents often. Unfortunately the Chat versions of the models in the API do not show

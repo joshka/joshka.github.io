@@ -1,8 +1,9 @@
-{#- The active menu item is the one whose URL prefixes the current URL, or "blog" for everything else (posts) -#}
+{#- The active menu item is the one whose URL prefixes the current URL, or "blog" (the first item) for everything else except the home page -#}
 {%- set items = [{...item, "url": item.url | replace(from="$BASE_URL", to=config.base_url)} for item in config.extra.menu_items] -%}
 {%- set url = current_url or "" -%}
 {%- set matches = [i.url for i in items if i.url != config.base_url and url is starting_with(pat=i.url)] -%}
-{%- set active = (matches[-1] if matches else config.base_url) if url else none -%}
+{%- set is_home = url == config.base_url ~ "/" -%}
+{%- set active = (matches[-1] if matches else (none if is_home else items[0].url)) if url else none -%}
 <header class="header">
     <div class="header__inner">
         <div class="header__logo">
@@ -10,15 +11,24 @@
                 <div class="logo">{{ config.extra.logo_text }}</div>
             </a>
         </div>
+        <nav class="menu">
+            <ul class="menu__inner">
+            {%- for item in [i for i in items if not i?.external] %}
+                <li {%- if item.url == active %} class="active" {%- endif %}>
+                    <a href="{{ item.url | safe }}">{{ item.name | safe }}</a>
+                </li>
+            {%- endfor %}
+            </ul>
+        </nav>
     </div>
-
-    <nav class="menu">
-        <ul class="menu__inner">
-        {%- for item in items %}
-            <li {%- if item.url == active %} class="active" {%- endif %}>
-                <a href="{{ item.url | safe }}" {%- if item.newtab %} target="_blank" rel="noopener noreferrer" {%- endif %}>{{ item.name | safe }}</a>
-            </li>
-        {%- endfor %}
-        </ul>
-    </nav>
+    <ul class="header__external">
+    {%- for item in [i for i in items if i?.external] %}
+        <li><a href="{{ item.url | safe }}" target="_blank" rel="noopener noreferrer" aria-label="{{ item.name }}">
+            {%- if item?.icon %}<span class="icon" style="--icon: url({{ get_url(path='icons/' ~ item.icon ~ '.svg') | safe }})" aria-hidden="true"></span>{% endif -%}
+            <span class="label">{{ item.name }}</span></a></li>
+    {%- endfor %}
+    </ul>
 </header>
+{%- if page is defined and page.date %}
+{{ <building /> }}
+{%- endif %}

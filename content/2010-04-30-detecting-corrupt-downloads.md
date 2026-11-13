@@ -1,5 +1,6 @@
 +++
 title = "Detecting and Preventing Corrupt Software Downloads"
+description = "Checking SHA1 hashes to catch corrupt MSDN and other software downloads before you install them."
 date = "2010-04-30T11:33:00+10:00"
 [taxonomies]
 tags = ["Software"]
@@ -15,7 +16,7 @@ problem is easy to detect and prevent.
 <!-- more -->
 
 1. Install the [HashCheck Shell Extension](http://code.kliu.org/hashcheck/) by [Kai
-   Liu](http://www.kailiu.com/). There are other options for hash checking programs, but this one
+   Liu](https://web.archive.org/web/20141220070656/http://www.kailiu.com/). There are other options for hash checking programs, but this one
    works well enough.
 1. On the download page for the file, copy the SHA1 hash. For MSDN downloads this can be found by
    expanding the Details View link.

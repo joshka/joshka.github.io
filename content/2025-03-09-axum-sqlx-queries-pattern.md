@@ -1,5 +1,6 @@
 +++
 title = "An ergonomic pattern for SQLx queries in Axum"
+description = "Keep the SQLx pool in Axum state, group queries in a struct, and use FromRef to pass it to handlers."
 date = "2025-03-09T18:08:00-07:00"
 [taxonomies]
 tags = ["Software", "Rust"]

@@ -1,4 +1,8 @@
----
-# title: LinkedIn
-redirect_to: https://linkedin.com/in/joshuamckinney
----
++++
+title = "LinkedIn"
+path = "linkedin"
+template = "redirect.html"
+
+[extra]
+redirect_to = "https://www.linkedin.com/in/joshka"
++++

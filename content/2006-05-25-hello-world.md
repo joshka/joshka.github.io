@@ -1,5 +1,6 @@
 +++
 title = "Hello world!"
+description = "The first post on this blog, in 2006."
 date = "2006-05-25T05:43:00+10:00"
 [taxonomies]
 tags = ["Life"]

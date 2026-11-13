@@ -1,0 +1,32 @@
+name: Refresh project stats
+
+on:
+  schedule:
+    # 06:00 UTC on the 1st of each month
+    - cron: "0 6 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+      - name: Fetch stats
+        run: python3 scripts/fetch-projects.py
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit changes
+        run: |
+          git add data/projects.json
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Refresh project stats"
+          git push

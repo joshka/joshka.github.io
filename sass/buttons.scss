@@ -1,9 +1,3 @@
-.button-container {
-  display: table;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 button,
 .button,
 a.button {
@@ -50,7 +44,7 @@ a.button {
   /* sizes */
 
   &.small {
-    font-size: .8rem;
+    font-size: var(--text-xs);
   }
 
   &.wide {
@@ -59,34 +53,4 @@ a.button {
   }
 }
 
-a.read-more,
-a.read-more:hover,
-a.read-more:active {
-  display: inline-flex;
-  background: none;
-  box-shadow: none;
-  padding: 0;
-  margin: 20px 0;
-  max-width: 100%;
-}
 
-.code-toolbar {
-  margin-bottom: 20px;
-
-  .toolbar-item a {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3px 8px;
-    margin-bottom: 5px;
-    text-align: center;
-    font-size: 13px;
-    font-weight: 500;
-    border-radius: 8px;
-    border: 1px solid transparent;
-    appearance: none;
-    cursor: pointer;
-    outline: none;
-  }
-}

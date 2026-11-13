@@ -1,5 +1,6 @@
 +++
 title = "Taskbar Shuffle rockin my world today"
+description = "A small Windows utility for reordering taskbar buttons by dragging them."
 date = "2006-06-23T08:54:00+10:00"
 [taxonomies]
 tags = ["Software"]

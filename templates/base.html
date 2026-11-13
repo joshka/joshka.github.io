@@ -18,13 +18,13 @@
     {% include "partials/head.html" %}
 </head>
 
-<body class="">
+<body class="{% block body_class %}{% endblock body_class %}">
 <div class="container">
     {% include "partials/header.html" %}
 
-    <div class="content">
+    <main class="content">
         {% block content %}{% endblock content %}
-    </div>
+    </main>
 
     {% include "partials/footer.html" %}
 </div>

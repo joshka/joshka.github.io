@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="post">
+    <div class="resume-header">
+        <div class="project-meta">Resume</div>
+        <h1 class="post-title">Josh McKinney</h1>
+        <p class="resume-header__lead">Software engineer · backend, platform, security, developer tooling</p>
+        <ul class="resume-header__contact">
+            <li>Seattle, WA</li>
+            <li><a href="mailto:resume.2026@joshka.net">resume.2026@joshka.net</a></li>
+            <li><a href="https://github.com/joshka">github.com/joshka</a></li>
+            <li><a href="https://www.linkedin.com/in/joshka">linkedin.com/in/joshka</a></li>
+        </ul>
+    </div>
+    <div class="post-content">
+        {{ page.content | safe }}
+
+        <h2 id="consulting-engagements">Consulting engagements</h2>
+        <div class="project-grid">
+            {%- for e in page.extra.engagements %}
+            <div class="project-card">
+                <div class="project-body">
+                    <div class="project-meta">{{ e.years }}</div>
+                    <h3>{{ e.client }}</h3>
+                    <p>{{ e.work }}</p>
+                    <div class="project-links">{{ e.stack }}</div>
+                </div>
+            </div>
+            {%- endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,5 +1,6 @@
 +++
 title = "ChatGPT Memes"
+description = "Asking ChatGPT to invent new meme formats, and what came back."
 date = "2023-01-25T03:34:35-08:00"
 [taxonomies]
 tags = ["OpenAI", "ChatGPT", "Midjourney"]

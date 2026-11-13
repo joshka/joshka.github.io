@@ -1,5 +1,6 @@
 +++
 title = "My Geek Origin Story"
+description = "How a CP/M handbook and a garage-sale Osborne Executive got me started with computers."
 date = "2016-07-30T14:14:00-05:00"
 [taxonomies]
 tags = ["Life"]
@@ -8,7 +9,7 @@ tags = ["Life"]
 Like many a software engineer does again and again, I'm restarting my blog. This time I'm going to
 kick this iteration off with an idea inspired by [Michael Kordahi
 (@delicateGenius)](http://delicategeniusblog.com) many years ago for Tech.Ed 2011, the [Geek Origin
-Story](http://delicategeniusblog.com/my-geek-origin-story-whats-yours/).
+Story](https://web.archive.org/web/20161017050719/http://delicategeniusblog.com/my-geek-origin-story-whats-yours/).
 
 <!-- more -->
 

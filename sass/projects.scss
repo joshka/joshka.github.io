@@ -1,0 +1,438 @@
+@import "variables";
+
+.icon {
+  display: inline-block;
+  flex: none;
+  width: 13px;
+  height: 13px;
+  background-color: currentColor;
+  mask: var(--icon) center / contain no-repeat;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+}
+
+.project-hero,
+.project-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+  background: var(--card-background);
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+}
+
+.project-hero {
+  margin: 28px 0 8px;
+
+  h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0;
+    font-size: var(--text-xl);
+  }
+
+  .project-image img {
+    aspect-ratio: auto;
+  }
+
+  .project-stats b {
+    font-size: var(--text-2xl);
+    font-weight: 500;
+    color: var(--accent);
+  }
+}
+
+.project-image {
+  display: block;
+  border-bottom: 1px solid var(--card-border);
+
+  img,
+  video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1200 / 630;
+    object-fit: cover;
+    object-position: top center;
+  }
+}
+
+.project-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 18px 20px;
+
+  h2 a,
+  h3 a {
+    text-decoration: none;
+  }
+
+  p {
+    flex: 1;
+    margin: 8px 0 14px;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--light-color-secondary);
+  }
+}
+
+.project-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+  margin-bottom: 14px;
+  font-size: var(--text-xs);
+  color: var(--light-color-secondary);
+
+  b {
+    display: block;
+    font-size: var(--text-xl);
+    color: var(--color);
+  }
+}
+
+@media (min-width: 1000px) {
+  .project-hero {
+    flex-direction: row;
+
+    .project-image {
+      flex: 0 0 52%;
+      border-bottom: 0;
+      border-right: 1px solid var(--card-border);
+
+      display: flex;
+      align-items: center;
+      // Matches the ratatui.rs banner's own background so letterboxing is invisible
+      background: #0d1120;
+
+      img {
+        object-fit: contain;
+      }
+    }
+  }
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 12px;
+
+  @media (min-width: 1000px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    &--2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: $phone-max-width) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.project-card :is(h3, .card-title) {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: var(--text-lg);
+  margin: 0;
+}
+
+.project-version {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  font-weight: normal;
+  color: var(--light-color-secondary);
+}
+
+.project-highlights {
+  margin: 0 0 18px;
+  padding-left: 22px;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.project-meta {
+  font-size: var(--text-xs);
+  color: var(--tag-color);
+  margin-bottom: 4px;
+}
+
+.project-tag {
+  font-size: var(--text-xs);
+  font-weight: normal;
+  text-transform: lowercase;
+  color: var(--tag-color);
+  border: 1px solid var(--tag-color);
+  border-radius: 3px;
+  padding: 0 5px;
+}
+
+.project-links {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  white-space: nowrap;
+  gap: 16px;
+  padding-top: 10px;
+  border-top: 1px solid var(--card-border);
+  font-size: var(--text-xs);
+  color: var(--light-color-secondary);
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--light-color-secondary);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+}
+
+.project-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+
+  a {
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: 3px 12px;
+    font-size: var(--text-xs);
+    color: var(--light-color-secondary);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+  }
+}
+
+.resume-role {
+  margin: -12px 0 10px;
+  font-size: var(--text-sm);
+  color: var(--light-color-secondary);
+}
+
+.home {
+  width: 100%;
+}
+
+.intro {
+  padding: 36px 0 8px;
+
+  p {
+    margin: 0;
+    color: var(--light-color-secondary);
+  }
+
+  .intro__name {
+    margin: 0 0 8px;
+    font-size: var(--text-2xl);
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  .intro__lead {
+    margin-bottom: 6px;
+    font-size: var(--text-lg);
+    font-weight: 400;
+    color: var(--color);
+  }
+}
+
+.home-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-size: var(--text-sm);
+  padding: 10px 0;
+  margin: 0;
+  border-bottom: 1px solid var(--border-color);
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  span {
+    color: var(--light-color-secondary);
+  }
+}
+
+.intro__bio {
+  max-width: var(--measure);
+  margin-top: 14px !important;
+  line-height: 1.7;
+}
+
+// Home page highlight tiles are whole-card links
+.home-highlights {
+  margin: 28px 0 8px;
+
+  a.project-card {
+    color: inherit;
+    text-decoration: none;
+
+    .card-title {
+      color: var(--color);
+    }
+
+    .project-links {
+      color: var(--accent);
+    }
+  }
+}
+
+.home-latest {
+  margin-top: 40px;
+
+  h2 {
+    font-size: var(--text-lg);
+    margin: 0 0 12px;
+  }
+}
+
+.latest-post {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: var(--measure);
+  padding: 16px 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  color: inherit;
+  text-decoration: none;
+
+  &__date {
+    font-size: var(--text-xs);
+    color: var(--light-color-secondary);
+  }
+
+  &__title {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-heading);
+    color: var(--accent);
+  }
+
+  &__summary {
+    font-size: var(--text-sm);
+    color: var(--light-color-secondary);
+  }
+}
+
+.home-latest__more {
+  font-size: var(--text-sm);
+}
+
+.chip-count {
+  margin-left: 4px;
+  color: var(--light-color-secondary);
+  opacity: .7;
+}
+
+.about-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  max-width: var(--measure);
+  margin-bottom: 8px;
+
+  img {
+    flex: none;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow);
+  }
+
+  p {
+    margin: 0;
+    font-size: var(--text-lg);
+    line-height: 1.5;
+  }
+
+  @media (max-width: $phone-max-width) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.resume-header {
+  margin-bottom: 24px;
+
+  .post-title {
+    margin: 2px 0 6px;
+  }
+
+  &__lead {
+    margin: 0 0 12px;
+    font-size: var(--text-lg);
+  }
+
+  &__contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+
+    li {
+      margin-right: 20px;
+    }
+    color: var(--light-color-secondary);
+
+  }
+}
+
+// Overrides the dash markers .post ul draws for prose lists
+.post .resume-header__contact {
+  margin-left: 0;
+
+  li::before {
+    content: none;
+  }
+
+  li + li::before {
+    content: '·';
+    position: static;
+    margin-right: 20px;
+    color: var(--light-color-secondary);
+  }
+
+  // Stacked on phones, so separators would read as bullets
+  @media (max-width: $phone-max-width) {
+    flex-direction: column;
+
+    li + li::before {
+      content: none;
+    }
+  }
+}
+
+// On phones the building strip stays on one line and scrolls sideways
+@media (max-width: $phone-max-width) {
+  .home-strip {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+
+  .post-tags-inline {
+    display: block;
+  }
+}

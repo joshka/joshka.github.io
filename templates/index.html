@@ -1,43 +1,57 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="posts">
-    {%- for page in paginator.pages %}
-    <div class="post on-list">
-        {{ <post_header page={page} /> }}
-        <div class="post-content">
-            {{ (page.summary or page.content) | safe }}
-        </div>
-        {%- if page.summary %}
-        <div>
-            <!-- &#xFE0E; -- force text style - some devices render this as emoji -->
-            <a class="read-more button" href="{{ page.permalink | safe }}">
-                <span class="button__text">Read more</span>&nbsp;
-                <span class="button__icon">&#8617;&#xFE0E;</span>
-            </a>
-        </div>
-        {%- endif %}
+<div class="home">
+    <section class="intro">
+        <h1 class="intro__name">Josh McKinney</h1>
+        <p class="intro__lead">Software engineer: backend, platform, security, developer tools.</p>
+        <p class="intro__bio">I build the systems other engineers depend on: authentication and
+        authorization services at Amazon and AWS, AI developer tooling on OpenAI's Codex, and
+        <a href="https://ratatui.rs">Ratatui</a>, the Rust terminal UI library I co-maintain. I care
+        about clear interfaces, good docs, and tools that are straightforward to operate.</p>
+    </section>
+
+    <div class="project-grid home-highlights">
+        <a class="project-card" href="{{ get_url(path='projects') | safe }}">
+            <div class="project-body">
+                <div class="project-meta">2023 – present</div>
+                <h2 class="card-title">Ratatui</h2>
+                <p>Co-maintainer of the standard Rust terminal UI library, plus a family of widgets
+                and tools built on it.</p>
+                <div class="project-links">70M+ downloads · projects →</div>
+            </div>
+        </a>
+        <a class="project-card" href="{{ get_url(path='resume') | safe }}#openai-codex">
+            <div class="project-body">
+                <div class="project-meta">2025 – 2026</div>
+                <h2 class="card-title">OpenAI (Codex)</h2>
+                <p>Terminal UI, auth and login, connectivity, and reliability for OpenAI's AI coding
+                agent.</p>
+                <div class="project-links">Member of Technical Staff · resume →</div>
+            </div>
+        </a>
+        <a class="project-card" href="{{ get_url(path='resume') | safe }}#amazon-and-aws">
+            <div class="project-body">
+                <div class="project-meta">2017 – 2022</div>
+                <h2 class="card-title">Amazon and AWS</h2>
+                <p>Tech lead for an OAuth / OpenID Connect service securing 80K+ service-to-service
+                connections across 2.5M hosts.</p>
+                <div class="project-links">Security and auth · resume →</div>
+            </div>
+        </a>
     </div>
-    {%- endfor %}
-    <div class="pagination">
-        <div class="pagination__buttons">
-        {%- if paginator.previous %}
-            <span class="button previous">
-                <a href="{{ paginator.previous | safe }}">
-                    <span class="button__icon">←</span>&nbsp;
-                    <span class="button__text">Newer posts</span>
-                </a>
-            </span>
-        {%- endif %}
-        {%- if paginator.next %}
-            <span class="button next">
-                <a href="{{ paginator.next | safe }}">
-                    <span class="button__text">Older posts</span>&nbsp;
-                    <span class="button__icon">→</span>
-                </a>
-            </span>
-        {%- endif %}
-        </div>
-    </div>
+
+    {%- set latest = section.pages | first %}
+    {%- if latest %}
+    <section class="home-latest">
+        <h2>Latest writing</h2>
+        <a class="latest-post" href="{{ latest.permalink | safe }}">
+            <span class="latest-post__date">{{ latest.date | date(format="%Y-%m-%d") }}</span>
+            <span class="latest-post__title">{{ latest.title }}</span>
+            {%- if latest.description %}<span class="latest-post__summary">{{ latest.description }}</span>{% endif %}
+        </a>
+        <p class="home-latest__more"><a href="{{ get_url(path='writing') | safe }}">All posts →</a></p>
+    </section>
+    {%- endif %}
 </div>
 {% endblock content %}
