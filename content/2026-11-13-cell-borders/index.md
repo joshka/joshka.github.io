@@ -1,8 +1,11 @@
 +++
 title = "Terminal borders that don't cost a cell"
 date = "2026-11-13T12:00:00-08:00"
+description = "A terminal protocol for thin lines on cell edges: borders, rounded corners and gridlines that don't use up rows or columns. Working in Ghostty, with Ratatui demos."
 [taxonomies]
 tags = ["Terminals", "TUI", "Ratatui", "Ghostty"]
+[extra]
+og_image = "og.png"
 +++
 
 _This post (and the code behind it) was written with a lot of help from AI. I'm not going to
