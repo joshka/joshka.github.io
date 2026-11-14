@@ -154,3 +154,14 @@
     }
   }
 }
+
+// Headings wrapped in self-links (insert_anchor_links = "heading")
+.post-content :is(h1, h2, h3, h4, h5, h6) > a.zola-anchor {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover::after {
+    content: " #";
+    color: var(--accent);
+  }
+}
