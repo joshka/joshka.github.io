@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Introducing JUnit JSON Params | Joshka.net</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noodp"/>
+
+<link rel="preload" href="https://www.joshka.net/fonts/FiraCode-VF.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://www.joshka.net/style.css?h=88f736eb3ef052eec811">
+<link rel="icon" href="https://www.joshka.net/favicon.svg" type="image/svg+xml">
+<meta name="description" content="A JUnit 5 library for parameterizing tests with inline JSON and JSON resource files.">
+<meta property="og:description" content="A JUnit 5 library for parameterizing tests with inline JSON and JSON resource files.">
+<meta property="og:title" content="Introducing JUnit JSON Params | Joshka.net">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.joshka.net/junit-json-params/">
+<meta property="og:image" content="https://www.joshka.net/og/home.png">
+<meta name="twitter:image" content="https://www.joshka.net/og/home.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="A JUnit 5 library for parameterizing tests with inline JSON and JSON resource files.">
+<meta name="twitter:title" content="Introducing JUnit JSON Params | Joshka.net">
+<meta property="twitter:domain" content="www.joshka.net">
+<meta property="twitter:url" content="https://www.joshka.net/junit-json-params/">
+<link rel="alternate" type="application/atom+xml" title="Joshka.net Atom Feed" href="https://www.joshka.net/atom.xml" />
+
+</head>
+
+<body class="">
+<div class="container">
+    <header class="header">
+    <div class="header__inner">
+        <div class="header__logo">
+            <a href="https://www.joshka.net" style="text-decoration: none;">
+                <div class="logo">joshka.net</div>
+            </a>
+        </div>
+        <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active">
+                    <a href="https://www.joshka.net/writing">writing</a>
+                </li>
+                <li>
+                    <a href="https://www.joshka.net/about">about</a>
+                </li>
+                <li>
+                    <a href="https://www.joshka.net/resume">resume</a>
+                </li>
+                <li>
+                    <a href="https://www.joshka.net/projects">projects</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <ul class="header__external">
+        <li><a href="https://github.com/joshka" target="_blank" rel="noopener noreferrer" aria-label="github"><span class="icon" style="--icon: url(https://www.joshka.net/icons/github.svg)" aria-hidden="true"></span><span class="label">github</span></a></li>
+        <li><a href="https://www.linkedin.com/in/joshka" target="_blank" rel="noopener noreferrer" aria-label="linkedin"><span class="icon" style="--icon: url(https://www.joshka.net/icons/linkedin.svg)" aria-hidden="true"></span><span class="label">linkedin</span></a></li>
+        <li><a href="https://hachyderm.io/@joshka" target="_blank" rel="noopener noreferrer" aria-label="mastodon"><span class="icon" style="--icon: url(https://www.joshka.net/icons/mastodon.svg)" aria-hidden="true"></span><span class="label">mastodon</span></a></li>
+        <li><a href="https://bsky.app/profile/joshka.net" target="_blank" rel="noopener noreferrer" aria-label="bluesky"><span class="icon" style="--icon: url(https://www.joshka.net/icons/bluesky.svg)" aria-hidden="true"></span><span class="label">bluesky</span></a></li>
+        <li><a href="https://x.com/joshuamck" target="_blank" rel="noopener noreferrer" aria-label="x"><span class="icon" style="--icon: url(https://www.joshka.net/icons/x.svg)" aria-hidden="true"></span><span class="label">x</span></a></li>
+        <li><a href="https://soundcloud.com/joshka" target="_blank" rel="noopener noreferrer" aria-label="soundcloud"><span class="icon" style="--icon: url(https://www.joshka.net/icons/soundcloud.svg)" aria-hidden="true"></span><span class="label">soundcloud</span></a></li>
+    </ul>
+</header>
+
+<nav class="home-strip">
+    <span>building:</span>
+    <a href="https://ratatui.rs">ratatui</a>
+    <a href="/betamax/">betamax</a>
+    <a href="/jk/">jk</a>
+    <a href="/ratatui-diff/">ratatui-diff</a>
+    <a href="/practice/">practice</a>
+    <a href="/projects/">all projects →</a>
+</nav>
+
+
+
+    <main class="content">
+        
+<div class="post">
+    
+<h1 class="post-title"><a href="https://www.joshka.net/junit-json-params/">Introducing JUnit JSON Params</a></h1>
+<div class="post-meta-inline">
+    <span class="post-date">2018-08-27</span>
+</div>
+
+<span class="post-tags-inline"> :: tags:&nbsp; 
+        <a class="post-tag" href="https://www.joshka.net/tags/java/">#Java</a>&nbsp;
+        <a class="post-tag" href="https://www.joshka.net/tags/software/">#Software</a></span>
+
+
+    <div class="post-content">
+        <p>Yesterday, I released <a rel="external" href="https://www.joshka.net/junit-json-params/">junit-json-params</a>, a small java
+library built on JUnit 5 that enables parameterizing unit tests with inline JSON and JSON resource
+files.</p>
+<span id="continue-reading"></span>
+<p>This is useful for writing tests where the information is structured. For example, given the
+following JSON document:</p>
+<p><strong>items.json:</strong></p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#1D2330, #DFE5EE); background-color: light-dark(#EEF1F5, #10151F);" ><code data-lang="json"><span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">[</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">  {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    &quot;</span><span style="color: light-dark(#1A7A77, #52C4C0);">city</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#4A5263, #B4BCCA);"> &quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">Seattle</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    &quot;</span><span style="color: light-dark(#1A7A77, #52C4C0);">item</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#4A5263, #B4BCCA);"> &quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">banana</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    &quot;</span><span style="color: light-dark(#1A7A77, #52C4C0);">price</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#836F1C, #C7B461);"> 0.0</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">  }</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">  {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    &quot;</span><span style="color: light-dark(#1A7A77, #52C4C0);">city</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#4A5263, #B4BCCA);"> &quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">NY</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    &quot;</span><span style="color: light-dark(#1A7A77, #52C4C0);">item</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#4A5263, #B4BCCA);"> &quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">banana</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    &quot;</span><span style="color: light-dark(#1A7A77, #52C4C0);">price</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#836F1C, #C7B461);"> 2.0</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">  }</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">]</span></span></code></pre>
+<p>We can expect the following tests all to succeed:</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#1D2330, #DFE5EE); background-color: light-dark(#EEF1F5, #10151F);" ><code data-lang="java"><span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">import</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> net</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">joshka</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">junit</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">json</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">params</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">JsonFileSource</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">import</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> org</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">junit</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">jupiter</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">params</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">ParameterizedTest</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">import</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> javax</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">json</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">JsonObject</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">import</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> static</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> org</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">junit</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">jupiter</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">api</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">Assertions</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">assertEquals</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">class</span><span style="color: light-dark(#1A7A77, #52C4C0);"> ExampleTests</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    @</span><span style="color: light-dark(#8A3FB0, #D58BF0);">ParameterizedTest</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    @</span><span style="color: light-dark(#8A3FB0, #D58BF0);">JsonSource</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">{&#39;key&#39;:&#39;value&#39;}</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    void</span><span style="color: light-dark(#2464C0, #76A8F2);"> keyValue</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#8A3FB0, #D58BF0);">JsonObject</span><span style="color: light-dark(#B0443F, #E48383);"> json</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#2464C0, #76A8F2);">        assertEquals</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">value</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span> json</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#2464C0, #76A8F2);">getString</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">key</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    @</span><span style="color: light-dark(#8A3FB0, #D58BF0);">ParameterizedTest</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    @</span><span style="color: light-dark(#8A3FB0, #D58BF0);">JsonFileSource</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#836F1C, #C7B461);">resources</span><span style="color: light-dark(#4A5263, #B4BCCA);"> =</span><span style="color: light-dark(#4A5263, #B4BCCA);"> &quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">/items.json</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    void</span><span style="color: light-dark(#2464C0, #76A8F2);"> priceTests</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#8A3FB0, #D58BF0);">JsonObject</span><span style="color: light-dark(#B0443F, #E48383);"> json</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">        String</span><span> city</span><span style="color: light-dark(#4A5263, #B4BCCA);"> =</span><span> json</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#2464C0, #76A8F2);">getString</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">city</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">        String</span><span> item</span><span style="color: light-dark(#4A5263, #B4BCCA);"> =</span><span> json</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#2464C0, #76A8F2);">getString</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">item</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">        double</span><span> price</span><span style="color: light-dark(#4A5263, #B4BCCA);"> =</span><span> json</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#2464C0, #76A8F2);">getJsonNumber</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">price</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#2464C0, #76A8F2);">doubleValue</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#2464C0, #76A8F2);">        assertEquals</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>price</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#2464C0, #76A8F2);"> price</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>city</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span> item</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    private</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> double</span><span style="color: light-dark(#2464C0, #76A8F2);"> price</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#8A3FB0, #D58BF0);">String</span><span style="color: light-dark(#B0443F, #E48383);"> city</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> String</span><span style="color: light-dark(#B0443F, #E48383);"> item</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">        if</span><span style="color: light-dark(#4A5263, #B4BCCA);"> (</span><span style="color: light-dark(#4A5263, #B4BCCA);">!</span><span>item</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#2464C0, #76A8F2);">equals</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">banana</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">            throw</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> new</span><span style="color: light-dark(#2464C0, #76A8F2);"> IllegalArgumentException</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">item</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">        }</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">        switch</span><span style="color: light-dark(#4A5263, #B4BCCA);"> (</span><span>city</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">            case</span><span style="color: light-dark(#4A5263, #B4BCCA);"> &quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">Seattle</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#8A3FB0, #D58BF0);">:</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">                return</span><span style="color: light-dark(#836F1C, #C7B461);"> 0.0</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">            case</span><span style="color: light-dark(#4A5263, #B4BCCA);"> &quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">NY</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#8A3FB0, #D58BF0);">:</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">                return</span><span style="color: light-dark(#836F1C, #C7B461);"> 2.0</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">            default</span><span style="color: light-dark(#8A3FB0, #D58BF0);">:</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">                throw</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> new</span><span style="color: light-dark(#2464C0, #76A8F2);"> IllegalArgumentException</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">city</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">        }</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    }</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">}</span></span></code></pre>
+<p>For more info see the <a rel="external" href="https://github.com/joshka/junit-json-params">junit-json-params project on Github</a>.</p>
+<p>I'm hoping that this idea and future work on JUnit 5 might make it easy to make arguments by name
+work. E.g.:</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#1D2330, #DFE5EE); background-color: light-dark(#EEF1F5, #10151F);" ><code data-lang="java"><span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">void</span><span style="color: light-dark(#2464C0, #76A8F2);"> priceTests</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#8A3FB0, #D58BF0);">String</span><span> city</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> String</span><span> item</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> double</span><span> price</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;">  //</span><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;">...</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">}</span></span></code></pre>
+    </div>
+    <div class="pagination">
+        <div class="pagination__title">
+            <span class="pagination__title-h">Thanks for reading! Read other posts?</span>
+            <hr />
+        </div>
+        <div class="pagination__buttons">
+            <span class="button previous">
+                <a href="https://www.joshka.net/installing-dotnet-osx/">
+                    <span class="button__icon">←</span>&nbsp;
+                    <span class="button__text">Installing .NET Core on OSX</span>
+                </a>
+            </span>
+            <span class="button next">
+                <a href="https://www.joshka.net/pio-for-midi-with-raspberry-pi-pico/">
+                    <span class="button__text">Programmable IO (PIO) for MIDI with the Raspberry Pi Pico</span>&nbsp;
+                    <span class="button__icon">→</span>
+                </a>
+            </span>
+        </div>
+    </div>
+</div>
+
+    </main>
+
+    <footer class="footer">
+    <div class="footer__inner">
+        <div class="copyright">
+            <span>© 2026 Josh McKinney</span>
+        </div>
+        <ul class="footer__links">
+            <li><a href="https://www.joshka.net/atom.xml">rss</a></li>
+            <li><a href="mailto:resume.2026@joshka.net">email</a></li>
+            <li><a href="https://github.com/joshka" rel="noopener noreferrer">github</a></li>
+            <li><a href="https://www.linkedin.com/in/joshka" rel="noopener noreferrer">linkedin</a></li>
+            <li><a href="https://hachyderm.io/@joshka" rel="noopener noreferrer">mastodon</a></li>
+            <li><a href="https://bsky.app/profile/joshka.net" rel="noopener noreferrer">bluesky</a></li>
+            <li><a href="https://x.com/joshuamck" rel="noopener noreferrer">x</a></li>
+            <li><a href="https://soundcloud.com/joshka" rel="noopener noreferrer">soundcloud</a></li>
+        </ul>
+    </div>
+</footer>
+
+</div>
+</body>
+
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Detecting and Preventing Corrupt Software Downloads | Joshka.net</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noodp"/>
+
+<link rel="preload" href="https://www.joshka.net/fonts/FiraCode-VF.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://www.joshka.net/style.css?h=88f736eb3ef052eec811">
+<link rel="icon" href="https://www.joshka.net/favicon.svg" type="image/svg+xml">
+<meta name="description" content="Checking SHA1 hashes to catch corrupt MSDN and other software downloads before you install them.">
+<meta property="og:description" content="Checking SHA1 hashes to catch corrupt MSDN and other software downloads before you install them.">
+<meta property="og:title" content="Detecting and Preventing Corrupt Software Downloads | Joshka.net">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.joshka.net/detecting-corrupt-downloads/">
+<meta property="og:image" content="https://www.joshka.net/og/home.png">
+<meta name="twitter:image" content="https://www.joshka.net/og/home.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Checking SHA1 hashes to catch corrupt MSDN and other software downloads before you install them.">
+<meta name="twitter:title" content="Detecting and Preventing Corrupt Software Downloads | Joshka.net">
+<meta property="twitter:domain" content="www.joshka.net">
+<meta property="twitter:url" content="https://www.joshka.net/detecting-corrupt-downloads/">
+<link rel="alternate" type="application/atom+xml" title="Joshka.net Atom Feed" href="https://www.joshka.net/atom.xml" />
+
+</head>
+
+<body class="">
+<div class="container">
+    <header class="header">
+    <div class="header__inner">
+        <div class="header__logo">
+            <a href="https://www.joshka.net" style="text-decoration: none;">
+                <div class="logo">joshka.net</div>
+            </a>
+        </div>
+        <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active">
+                    <a href="https://www.joshka.net/writing">writing</a>
+                </li>
+                <li>
+                    <a href="https://www.joshka.net/about">about</a>
+                </li>
+                <li>
+                    <a href="https://www.joshka.net/resume">resume</a>
+                </li>
+                <li>
+                    <a href="https://www.joshka.net/projects">projects</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <ul class="header__external">
+        <li><a href="https://github.com/joshka" target="_blank" rel="noopener noreferrer" aria-label="github"><span class="icon" style="--icon: url(https://www.joshka.net/icons/github.svg)" aria-hidden="true"></span><span class="label">github</span></a></li>
+        <li><a href="https://www.linkedin.com/in/joshka" target="_blank" rel="noopener noreferrer" aria-label="linkedin"><span class="icon" style="--icon: url(https://www.joshka.net/icons/linkedin.svg)" aria-hidden="true"></span><span class="label">linkedin</span></a></li>
+        <li><a href="https://hachyderm.io/@joshka" target="_blank" rel="noopener noreferrer" aria-label="mastodon"><span class="icon" style="--icon: url(https://www.joshka.net/icons/mastodon.svg)" aria-hidden="true"></span><span class="label">mastodon</span></a></li>
+        <li><a href="https://bsky.app/profile/joshka.net" target="_blank" rel="noopener noreferrer" aria-label="bluesky"><span class="icon" style="--icon: url(https://www.joshka.net/icons/bluesky.svg)" aria-hidden="true"></span><span class="label">bluesky</span></a></li>
+        <li><a href="https://x.com/joshuamck" target="_blank" rel="noopener noreferrer" aria-label="x"><span class="icon" style="--icon: url(https://www.joshka.net/icons/x.svg)" aria-hidden="true"></span><span class="label">x</span></a></li>
+        <li><a href="https://soundcloud.com/joshka" target="_blank" rel="noopener noreferrer" aria-label="soundcloud"><span class="icon" style="--icon: url(https://www.joshka.net/icons/soundcloud.svg)" aria-hidden="true"></span><span class="label">soundcloud</span></a></li>
+    </ul>
+</header>
+
+<nav class="home-strip">
+    <span>building:</span>
+    <a href="https://ratatui.rs">ratatui</a>
+    <a href="/betamax/">betamax</a>
+    <a href="/jk/">jk</a>
+    <a href="/ratatui-diff/">ratatui-diff</a>
+    <a href="/practice/">practice</a>
+    <a href="/projects/">all projects →</a>
+</nav>
+
+
+
+    <main class="content">
+        
+<div class="post">
+    
+<h1 class="post-title"><a href="https://www.joshka.net/detecting-corrupt-downloads/">Detecting and Preventing Corrupt Software Downloads</a></h1>
+<div class="post-meta-inline">
+    <span class="post-date">2010-04-30</span>
+</div>
+
+<span class="post-tags-inline"> :: tags:&nbsp; 
+        <a class="post-tag" href="https://www.joshka.net/tags/software/">#Software</a></span>
+
+
+    <div class="post-content">
+        <p>In the past I and several of my colleagues have run into problems when attempting to install
+software downloaded from the <a rel="external" href="http://msdn.microsoft.com/en-us/subscriptions/downloads/default.aspx">MSDN Subscriber
+Downloads</a> or elsewhere. One
+possible cause for this is file corruption either due to an incomplete download, or caused later
+when copying the file to another device (e.g. over a local network or via flaky USB drives). This
+problem is easy to detect and prevent.</p>
+<span id="continue-reading"></span>
+<ol>
+<li>Install the <a rel="external" href="http://code.kliu.org/hashcheck/">HashCheck Shell Extension</a> by <a rel="external" href="https://web.archive.org/web/20141220070656/http://www.kailiu.com/">Kai
+Liu</a>. There are other options for hash checking programs, but this one
+works well enough.</li>
+<li>On the download page for the file, copy the SHA1 hash. For MSDN downloads this can be found by
+expanding the Details View link.</li>
+<li>In Windows Explorer open the Properties dialog for the file that you downloaded. Click on the new
+<strong>Checksums</strong> tab. HashCheck will calculate the various checksums of the file.</li>
+<li>Paste the hash into the text box on the <strong>Checksums</strong> tab and ensure that the SHA1 line is
+highlighted to indicate that the values match.</li>
+<li>Click <strong>Save</strong> to create a new .sha1 file beside the downloaded file that contains this
+calculated and checked hash. You can double click this file to check whether the file has changed
+since you downloaded it. Do this whenever you transfer the file on to another device (e.g.
+network, DVD, USB) to prevent file corruption causing installation failures.</li>
+</ol>
+
+    </div>
+    <div class="pagination">
+        <div class="pagination__title">
+            <span class="pagination__title-h">Thanks for reading! Read other posts?</span>
+            <hr />
+        </div>
+        <div class="pagination__buttons">
+            <span class="button previous">
+                <a href="https://www.joshka.net/app-config-connections-strings/">
+                    <span class="button__icon">←</span>&nbsp;
+                    <span class="button__text">app.config and Dev Prod Test databases</span>
+                </a>
+            </span>
+            <span class="button next">
+                <a href="https://www.joshka.net/my-geek-origin-story/">
+                    <span class="button__text">My Geek Origin Story</span>&nbsp;
+                    <span class="button__icon">→</span>
+                </a>
+            </span>
+        </div>
+    </div>
+</div>
+
+    </main>
+
+    <footer class="footer">
+    <div class="footer__inner">
+        <div class="copyright">
+            <span>© 2026 Josh McKinney</span>
+        </div>
+        <ul class="footer__links">
+            <li><a href="https://www.joshka.net/atom.xml">rss</a></li>
+            <li><a href="mailto:resume.2026@joshka.net">email</a></li>
+            <li><a href="https://github.com/joshka" rel="noopener noreferrer">github</a></li>
+            <li><a href="https://www.linkedin.com/in/joshka" rel="noopener noreferrer">linkedin</a></li>
+            <li><a href="https://hachyderm.io/@joshka" rel="noopener noreferrer">mastodon</a></li>
+            <li><a href="https://bsky.app/profile/joshka.net" rel="noopener noreferrer">bluesky</a></li>
+            <li><a href="https://x.com/joshuamck" rel="noopener noreferrer">x</a></li>
+            <li><a href="https://soundcloud.com/joshka" rel="noopener noreferrer">soundcloud</a></li>
+        </ul>
+    </div>
+</footer>
+
+</div>
+</body>
+
+</html>

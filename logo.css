@@ -1,0 +1,1 @@
+.logo{display:flex;align-items:center;text-decoration:none;color:var(--color);font-weight:bold}.logo::before{content:"~/";color:var(--accent)}

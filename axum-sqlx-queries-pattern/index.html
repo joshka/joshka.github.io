@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>An ergonomic pattern for SQLx queries in Axum | Joshka.net</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noodp"/>
+
+<link rel="preload" href="https://www.joshka.net/fonts/FiraCode-VF.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://www.joshka.net/style.css?h=88f736eb3ef052eec811">
+<link rel="icon" href="https://www.joshka.net/favicon.svg" type="image/svg+xml">
+<meta name="description" content="Keep the SQLx pool in Axum state, group queries in a struct, and use FromRef to pass it to handlers.">
+<meta property="og:description" content="Keep the SQLx pool in Axum state, group queries in a struct, and use FromRef to pass it to handlers.">
+<meta property="og:title" content="An ergonomic pattern for SQLx queries in Axum | Joshka.net">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.joshka.net/axum-sqlx-queries-pattern/">
+<meta property="og:image" content="https://www.joshka.net/og/home.png">
+<meta name="twitter:image" content="https://www.joshka.net/og/home.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Keep the SQLx pool in Axum state, group queries in a struct, and use FromRef to pass it to handlers.">
+<meta name="twitter:title" content="An ergonomic pattern for SQLx queries in Axum | Joshka.net">
+<meta property="twitter:domain" content="www.joshka.net">
+<meta property="twitter:url" content="https://www.joshka.net/axum-sqlx-queries-pattern/">
+<link rel="alternate" type="application/atom+xml" title="Joshka.net Atom Feed" href="https://www.joshka.net/atom.xml" />
+
+</head>
+
+<body class="">
+<div class="container">
+    <header class="header">
+    <div class="header__inner">
+        <div class="header__logo">
+            <a href="https://www.joshka.net" style="text-decoration: none;">
+                <div class="logo">joshka.net</div>
+            </a>
+        </div>
+        <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active">
+                    <a href="https://www.joshka.net/writing">writing</a>
+                </li>
+                <li>
+                    <a href="https://www.joshka.net/about">about</a>
+                </li>
+                <li>
+                    <a href="https://www.joshka.net/resume">resume</a>
+                </li>
+                <li>
+                    <a href="https://www.joshka.net/projects">projects</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <ul class="header__external">
+        <li><a href="https://github.com/joshka" target="_blank" rel="noopener noreferrer" aria-label="github"><span class="icon" style="--icon: url(https://www.joshka.net/icons/github.svg)" aria-hidden="true"></span><span class="label">github</span></a></li>
+        <li><a href="https://www.linkedin.com/in/joshka" target="_blank" rel="noopener noreferrer" aria-label="linkedin"><span class="icon" style="--icon: url(https://www.joshka.net/icons/linkedin.svg)" aria-hidden="true"></span><span class="label">linkedin</span></a></li>
+        <li><a href="https://hachyderm.io/@joshka" target="_blank" rel="noopener noreferrer" aria-label="mastodon"><span class="icon" style="--icon: url(https://www.joshka.net/icons/mastodon.svg)" aria-hidden="true"></span><span class="label">mastodon</span></a></li>
+        <li><a href="https://bsky.app/profile/joshka.net" target="_blank" rel="noopener noreferrer" aria-label="bluesky"><span class="icon" style="--icon: url(https://www.joshka.net/icons/bluesky.svg)" aria-hidden="true"></span><span class="label">bluesky</span></a></li>
+        <li><a href="https://x.com/joshuamck" target="_blank" rel="noopener noreferrer" aria-label="x"><span class="icon" style="--icon: url(https://www.joshka.net/icons/x.svg)" aria-hidden="true"></span><span class="label">x</span></a></li>
+        <li><a href="https://soundcloud.com/joshka" target="_blank" rel="noopener noreferrer" aria-label="soundcloud"><span class="icon" style="--icon: url(https://www.joshka.net/icons/soundcloud.svg)" aria-hidden="true"></span><span class="label">soundcloud</span></a></li>
+    </ul>
+</header>
+
+<nav class="home-strip">
+    <span>building:</span>
+    <a href="https://ratatui.rs">ratatui</a>
+    <a href="/betamax/">betamax</a>
+    <a href="/jk/">jk</a>
+    <a href="/ratatui-diff/">ratatui-diff</a>
+    <a href="/practice/">practice</a>
+    <a href="/projects/">all projects →</a>
+</nav>
+
+
+
+    <main class="content">
+        
+<div class="post">
+    
+<h1 class="post-title"><a href="https://www.joshka.net/axum-sqlx-queries-pattern/">An ergonomic pattern for SQLx queries in Axum</a></h1>
+<div class="post-meta-inline">
+    <span class="post-date">2025-03-09</span>
+</div>
+
+<span class="post-tags-inline"> :: tags:&nbsp; 
+        <a class="post-tag" href="https://www.joshka.net/tags/rust/">#Rust</a>&nbsp;
+        <a class="post-tag" href="https://www.joshka.net/tags/software/">#Software</a></span>
+
+
+    <div class="post-content">
+        <p>Axum is the most popular web framework in Rust at the time of writing. In this post, I'll show an
+easy and ergonomic pattern for connecting to a database using SQLx and Axum.</p>
+<p>This is a small response to a question on <a rel="external" href="https://www.reddit.com/r/rust/comments/1j76nhm/comment/mgy2ptm/?utm_source=share&amp;utm_medium=web3x&amp;utm_name=web3xcss&amp;utm_term=1&amp;utm_content=share_button">a reddit thread about how to structure SQLx queries in
+Axum</a>.
+The pattern I'll show here is not the only way to do it, but it's one that I've found to be simple
+and effective.</p>
+<p>TL;DR: Store the database pool in your application state, create a struct to hold your queries, and
+use the <code>FromRef</code> trait to simplify the interaction between your handlers and the database.</p>
+<span id="continue-reading"></span><h2 id="the-problem"><a class="zola-anchor" href="#the-problem" aria-label="Anchor link for: the-problem">The problem</a></h2>
+<p>When writing web applications, you often need to interact with a database. In Rust, one of the the
+most popular database libraries is SQLx. Setting up SQLx with Axum is straightforward, but it can be
+a bit repetitive. You need to create a database pool, pass it to your handlers, and then use it in
+your queries.</p>
+<p>For the purpose of this post, let's assume you have a simple web application that interacts directly
+with a Sqlite database rather than through some ORM or other service abstraction. This is common for
+smaller projects or when you want to keep things simple.</p>
+<p>Here's an example of how you might set up SQLx with Axum:</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#1D2330, #DFE5EE); background-color: light-dark(#EEF1F5, #10151F);" ><code data-lang="rust"><span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">type</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Db</span><span style="color: light-dark(#4A5263, #B4BCCA);"> =</span><span style="color: light-dark(#4A5263, #B4BCCA);"> sqlx</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#1A7A77, #52C4C0);">SqlitePool</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">type</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Result</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">T</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#1A7A77, #52C4C0);"> E</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);"> =</span><span style="color: light-dark(#4A5263, #B4BCCA);"> std</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#4A5263, #B4BCCA);">result</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#1A7A77, #52C4C0);">Result</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">T</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#1A7A77, #52C4C0);"> E</span><span style="color: light-dark(#4A5263, #B4BCCA);"> =</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> crate</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#1A7A77, #52C4C0);">Error</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;"> //</span><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;"> or use anyhow / color-eyre</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#836F1C, #AD9B49);">#</span><span style="color: light-dark(#4A5263, #B4BCCA);">[</span><span style="color: light-dark(#836F1C, #AD9B49);">derive</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#1A7A77, #52C4C0);">Clone</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">]</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">struct</span><span style="color: light-dark(#1A7A77, #52C4C0);"> AppState</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span>    db</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Db</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#836F1C, #AD9B49);">#</span><span style="color: light-dark(#4A5263, #B4BCCA);">[</span><span style="color: light-dark(#836F1C, #AD9B49);">tokio</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#836F1C, #AD9B49);">main</span><span style="color: light-dark(#4A5263, #B4BCCA);">]</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">async</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> fn</span><span style="color: light-dark(#2464C0, #76A8F2);"> main</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> -&gt;</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Result</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;">    //</span><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;"> ... other config code ...</span></span>
+<span class="giallo-l"><span>    </span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    let</span><span> db</span><span style="color: light-dark(#4A5263, #B4BCCA);"> =</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Db</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#2464C0, #76A8F2);">connect</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>config</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span>connection_string</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">await</span><span style="color: light-dark(#4A5263, #B4BCCA);">?</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    let</span><span> state</span><span style="color: light-dark(#4A5263, #B4BCCA);"> =</span><span style="color: light-dark(#1A7A77, #52C4C0);"> AppState</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span><span> db</span><span style="color: light-dark(#4A5263, #B4BCCA);"> }</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    let</span><span> app</span><span style="color: light-dark(#4A5263, #B4BCCA);"> =</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Router</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#2464C0, #76A8F2);">new</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">        .</span><span style="color: light-dark(#2464C0, #76A8F2);">nest</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">/users</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#4A5263, #B4BCCA);"> users</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#2464C0, #76A8F2);">router</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">        .</span><span style="color: light-dark(#2464C0, #76A8F2);">nest</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">/posts</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#4A5263, #B4BCCA);"> posts</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#2464C0, #76A8F2);">router</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;">        //</span><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;"> ... other routes ...</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">        .</span><span style="color: light-dark(#2464C0, #76A8F2);">with_state</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>state</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span>    </span></span>
+<span class="giallo-l"><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;">    //</span><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;"> ... other server setup code ...</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">}</span></span></code></pre><pre class="giallo" style="color-scheme: light dark; color: light-dark(#1D2330, #DFE5EE); background-color: light-dark(#EEF1F5, #10151F);" ><code data-lang="rust"><span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">mod</span><span style="color: light-dark(#4A5263, #B4BCCA);"> users</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    use</span><span style="color: light-dark(#4A5263, #B4BCCA);"> axum</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#4A5263, #B4BCCA);">{</span><span style="color: light-dark(#4A5263, #B4BCCA);">extract</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#4A5263, #B4BCCA);">{</span><span style="color: light-dark(#1A7A77, #52C4C0);">FromRequest</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Path</span><span style="color: light-dark(#4A5263, #B4BCCA);">}</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#4A5263, #B4BCCA);"> response</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#1A7A77, #52C4C0);">Json</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Router</span><span style="color: light-dark(#4A5263, #B4BCCA);">}</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    use</span><span style="color: light-dark(#4A5263, #B4BCCA);"> sqlx</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span>query</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    use</span><span> super</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#4A5263, #B4BCCA);">{</span><span style="color: light-dark(#1A7A77, #52C4C0);">AppState</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Db</span><span style="color: light-dark(#4A5263, #B4BCCA);">}</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#836F1C, #AD9B49);">    #</span><span style="color: light-dark(#4A5263, #B4BCCA);">[</span><span style="color: light-dark(#836F1C, #AD9B49);">derive</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#836F1C, #AD9B49);">sqlx</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#1A7A77, #52C4C0);">FromRow</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">]</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    struct</span><span style="color: light-dark(#1A7A77, #52C4C0);"> User</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span>        id</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#1A7A77, #52C4C0);"> i32</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span></span>
+<span class="giallo-l"><span>        name</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#1A7A77, #52C4C0);"> String</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    pub</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> fn</span><span style="color: light-dark(#2464C0, #76A8F2);"> router</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> -&gt;</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Router</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#1A7A77, #52C4C0);">        Router</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#2464C0, #76A8F2);">new</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">            .</span><span style="color: light-dark(#2464C0, #76A8F2);">route</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">/</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#2464C0, #76A8F2);"> get</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>index</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">            .</span><span style="color: light-dark(#2464C0, #76A8F2);">route</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">/:id</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#2464C0, #76A8F2);"> get</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>show</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    async</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> fn</span><span style="color: light-dark(#2464C0, #76A8F2);"> index</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>state</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#1A7A77, #52C4C0);"> AppState</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> -&gt;</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Result</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">Json</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">Vec</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">User</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">        let</span><span> users</span><span style="color: light-dark(#4A5263, #B4BCCA);"> =</span><span style="color: light-dark(#B0443F, #E48383);"> query!</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">SELECT * FROM users</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">            .</span><span style="color: light-dark(#2464C0, #76A8F2);">fetch_all</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&amp;</span><span>state</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span>db</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">            .</span><span style="color: light-dark(#8A3FB0, #D58BF0);">await</span><span style="color: light-dark(#4A5263, #B4BCCA);">?</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#1A7A77, #52C4C0);">        Ok</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#2464C0, #76A8F2);">Json</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>users</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    async</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> fn</span><span style="color: light-dark(#2464C0, #76A8F2);"> show</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>state</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#1A7A77, #52C4C0);"> AppState</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span> id</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Path</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">i64</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> -&gt;</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Result</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">Json</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">User</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">        let</span><span> user</span><span style="color: light-dark(#4A5263, #B4BCCA);"> =</span><span style="color: light-dark(#B0443F, #E48383);"> query!</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">SELECT * FROM users WHERE id = ?</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span> id</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">            .</span><span style="color: light-dark(#2464C0, #76A8F2);">fetch_one</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&amp;</span><span>state</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span>db</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">            .</span><span style="color: light-dark(#8A3FB0, #D58BF0);">await</span><span style="color: light-dark(#4A5263, #B4BCCA);">?</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#1A7A77, #52C4C0);">        Ok</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#2464C0, #76A8F2);">Json</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>user</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;">    //</span><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;"> ... other handlers ...</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">}</span></span></code></pre>
+<p>The two main issues with this approach are:</p>
+<ol>
+<li>The queries are scattered throughout the handlers, making it hard to see what queries are
+available and where they are used.</li>
+<li>The code for extracting the database pool from the state is repeated in every handler.</li>
+</ol>
+<h2 id="the-solution"><a class="zola-anchor" href="#the-solution" aria-label="Anchor link for: the-solution">The solution</a></h2>
+<p>To make this process simpler, we can create a type in each vertical slice which holds the logic for
+all the queries in the module and implement the <code>FromRef</code> trait for it. This trait allows us to pass
+a State extractor to our handlers which is scoped to only the queries struct related to the module.</p>
+<p>Here's how you might refactor the above example:</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#1D2330, #DFE5EE); background-color: light-dark(#EEF1F5, #10151F);" ><code data-lang="rust"><span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">mod</span><span style="color: light-dark(#4A5263, #B4BCCA);"> users</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    use</span><span style="color: light-dark(#4A5263, #B4BCCA);"> axum</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#4A5263, #B4BCCA);">{</span><span style="color: light-dark(#4A5263, #B4BCCA);">extract</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#4A5263, #B4BCCA);">{</span><span style="color: light-dark(#1A7A77, #52C4C0);">FromRequest</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Path</span><span style="color: light-dark(#4A5263, #B4BCCA);">}</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#4A5263, #B4BCCA);"> response</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#1A7A77, #52C4C0);">Json</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Router</span><span style="color: light-dark(#4A5263, #B4BCCA);">}</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    use</span><span style="color: light-dark(#4A5263, #B4BCCA);"> sqlx</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span>query</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    use</span><span> super</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#4A5263, #B4BCCA);">{</span><span style="color: light-dark(#1A7A77, #52C4C0);">AppState</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Db</span><span style="color: light-dark(#4A5263, #B4BCCA);">}</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#836F1C, #AD9B49);">    #</span><span style="color: light-dark(#4A5263, #B4BCCA);">[</span><span style="color: light-dark(#836F1C, #AD9B49);">derive</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#836F1C, #AD9B49);">sqlx</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#1A7A77, #52C4C0);">FromRow</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">]</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    struct</span><span style="color: light-dark(#1A7A77, #52C4C0);"> User</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span>        id</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#1A7A77, #52C4C0);"> i32</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span></span>
+<span class="giallo-l"><span>        name</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#1A7A77, #52C4C0);"> String</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    pub</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> struct</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Users</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span>        db</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#4A5263, #B4BCCA);"> sqlx</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#1A7A77, #52C4C0);">SqlitePool</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    impl</span><span style="color: light-dark(#1A7A77, #52C4C0);"> FromRef</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">AppState</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> for</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Users</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">        fn</span><span style="color: light-dark(#2464C0, #76A8F2);"> from_ref</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>state</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#4A5263, #B4BCCA);"> &amp;</span><span style="color: light-dark(#1A7A77, #52C4C0);">AppState</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> -&gt;</span><span> Self</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">            let</span><span> db</span><span style="color: light-dark(#4A5263, #B4BCCA);"> =</span><span> state</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span>db</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#2464C0, #76A8F2);">clone</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span>            Self</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span><span> db</span><span style="color: light-dark(#4A5263, #B4BCCA);"> }</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">        }</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    impl</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Users</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">        pub</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> fn</span><span style="color: light-dark(#2464C0, #76A8F2);"> new</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>db</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Db</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> -&gt;</span><span> Self</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span>            Self</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span><span> db</span><span style="color: light-dark(#4A5263, #B4BCCA);"> }</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">        }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">        pub</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> async</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> fn</span><span style="color: light-dark(#2464C0, #76A8F2);"> all</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&amp;</span><span>self</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> -&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);"> sqlx</span><span style="color: light-dark(#4A5263, #B4BCCA);">::</span><span style="color: light-dark(#1A7A77, #52C4C0);">Result</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">Vec</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">User</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#B0443F, #E48383);">            query!</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">SELECT * FROM users</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">                .</span><span style="color: light-dark(#2464C0, #76A8F2);">fetch_all</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&amp;</span><span>self</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span>db</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">                .</span><span style="color: light-dark(#8A3FB0, #D58BF0);">await</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">        }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">        pub</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> async</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> fn</span><span style="color: light-dark(#2464C0, #76A8F2);"> find_by_id</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&amp;</span><span>self</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span> id</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#1A7A77, #52C4C0);"> i64</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> -&gt;</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Result</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">User</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#B0443F, #E48383);">            query!</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">SELECT * FROM users WHERE id = ?</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span> id</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">                .</span><span style="color: light-dark(#2464C0, #76A8F2);">fetch_one</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">&amp;</span><span>self</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span>db</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">                .</span><span style="color: light-dark(#8A3FB0, #D58BF0);">await</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">        }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;">        //</span><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;"> ... other queries ...</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    async</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> fn</span><span style="color: light-dark(#2464C0, #76A8F2);"> index</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>queries</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#1A7A77, #52C4C0);"> State</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">Users</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> -&gt;</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Result</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">Json</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">Vec</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">User</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">        let</span><span> users</span><span style="color: light-dark(#4A5263, #B4BCCA);"> =</span><span> queries</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#2464C0, #76A8F2);">index</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">await</span><span style="color: light-dark(#4A5263, #B4BCCA);">?</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#1A7A77, #52C4C0);">        Ok</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#2464C0, #76A8F2);">Json</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>users</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">    async</span><span style="color: light-dark(#8A3FB0, #D58BF0);"> fn</span><span style="color: light-dark(#2464C0, #76A8F2);"> show</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>queries</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#1A7A77, #52C4C0);"> State</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">Users</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);">,</span><span> id</span><span style="color: light-dark(#4A5263, #B4BCCA);">:</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Path</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">i64</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);"> -&gt;</span><span style="color: light-dark(#1A7A77, #52C4C0);"> Result</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">Json</span><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#1A7A77, #52C4C0);">User</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span><span style="color: light-dark(#4A5263, #B4BCCA);"> {</span></span>
+<span class="giallo-l"><span style="color: light-dark(#8A3FB0, #D58BF0);">        let</span><span> user</span><span style="color: light-dark(#4A5263, #B4BCCA);"> =</span><span> queries</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#2464C0, #76A8F2);">find_by_id</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#4A5263, #B4BCCA);">*</span><span>id</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">.</span><span style="color: light-dark(#8A3FB0, #D58BF0);">await</span><span style="color: light-dark(#4A5263, #B4BCCA);">?</span><span style="color: light-dark(#4A5263, #B4BCCA);">;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#1A7A77, #52C4C0);">        Ok</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span style="color: light-dark(#2464C0, #76A8F2);">Json</span><span style="color: light-dark(#4A5263, #B4BCCA);">(</span><span>user</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;">    //</span><span style="color: light-dark(#6B7385, #7D879B);font-style: italic;"> ... other handlers ...</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">}</span></span></code></pre>
+<p>Using this pattern lets the infrastructure code be separated from the handlers. The <code>Users</code> struct
+is automatically created from the state and passed to the handlers. This makes the handlers cleaner
+and easier to read as they avoid the need to extract the database pool from the state.</p>
+<p>This approach provides a nice separation of concerns. The <code>Users</code> struct is responsible for
+interacting with the database, while the handlers are responsible for handling the HTTP requests.</p>
+<p>It also provides a seam for unit testing. You can easily mock the <code>Users</code> struct in your tests to
+avoid hitting the database, as well as providing an ability to test the queries in isolation from
+the handlers.</p>
+
+    </div>
+    <div class="pagination">
+        <div class="pagination__title">
+            <span class="pagination__title-h">Thanks for reading! Read other posts?</span>
+            <hr />
+        </div>
+        <div class="pagination__buttons">
+            <span class="button previous">
+                <a href="https://www.joshka.net/thunderbolt-4-docks/">
+                    <span class="button__icon">←</span>&nbsp;
+                    <span class="button__text">Thunderbolt 4 Dock Comparison</span>
+                </a>
+            </span>
+            <span class="button next">
+                <a href="https://www.joshka.net/cell-borders/">
+                    <span class="button__text">Terminal borders that don&#39;t cost a cell</span>&nbsp;
+                    <span class="button__icon">→</span>
+                </a>
+            </span>
+        </div>
+    </div>
+</div>
+
+    </main>
+
+    <footer class="footer">
+    <div class="footer__inner">
+        <div class="copyright">
+            <span>© 2026 Josh McKinney</span>
+        </div>
+        <ul class="footer__links">
+            <li><a href="https://www.joshka.net/atom.xml">rss</a></li>
+            <li><a href="mailto:resume.2026@joshka.net">email</a></li>
+            <li><a href="https://github.com/joshka" rel="noopener noreferrer">github</a></li>
+            <li><a href="https://www.linkedin.com/in/joshka" rel="noopener noreferrer">linkedin</a></li>
+            <li><a href="https://hachyderm.io/@joshka" rel="noopener noreferrer">mastodon</a></li>
+            <li><a href="https://bsky.app/profile/joshka.net" rel="noopener noreferrer">bluesky</a></li>
+            <li><a href="https://x.com/joshuamck" rel="noopener noreferrer">x</a></li>
+            <li><a href="https://soundcloud.com/joshka" rel="noopener noreferrer">soundcloud</a></li>
+        </ul>
+    </div>
+</footer>
+
+</div>
+</body>
+
+</html>

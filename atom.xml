@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Joshka.net</title>
+    <subtitle>Josh McKinney&#39;s personal website</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://www.joshka.net/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://www.joshka.net"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-11-13T12:00:00-08:00</updated>
+    <id>https://www.joshka.net/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Terminal borders that don&#39;t cost a cell</title>
+        <published>2026-11-13T12:00:00-08:00</published>
+        <updated>2026-11-13T12:00:00-08:00</updated>
+        
+        <author>
+          <name>Josh McKinney</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://www.joshka.net/cell-borders/"/>
+        <id>https://www.joshka.net/cell-borders/</id>
+        
+        <summary type="html">&lt;p&gt;&lt;em&gt;This post (and the code behind it) was written with a lot of help from AI. I&#39;m not going to
+apologize for that. If that bothers you, feel free to close the tab.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;I maintain &lt;a rel=&quot;external&quot; href=&quot;https://ratatui.rs&quot;&gt;Ratatui&lt;/a&gt;, so I see a lot of the TUIs people build. Many of them end up looking fairly
+same-ish: plain boxes on a boring background, missing a bunch of the things that good design in
+other mediums brings us.&lt;/p&gt;
+&lt;p&gt;Borders are part of the problem. They have to take up space, so they become part of the panels
+people want to build. One option is to drop them and just use color, but borders are really nice
+for delineating and surrounding things. There are lots of ways to sort of get borders in a
+terminal, but none that are 100% good. I&#39;ve drawn enough &lt;code&gt;┌──┐&lt;/code&gt; by hand to have opinions about
+this.&lt;/p&gt;
+&lt;p&gt;The usual way is the Unicode Box Drawing block, which has 128 characters for lines, corners and
+joins. Somehow that&#39;s still not enough:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.joshka.net/cell-borders/box-drawing-block.png&quot;&gt;&lt;img src=&quot;https://www.joshka.net/cell-borders/box-drawing-block.png&quot; alt=&quot;The Unicode Box Drawing block, U+2500 to U+257F, rendered in Ghostty&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;So I&#39;ve been working on a terminal protocol that draws thin lines on the edges of cells instead.
+I&#39;ve got it working as &lt;a rel=&quot;external&quot; href=&quot;https://github.com/joshka/ghostty/tree/joshka/cell-borders&quot;&gt;a patch to Ghostty&lt;/a&gt; (and &lt;a rel=&quot;external&quot; href=&quot;https://github.com/raphamorim/rio/pull/1947&quot;&gt;an earlier version in
+Rio&lt;/a&gt; before that), and
+I&#39;ve built demo apps for it with Ratatui. I&#39;d like feedback from
+terminal and TUI authors.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.joshka.net/cell-borders/panes.png&quot;&gt;&lt;img src=&quot;https://www.joshka.net/cell-borders/panes.png&quot; alt=&quot;A tiling window manager demo built with Ratatui, using cell borders for panes, tabs, form fields and buttons&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>An ergonomic pattern for SQLx queries in Axum</title>
+        <published>2025-03-09T18:08:00-07:00</published>
+        <updated>2025-03-09T18:08:00-07:00</updated>
+        
+        <author>
+          <name>Josh McKinney</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://www.joshka.net/axum-sqlx-queries-pattern/"/>
+        <id>https://www.joshka.net/axum-sqlx-queries-pattern/</id>
+        
+        <summary type="html">&lt;p&gt;Axum is the most popular web framework in Rust at the time of writing. In this post, I&#39;ll show an
+easy and ergonomic pattern for connecting to a database using SQLx and Axum.&lt;/p&gt;
+&lt;p&gt;This is a small response to a question on &lt;a rel=&quot;external&quot; href=&quot;https://www.reddit.com/r/rust/comments/1j76nhm/comment/mgy2ptm/?utm_source=share&amp;amp;utm_medium=web3x&amp;amp;utm_name=web3xcss&amp;amp;utm_term=1&amp;amp;utm_content=share_button&quot;&gt;a reddit thread about how to structure SQLx queries in
+Axum&lt;/a&gt;.
+The pattern I&#39;ll show here is not the only way to do it, but it&#39;s one that I&#39;ve found to be simple
+and effective.&lt;/p&gt;
+&lt;p&gt;TL;DR: Store the database pool in your application state, create a struct to hold your queries, and
+use the &lt;code&gt;FromRef&lt;/code&gt; trait to simplify the interaction between your handlers and the database.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Thunderbolt 4 Dock Comparison</title>
+        <published>2023-06-15T19:35:00-07:00</published>
+        <updated>2023-06-15T19:35:00-07:00</updated>
+        
+        <author>
+          <name>Josh McKinney</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://www.joshka.net/thunderbolt-4-docks/"/>
+        <id>https://www.joshka.net/thunderbolt-4-docks/</id>
+        
+        <summary type="html">&lt;p&gt;Recently, while searching for a Thunderbolt 4 Dock, I found myself in a sea of data, but with no
+detailed comparison table to help. Hence, I decided to create one myself.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>AI Article Checklist</title>
+        <published>2023-06-06T15:45:00-08:00</published>
+        <updated>2023-06-06T15:45:00-08:00</updated>
+        
+        <author>
+          <name>Josh McKinney</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://www.joshka.net/ai-article-checklist/"/>
+        <id>https://www.joshka.net/ai-article-checklist/</id>
+        
+        <summary type="html">&lt;p&gt;I remember the early 2000s, a time marked by heated discussions in Slashdot comments and perhaps
+even earlier on Usenet. The topic of interest? Articles presenting possible solutions to fight spam.
+Accompanying these articles, a popular &lt;a rel=&quot;external&quot; href=&quot;https://craphound.com/spamsolutions.txt&quot;&gt;checklist&lt;/a&gt; was
+often shared. Now, in the 2020s, we&#39;re seeing a similar phenomenon with articles questioning the
+usefulness of LLMs in software writing. So, I decided to dust off this old spam checklist and
+repurpose it to the modern age.&lt;/p&gt;
+&lt;p&gt;Your article critiquing using AI tools for software development is...&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>The Moon is made of Cheese</title>
+        <published>2023-06-05T12:00:00-08:00</published>
+        <updated>2023-06-05T12:00:00-08:00</updated>
+        
+        <author>
+          <name>Josh McKinney</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://www.joshka.net/cheese/"/>
+        <id>https://www.joshka.net/cheese/</id>
+        
+        <summary type="html">&lt;p&gt;Lately, we&#39;ve seen a significant rise in articles casting doubt on the utility of Large Language
+Models (LLMs) like ChatGPT for specific tasks. These articles tend to anchor their conclusions on
+isolated experiments, generally an inadequate and potentially misleading approach due to the
+intrinsic randomness characterizing the outputs of LLMs. Instead, it&#39;s crucial this evaluation
+doesn&#39;t rely on a solitary experiment. Multiple trials and a deep understanding of the probabilities
+involved in different outcomes can provide a much more accurate reflection of LLMs&#39; overall
+performance.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>ChatGPT Memes</title>
+        <published>2023-01-25T03:34:35-08:00</published>
+        <updated>2023-01-25T03:34:35-08:00</updated>
+        
+        <author>
+          <name>Josh McKinney</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://www.joshka.net/chatgpt-memes/"/>
+        <id>https://www.joshka.net/chatgpt-memes/</id>
+        
+        <summary type="html">&lt;p&gt;I was curious about how ChatGPT would go with creating this era&#39;s main cultural output, memes after
+reading &lt;a rel=&quot;external&quot; href=&quot;https://news.ycombinator.com/item?id=34516204&quot;&gt;a comment by @jeisc on Hacker news&lt;/a&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Does anyone here really think that AI will produce a new &quot;Jungle Book&quot; by Kipling or a new &quot;Mona
+Lisa&quot; by Da Vinci or a new &quot;Requiem&quot; by Mozart&quot; which could even have a remote possibility of
+becoming cultural icon and reference? And is that a goal or event that the spectators are waiting
+for? And if it occurs what would it infer about human cultural evolution?&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Programmable IO (PIO) for MIDI with the Raspberry Pi Pico</title>
+        <published>2022-11-05T00:00:00+00:00</published>
+        <updated>2022-11-05T00:00:00+00:00</updated>
+        
+        <author>
+          <name>Josh McKinney</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://www.joshka.net/pio-for-midi-with-raspberry-pi-pico/"/>
+        <id>https://www.joshka.net/pio-for-midi-with-raspberry-pi-pico/</id>
+        
+        <summary type="html">&lt;p&gt;I recently read a few posts on the &lt;a rel=&quot;external&quot; href=&quot;https://diyelectromusic.wordpress.com/&quot;&gt;Simple DIY Electronic Music Project&lt;/a&gt; blog about using the
+Raspberry Pi Pico to interface with synthesizers over MIDI. The Pico is an interesting beast and I
+was curious how far it can be pushed - how many devices can a Pico control at once?  It turns out
+that it is possible to create a MIDI thru device of up to 25 outputs with PIO doing most of the
+heavy lifting leaving the main CPUs to handle program logic (and perhaps USB / WiFi / Bluetooth /
+etc).&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Introducing JUnit JSON Params</title>
+        <published>2018-08-27T11:03:00-07:00</published>
+        <updated>2018-08-27T11:03:00-07:00</updated>
+        
+        <author>
+          <name>Josh McKinney</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://www.joshka.net/junit-json-params/"/>
+        <id>https://www.joshka.net/junit-json-params/</id>
+        
+        <summary type="html">&lt;p&gt;Yesterday, I released &lt;a rel=&quot;external&quot; href=&quot;https://www.joshka.net/junit-json-params/&quot;&gt;junit-json-params&lt;/a&gt;, a small java
+library built on JUnit 5 that enables parameterizing unit tests with inline JSON and JSON resource
+files.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Installing .NET Core on OSX</title>
+        <published>2016-08-03T19:31:00-05:00</published>
+        <updated>2016-08-03T19:31:00-05:00</updated>
+        
+        <author>
+          <name>Josh McKinney</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://www.joshka.net/installing-dotnet-osx/"/>
+        <id>https://www.joshka.net/installing-dotnet-osx/</id>
+        
+        <summary type="html">&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; this post contains  outdated instructions for a problem that occurred installing .NET core
+on OSX in 2016. &lt;a rel=&quot;external&quot; href=&quot;https://github.com/dotnet/sdk/issues/4600&quot;&gt;https://github.com/dotnet/sdk/issues/4600&lt;/a&gt; suggests that you can now install dotnet
+core on macOS by running &lt;code&gt;brew install dotnet&lt;/code&gt;. The instructions at
+&lt;a rel=&quot;external&quot; href=&quot;https://learn.microsoft.com/en-us/dotnet/core/install/macos&quot;&gt;https://learn.microsoft.com/en-us/dotnet/core/install/macos&lt;/a&gt; are also worth reading rather than
+this post.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>My Geek Origin Story</title>
+        <published>2016-07-30T14:14:00-05:00</published>
+        <updated>2016-07-30T14:14:00-05:00</updated>
+        
+        <author>
+          <name>Josh McKinney</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://www.joshka.net/my-geek-origin-story/"/>
+        <id>https://www.joshka.net/my-geek-origin-story/</id>
+        
+        <summary type="html">&lt;p&gt;Like many a software engineer does again and again, I&#39;m restarting my blog. This time I&#39;m going to
+kick this iteration off with an idea inspired by &lt;a rel=&quot;external&quot; href=&quot;http://delicategeniusblog.com&quot;&gt;Michael Kordahi
+(@delicateGenius)&lt;/a&gt; many years ago for Tech.Ed 2011, the &lt;a rel=&quot;external&quot; href=&quot;https://web.archive.org/web/20161017050719/http://delicategeniusblog.com/my-geek-origin-story-whats-yours/&quot;&gt;Geek Origin
+Story&lt;/a&gt;.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Detecting and Preventing Corrupt Software Downloads</title>
+        <published>2010-04-30T11:33:00+10:00</published>
+        <updated>2010-04-30T11:33:00+10:00</updated>
+        
+        <author>
+          <name>Josh McKinney</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://www.joshka.net/detecting-corrupt-downloads/"/>
+        <id>https://www.joshka.net/detecting-corrupt-downloads/</id>
+        
+        <summary type="html">&lt;p&gt;In the past I and several of my colleagues have run into problems when attempting to install
+software downloaded from the &lt;a rel=&quot;external&quot; href=&quot;http://msdn.microsoft.com/en-us/subscriptions/downloads/default.aspx&quot;&gt;MSDN Subscriber
+Downloads&lt;/a&gt; or elsewhere. One
+possible cause for this is file corruption either due to an incomplete download, or caused later
+when copying the file to another device (e.g. over a local network or via flaky USB drives). This
+problem is easy to detect and prevent.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>app.config and Dev Prod Test databases</title>
+        <published>2006-09-05T17:19:00+10:00</published>
+        <updated>2006-09-05T17:19:00+10:00</updated>
+        
+        <author>
+          <name>Josh McKinney</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://www.joshka.net/app-config-connections-strings/"/>
+        <id>https://www.joshka.net/app-config-connections-strings/</id>
+        
+        <summary type="html">&lt;p&gt;In well designed enterprise apps, it is often the case that your application will run in multiple
+environments, and against different databases (Development, Test, and Production). This can lead to
+issues when it comes to storing connections strings.&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Goulds Bookstore</title>
+        <published>2006-07-10T11:17:00+10:00</published>
+        <updated>2006-07-10T11:17:00+10:00</updated>
+        
+        <author>
+          <name>Josh McKinney</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://www.joshka.net/goulds-bookstore/"/>
+        <id>https://www.joshka.net/goulds-bookstore/</id>
+        
+        <content type="html" xml:base="https://www.joshka.net/goulds-bookstore/">&lt;p&gt;On the way back from the Hunter I discovered the best second hand bookstore I&#39;ve ever seen (in
+Newtown). Bigger than anything (new or secondhand) in Canberra by far, and well stocked with
+anything from Sci-Fi to communist propaganda. It even has a couple of cats that live there.
+&lt;a rel=&quot;external&quot; href=&quot;http://gouldsbooks.com.au/&quot;&gt;http://gouldsbooks.com.au/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Picked Up:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;William Gibson - Idoru&lt;/li&gt;
+&lt;li&gt;Corman, Leiserson, Rivest - Introduction to Algorithms&lt;/li&gt;
+&lt;li&gt;Bruce Schneir - Secrets and Lies&lt;/li&gt;
+&lt;li&gt;Scott Adams - The Dilbert Principle&lt;/li&gt;
+&lt;li&gt;Some trashy cyberpunk novel that I can&#39;t remember the name of&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Taskbar Shuffle rockin my world today</title>
+        <published>2006-06-23T08:54:00+10:00</published>
+        <updated>2006-06-23T08:54:00+10:00</updated>
+        
+        <author>
+          <name>Josh McKinney</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://www.joshka.net/taskbar-shuffle-rocks/"/>
+        <id>https://www.joshka.net/taskbar-shuffle-rocks/</id>
+        
+        <content type="html" xml:base="https://www.joshka.net/taskbar-shuffle-rocks/">&lt;p&gt;&quot;No hotkey, no extra steps, drag and drop the programs on your Windows taskbar by simply... well,
+dragging and dropping them! Neat concept, huh? No need to get all nervous when a program crashes or
+if you wanna reboot; you can re-order your programs exactly as they were.&quot;
+&lt;a rel=&quot;external&quot; href=&quot;http://www.freewebs.com/nerdcave/taskbarshuffle.htm&quot;&gt;http://www.freewebs.com/nerdcave/taskbarshuffle.htm&lt;/a&gt;&lt;/p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Hello world!</title>
+        <published>2006-05-25T05:43:00+10:00</published>
+        <updated>2006-05-25T05:43:00+10:00</updated>
+        
+        <author>
+          <name>Josh McKinney</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://www.joshka.net/hello-world/"/>
+        <id>https://www.joshka.net/hello-world/</id>
+        
+        <content type="html" xml:base="https://www.joshka.net/hello-world/">&lt;p&gt;So yeah a blog, novel eh...&lt;/p&gt;
+</content>
+        
+    </entry>
+</feed>

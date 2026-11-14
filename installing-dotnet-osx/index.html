@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Installing .NET Core on OSX | Joshka.net</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noodp"/>
+
+<link rel="preload" href="https://www.joshka.net/fonts/FiraCode-VF.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://www.joshka.net/style.css?h=88f736eb3ef052eec811">
+<link rel="icon" href="https://www.joshka.net/favicon.svg" type="image/svg+xml">
+<meta name="description" content="Installing .NET Core on OS X with Homebrew in 2016. Outdated now; links to current instructions.">
+<meta property="og:description" content="Installing .NET Core on OS X with Homebrew in 2016. Outdated now; links to current instructions.">
+<meta property="og:title" content="Installing .NET Core on OSX | Joshka.net">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.joshka.net/installing-dotnet-osx/">
+<meta property="og:image" content="https://www.joshka.net/og/home.png">
+<meta name="twitter:image" content="https://www.joshka.net/og/home.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Installing .NET Core on OS X with Homebrew in 2016. Outdated now; links to current instructions.">
+<meta name="twitter:title" content="Installing .NET Core on OSX | Joshka.net">
+<meta property="twitter:domain" content="www.joshka.net">
+<meta property="twitter:url" content="https://www.joshka.net/installing-dotnet-osx/">
+<link rel="alternate" type="application/atom+xml" title="Joshka.net Atom Feed" href="https://www.joshka.net/atom.xml" />
+
+</head>
+
+<body class="">
+<div class="container">
+    <header class="header">
+    <div class="header__inner">
+        <div class="header__logo">
+            <a href="https://www.joshka.net" style="text-decoration: none;">
+                <div class="logo">joshka.net</div>
+            </a>
+        </div>
+        <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active">
+                    <a href="https://www.joshka.net/writing">writing</a>
+                </li>
+                <li>
+                    <a href="https://www.joshka.net/about">about</a>
+                </li>
+                <li>
+                    <a href="https://www.joshka.net/resume">resume</a>
+                </li>
+                <li>
+                    <a href="https://www.joshka.net/projects">projects</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <ul class="header__external">
+        <li><a href="https://github.com/joshka" target="_blank" rel="noopener noreferrer" aria-label="github"><span class="icon" style="--icon: url(https://www.joshka.net/icons/github.svg)" aria-hidden="true"></span><span class="label">github</span></a></li>
+        <li><a href="https://www.linkedin.com/in/joshka" target="_blank" rel="noopener noreferrer" aria-label="linkedin"><span class="icon" style="--icon: url(https://www.joshka.net/icons/linkedin.svg)" aria-hidden="true"></span><span class="label">linkedin</span></a></li>
+        <li><a href="https://hachyderm.io/@joshka" target="_blank" rel="noopener noreferrer" aria-label="mastodon"><span class="icon" style="--icon: url(https://www.joshka.net/icons/mastodon.svg)" aria-hidden="true"></span><span class="label">mastodon</span></a></li>
+        <li><a href="https://bsky.app/profile/joshka.net" target="_blank" rel="noopener noreferrer" aria-label="bluesky"><span class="icon" style="--icon: url(https://www.joshka.net/icons/bluesky.svg)" aria-hidden="true"></span><span class="label">bluesky</span></a></li>
+        <li><a href="https://x.com/joshuamck" target="_blank" rel="noopener noreferrer" aria-label="x"><span class="icon" style="--icon: url(https://www.joshka.net/icons/x.svg)" aria-hidden="true"></span><span class="label">x</span></a></li>
+        <li><a href="https://soundcloud.com/joshka" target="_blank" rel="noopener noreferrer" aria-label="soundcloud"><span class="icon" style="--icon: url(https://www.joshka.net/icons/soundcloud.svg)" aria-hidden="true"></span><span class="label">soundcloud</span></a></li>
+    </ul>
+</header>
+
+<nav class="home-strip">
+    <span>building:</span>
+    <a href="https://ratatui.rs">ratatui</a>
+    <a href="/betamax/">betamax</a>
+    <a href="/jk/">jk</a>
+    <a href="/ratatui-diff/">ratatui-diff</a>
+    <a href="/practice/">practice</a>
+    <a href="/projects/">all projects →</a>
+</nav>
+
+
+
+    <main class="content">
+        
+<div class="post">
+    
+<h1 class="post-title"><a href="https://www.joshka.net/installing-dotnet-osx/">Installing .NET Core on OSX</a></h1>
+<div class="post-meta-inline">
+    <span class="post-date">2016-08-03</span>
+</div>
+
+<span class="post-tags-inline"> :: tags:&nbsp; 
+        <a class="post-tag" href="https://www.joshka.net/tags/software/">#Software</a></span>
+
+
+    <div class="post-content">
+        <p><strong>Note:</strong> this post contains  outdated instructions for a problem that occurred installing .NET core
+on OSX in 2016. <a rel="external" href="https://github.com/dotnet/sdk/issues/4600">https://github.com/dotnet/sdk/issues/4600</a> suggests that you can now install dotnet
+core on macOS by running <code>brew install dotnet</code>. The instructions at
+<a rel="external" href="https://learn.microsoft.com/en-us/dotnet/core/install/macos">https://learn.microsoft.com/en-us/dotnet/core/install/macos</a> are also worth reading rather than
+this post.</p>
+<span id="continue-reading"></span>
+<p>The easiest way to install <a rel="external" href="https://dotnet.microsoft.com/en-us/download">.NET Core</a> on OSX is a little
+different than the way currently suggested at the official site. I suggest using
+<a rel="external" href="http://brew.sh">Homebrew</a>, and <a rel="external" href="http://caskroom.io">Homebrew Cask</a>.</p>
+<h2 id="instructions"><a class="zola-anchor" href="#instructions" aria-label="Anchor link for: instructions">Instructions</a></h2>
+<p>If you have not already installed Homebrew, install it.</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#1D2330, #DFE5EE); background-color: light-dark(#EEF1F5, #10151F);" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: light-dark(#2464C0, #76A8F2);">/usr/bin/ruby</span><span style="color: light-dark(#836F1C, #C7B461);"> -</span><span style="color: light-dark(#836F1C, #C7B461);">e</span><span style="color: light-dark(#4A5263, #B4BCCA);"> &quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">$(</span><span style="color: light-dark(#2464C0, #76A8F2);">curl</span><span style="color: light-dark(#836F1C, #C7B461);"> -</span><span style="color: light-dark(#836F1C, #C7B461);">fsSL</span><span style="color: light-dark(#2F7D3C, #75CF84);"> https://raw.githubusercontent.com/Homebrew/install/master/install</span><span style="color: light-dark(#4A5263, #B4BCCA);">)</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span></span></code></pre>
+<p>Install dotnet using caskroom. This will also automatically install openssl if it's not already
+installed.</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#1D2330, #DFE5EE); background-color: light-dark(#EEF1F5, #10151F);" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: light-dark(#2464C0, #76A8F2);">brew</span><span style="color: light-dark(#2F7D3C, #75CF84);"> update</span></span>
+<span class="giallo-l"><span style="color: light-dark(#2464C0, #76A8F2);">brew</span><span style="color: light-dark(#2F7D3C, #75CF84);"> tap</span><span style="color: light-dark(#2F7D3C, #75CF84);"> caskroom/cask</span></span>
+<span class="giallo-l"><span style="color: light-dark(#2464C0, #76A8F2);">brew</span><span style="color: light-dark(#2F7D3C, #75CF84);"> cask</span><span style="color: light-dark(#2F7D3C, #75CF84);"> install</span><span style="color: light-dark(#2F7D3C, #75CF84);"> dotnet</span></span></code></pre>
+<p>Note: this will work completely once
+<a rel="external" href="https://github.com/caskroom/homebrew-cask/pull/23854">homebrew-cask#23854</a> is merged. Until then,
+follow the part of instructions that link the 1.0.0 versions of openssl to your <code>/usr/local/lib</code>
+folder.</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#1D2330, #DFE5EE); background-color: light-dark(#EEF1F5, #10151F);" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: light-dark(#2464C0, #76A8F2);">ln</span><span style="color: light-dark(#836F1C, #C7B461);"> -</span><span style="color: light-dark(#836F1C, #C7B461);">s</span><span style="color: light-dark(#2F7D3C, #75CF84);"> /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib</span><span style="color: light-dark(#2F7D3C, #75CF84);"> /usr/local/lib/</span></span>
+<span class="giallo-l"><span style="color: light-dark(#2464C0, #76A8F2);">ln</span><span style="color: light-dark(#836F1C, #C7B461);"> -</span><span style="color: light-dark(#836F1C, #C7B461);">s</span><span style="color: light-dark(#2F7D3C, #75CF84);"> /usr/local/opt/openssl/lib/libssl.1.0.0.dylib</span><span style="color: light-dark(#2F7D3C, #75CF84);"> /usr/local/lib/</span></span></code></pre>
+<p><strong>Update 2016-08-18:</strong> replaced rpath with linking method
+(<a rel="external" href="https://github.com/joshka/joshka.github.io/commit/fed667f640251b74a4cbb92d446136d75e3fe95e">diff</a>)</p>
+
+    </div>
+    <div class="pagination">
+        <div class="pagination__title">
+            <span class="pagination__title-h">Thanks for reading! Read other posts?</span>
+            <hr />
+        </div>
+        <div class="pagination__buttons">
+            <span class="button previous">
+                <a href="https://www.joshka.net/my-geek-origin-story/">
+                    <span class="button__icon">←</span>&nbsp;
+                    <span class="button__text">My Geek Origin Story</span>
+                </a>
+            </span>
+            <span class="button next">
+                <a href="https://www.joshka.net/junit-json-params/">
+                    <span class="button__text">Introducing JUnit JSON Params</span>&nbsp;
+                    <span class="button__icon">→</span>
+                </a>
+            </span>
+        </div>
+    </div>
+</div>
+
+    </main>
+
+    <footer class="footer">
+    <div class="footer__inner">
+        <div class="copyright">
+            <span>© 2026 Josh McKinney</span>
+        </div>
+        <ul class="footer__links">
+            <li><a href="https://www.joshka.net/atom.xml">rss</a></li>
+            <li><a href="mailto:resume.2026@joshka.net">email</a></li>
+            <li><a href="https://github.com/joshka" rel="noopener noreferrer">github</a></li>
+            <li><a href="https://www.linkedin.com/in/joshka" rel="noopener noreferrer">linkedin</a></li>
+            <li><a href="https://hachyderm.io/@joshka" rel="noopener noreferrer">mastodon</a></li>
+            <li><a href="https://bsky.app/profile/joshka.net" rel="noopener noreferrer">bluesky</a></li>
+            <li><a href="https://x.com/joshuamck" rel="noopener noreferrer">x</a></li>
+            <li><a href="https://soundcloud.com/joshka" rel="noopener noreferrer">soundcloud</a></li>
+        </ul>
+    </div>
+</footer>
+
+</div>
+</body>
+
+</html>

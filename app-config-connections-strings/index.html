@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>app.config and Dev Prod Test databases | Joshka.net</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noodp"/>
+
+<link rel="preload" href="https://www.joshka.net/fonts/FiraCode-VF.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://www.joshka.net/style.css?h=88f736eb3ef052eec811">
+<link rel="icon" href="https://www.joshka.net/favicon.svg" type="image/svg+xml">
+<meta name="description" content="Switching app.config connection strings between dev, test and prod databases in Visual Studio 2005 builds.">
+<meta property="og:description" content="Switching app.config connection strings between dev, test and prod databases in Visual Studio 2005 builds.">
+<meta property="og:title" content="app.config and Dev Prod Test databases | Joshka.net">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.joshka.net/app-config-connections-strings/">
+<meta property="og:image" content="https://www.joshka.net/og/home.png">
+<meta name="twitter:image" content="https://www.joshka.net/og/home.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Switching app.config connection strings between dev, test and prod databases in Visual Studio 2005 builds.">
+<meta name="twitter:title" content="app.config and Dev Prod Test databases | Joshka.net">
+<meta property="twitter:domain" content="www.joshka.net">
+<meta property="twitter:url" content="https://www.joshka.net/app-config-connections-strings/">
+<link rel="alternate" type="application/atom+xml" title="Joshka.net Atom Feed" href="https://www.joshka.net/atom.xml" />
+
+</head>
+
+<body class="">
+<div class="container">
+    <header class="header">
+    <div class="header__inner">
+        <div class="header__logo">
+            <a href="https://www.joshka.net" style="text-decoration: none;">
+                <div class="logo">joshka.net</div>
+            </a>
+        </div>
+        <nav class="menu">
+            <ul class="menu__inner">
+                <li class="active">
+                    <a href="https://www.joshka.net/writing">writing</a>
+                </li>
+                <li>
+                    <a href="https://www.joshka.net/about">about</a>
+                </li>
+                <li>
+                    <a href="https://www.joshka.net/resume">resume</a>
+                </li>
+                <li>
+                    <a href="https://www.joshka.net/projects">projects</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <ul class="header__external">
+        <li><a href="https://github.com/joshka" target="_blank" rel="noopener noreferrer" aria-label="github"><span class="icon" style="--icon: url(https://www.joshka.net/icons/github.svg)" aria-hidden="true"></span><span class="label">github</span></a></li>
+        <li><a href="https://www.linkedin.com/in/joshka" target="_blank" rel="noopener noreferrer" aria-label="linkedin"><span class="icon" style="--icon: url(https://www.joshka.net/icons/linkedin.svg)" aria-hidden="true"></span><span class="label">linkedin</span></a></li>
+        <li><a href="https://hachyderm.io/@joshka" target="_blank" rel="noopener noreferrer" aria-label="mastodon"><span class="icon" style="--icon: url(https://www.joshka.net/icons/mastodon.svg)" aria-hidden="true"></span><span class="label">mastodon</span></a></li>
+        <li><a href="https://bsky.app/profile/joshka.net" target="_blank" rel="noopener noreferrer" aria-label="bluesky"><span class="icon" style="--icon: url(https://www.joshka.net/icons/bluesky.svg)" aria-hidden="true"></span><span class="label">bluesky</span></a></li>
+        <li><a href="https://x.com/joshuamck" target="_blank" rel="noopener noreferrer" aria-label="x"><span class="icon" style="--icon: url(https://www.joshka.net/icons/x.svg)" aria-hidden="true"></span><span class="label">x</span></a></li>
+        <li><a href="https://soundcloud.com/joshka" target="_blank" rel="noopener noreferrer" aria-label="soundcloud"><span class="icon" style="--icon: url(https://www.joshka.net/icons/soundcloud.svg)" aria-hidden="true"></span><span class="label">soundcloud</span></a></li>
+    </ul>
+</header>
+
+<nav class="home-strip">
+    <span>building:</span>
+    <a href="https://ratatui.rs">ratatui</a>
+    <a href="/betamax/">betamax</a>
+    <a href="/jk/">jk</a>
+    <a href="/ratatui-diff/">ratatui-diff</a>
+    <a href="/practice/">practice</a>
+    <a href="/projects/">all projects →</a>
+</nav>
+
+
+
+    <main class="content">
+        
+<div class="post">
+    
+<h1 class="post-title"><a href="https://www.joshka.net/app-config-connections-strings/">app.config and Dev Prod Test databases</a></h1>
+<div class="post-meta-inline">
+    <span class="post-date">2006-09-05</span>
+</div>
+
+<span class="post-tags-inline"> :: tags:&nbsp; 
+        <a class="post-tag" href="https://www.joshka.net/tags/software/">#Software</a></span>
+
+
+    <div class="post-content">
+        <p>In well designed enterprise apps, it is often the case that your application will run in multiple
+environments, and against different databases (Development, Test, and Production). This can lead to
+issues when it comes to storing connections strings.</p>
+<span id="continue-reading"></span>
+<p>Using Visual Studio 2003, there was an option to override your application config file as described
+by <a rel="external" href="http://stephenchu.blogspot.com/2005/05/dynamic-deployment-config-settings.html">Stephen Chu's
+post</a>. I couldn't
+get this setting to work in Visual Studio 2005, and I assume it is deprecated as MSDN the seems to
+have very little documentation about the setting One way I managed to find around it is to add
+something similar to the following in your .proj file (.csproj, .vbproj, ...)</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#1D2330, #DFE5EE); background-color: light-dark(#EEF1F5, #10151F);" ><code data-lang="xml"><span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;</span><span style="color: light-dark(#2464C0, #76A8F2);">Project</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span></span>
+<span class="giallo-l"><span>  ...</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">  &lt;</span><span style="color: light-dark(#2464C0, #76A8F2);">Import</span><span style="color: light-dark(#836F1C, #AD9B49);"> Project</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">$(MSBuildBinPath)\Microsoft.VisualBasic.targets</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);"> /&gt;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">  &lt;</span><span style="color: light-dark(#2464C0, #76A8F2);">Target</span><span style="color: light-dark(#836F1C, #AD9B49);"> Name</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">BeforeBuild</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    &lt;</span><span style="color: light-dark(#2464C0, #76A8F2);">CreateProperty</span><span style="color: light-dark(#836F1C, #AD9B49);"> Value</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">app.debug.config</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#836F1C, #AD9B49);"> Condition</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);"> ‘$(Configuration)|$(Platform)’ == ‘Dev|AnyCPU’ </span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">      &lt;</span><span style="color: light-dark(#2464C0, #76A8F2);">Output</span><span style="color: light-dark(#836F1C, #AD9B49);"> TaskParameter</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">Value</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#836F1C, #AD9B49);"> PropertyName</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">AppConfig</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);"> /&gt;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    &lt;/</span><span style="color: light-dark(#2464C0, #76A8F2);">CreateProperty</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    &lt;</span><span style="color: light-dark(#2464C0, #76A8F2);">CreateProperty</span><span style="color: light-dark(#836F1C, #AD9B49);"> Value</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">app.test.config</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#836F1C, #AD9B49);"> Condition</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">‘$(AppConfig)’==” and ‘$(Configuration)|$(Platform)’ == ‘Test|AnyCPU’ </span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">      &lt;</span><span style="color: light-dark(#2464C0, #76A8F2);">Output</span><span style="color: light-dark(#836F1C, #AD9B49);"> TaskParameter</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">Value</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#836F1C, #AD9B49);"> PropertyName</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">AppConfig</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);"> /&gt;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    &lt;/</span><span style="color: light-dark(#2464C0, #76A8F2);">CreateProperty</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    &lt;</span><span style="color: light-dark(#2464C0, #76A8F2);">CreateProperty</span><span style="color: light-dark(#836F1C, #AD9B49);"> Value</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">app.prod.config</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#836F1C, #AD9B49);"> Condition</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">‘$(AppConfig)’==” and ‘$(Configuration)|$(Platform)’ == ‘Prod|AnyCPU’ </span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">      &lt;</span><span style="color: light-dark(#2464C0, #76A8F2);">Output</span><span style="color: light-dark(#836F1C, #AD9B49);"> TaskParameter</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">Value</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#836F1C, #AD9B49);"> PropertyName</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">AppConfig</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);"> /&gt;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    &lt;/</span><span style="color: light-dark(#2464C0, #76A8F2);">CreateProperty</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    &lt;</span><span style="color: light-dark(#2464C0, #76A8F2);">CreateProperty</span><span style="color: light-dark(#836F1C, #AD9B49);"> Value</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">app.config</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#836F1C, #AD9B49);"> Condition</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">‘$(AppConfig)’==”</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">      &lt;</span><span style="color: light-dark(#2464C0, #76A8F2);">Output</span><span style="color: light-dark(#836F1C, #AD9B49);"> TaskParameter</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">Value</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#836F1C, #AD9B49);"> PropertyName</span><span>=</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#2F7D3C, #75CF84);">AppConfig</span><span style="color: light-dark(#4A5263, #B4BCCA);">&quot;</span><span style="color: light-dark(#4A5263, #B4BCCA);"> /&gt;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">    &lt;/</span><span style="color: light-dark(#2464C0, #76A8F2);">CreateProperty</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">  &lt;/</span><span style="color: light-dark(#2464C0, #76A8F2);">Target</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#4A5263, #B4BCCA);">&lt;/</span><span style="color: light-dark(#2464C0, #76A8F2);">Project</span><span style="color: light-dark(#4A5263, #B4BCCA);">&gt;</span></span></code></pre>
+<p>This basically sets the <code>$(AppConfig)</code> variable to something sane (depending on your chosen
+configuration). When the <code>_CopyAppConfigFile</code> target (see Microsoft.Common.targets) runs it copies
+this file to the output directory.</p>
+<p>An alternative would be to write a new task to replace <code>_CopyAppConfigFile</code> and import it.</p>
+
+    </div>
+    <div class="pagination">
+        <div class="pagination__title">
+            <span class="pagination__title-h">Thanks for reading! Read other posts?</span>
+            <hr />
+        </div>
+        <div class="pagination__buttons">
+            <span class="button previous">
+                <a href="https://www.joshka.net/goulds-bookstore/">
+                    <span class="button__icon">←</span>&nbsp;
+                    <span class="button__text">Goulds Bookstore</span>
+                </a>
+            </span>
+            <span class="button next">
+                <a href="https://www.joshka.net/detecting-corrupt-downloads/">
+                    <span class="button__text">Detecting and Preventing Corrupt Software Downloads</span>&nbsp;
+                    <span class="button__icon">→</span>
+                </a>
+            </span>
+        </div>
+    </div>
+</div>
+
+    </main>
+
+    <footer class="footer">
+    <div class="footer__inner">
+        <div class="copyright">
+            <span>© 2026 Josh McKinney</span>
+        </div>
+        <ul class="footer__links">
+            <li><a href="https://www.joshka.net/atom.xml">rss</a></li>
+            <li><a href="mailto:resume.2026@joshka.net">email</a></li>
+            <li><a href="https://github.com/joshka" rel="noopener noreferrer">github</a></li>
+            <li><a href="https://www.linkedin.com/in/joshka" rel="noopener noreferrer">linkedin</a></li>
+            <li><a href="https://hachyderm.io/@joshka" rel="noopener noreferrer">mastodon</a></li>
+            <li><a href="https://bsky.app/profile/joshka.net" rel="noopener noreferrer">bluesky</a></li>
+            <li><a href="https://x.com/joshuamck" rel="noopener noreferrer">x</a></li>
+            <li><a href="https://soundcloud.com/joshka" rel="noopener noreferrer">soundcloud</a></li>
+        </ul>
+    </div>
+</footer>
+
+</div>
+</body>
+
+</html>
