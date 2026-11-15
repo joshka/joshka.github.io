@@ -70,6 +70,8 @@
 
   &-content {
     margin-top: 30px;
+    // Long URLs wrap instead of widening the page on phones
+    overflow-wrap: break-word;
   }
 
   ul {
@@ -135,6 +137,7 @@
 
     .post-tag {
       color: var(--tag-color);
+      font-weight: normal;
       text-decoration: none;
       white-space: nowrap;
 
@@ -218,11 +221,15 @@
     margin-bottom: 0.5em;
   }
 
-  // 100 columns of code; ch here is the code font's own character width, plus the 20px side padding
-  > .post-content > pre {
+  // Code blocks match the text column (about 80 columns of code). On posts with longer lines (page.html sets
+  // post--wide-code) every block gets 100 columns, so blocks on one page share a width. ch here is the code
+  // font's own character width, plus the 20px side padding
+  &.post--wide-code > .post-content > pre {
     max-width: calc(101ch + 40px);
   }
 
+  // A heading straight above a card grid lines up with the grid, not the text column
+  > .post-content > :is(h2, h3):has(+ .project-grid),
   > .post-content > :is(figure, table, .table-scroll, .project-grid),
   > .post-content > :has(img, video, picture):not(.about-header) {
     max-width: none;
@@ -282,9 +289,11 @@
   font-size: var(--text-sm);
   color: var(--light-color-secondary);
 
+  // Padding rather than margin keeps the numbers inside the column and off the screen edge on phones
   ol {
     list-style: decimal;
-    margin-left: 1.5em;
+    margin-left: 0;
+    padding-left: 2em;
   }
 
   li {
@@ -303,6 +312,12 @@
     text-decoration: none;
     margin-left: 0.25em;
   }
+}
+
+// Small enough, with no line box of its own, that a marker doesn't push its line away from the one above
+.footnote-reference {
+  font-size: 0.75em;
+  line-height: 0;
 }
 
 .footnote-reference a {

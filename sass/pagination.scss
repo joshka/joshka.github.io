@@ -7,10 +7,11 @@
     display: flex;
     text-align: center;
     position: relative;
-    margin: 100px 0 20px;
+    margin: 64px 0 20px;
 
     &-h {
       text-align: center;
+      text-wrap: balance;
       margin: 0 auto;
       padding: 5px 10px;
       background: var(--background);
@@ -55,9 +56,11 @@
   cursor: pointer;
   appearance: none;
 
+  // Inline text, so a long title wraps evenly and the arrow stays with the word next to it
   a {
-    display: flex;
-    align-items: baseline;
+    display: block;
     padding: 8px 16px;
+    text-align: center;
+    text-wrap: balance;
   }
 }

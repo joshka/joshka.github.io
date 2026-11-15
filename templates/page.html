@@ -1,7 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="post post--centered">
+{#- Code blocks match the text column, which holds about 80 columns of code. If any line of code in the post is
+    longer, every block on the page gets the 100-column width instead (see post--wide-code in post.scss).
+    The highlighter puts each line of code in a giallo-l span on its own line of HTML. Plain-text blocks
+    wrap, so their line lengths don't count. -#}
+{%- set_global wide_code = false -%}
+{%- set_global plain = false -%}
+{%- for line in page.content | split(pat="\n") -%}
+    {%- if "<code" in line -%}
+        {%- set_global plain = 'data-lang="plain"' in line or "data-lang" not in line -%}
+    {%- endif -%}
+    {%- if "giallo-l" in line and not plain -%}
+        {%- set text = line | striptags | replace(from="&lt;", to="<") | replace(from="&gt;", to=">") | replace(from="&quot;", to="'") | replace(from="&#39;", to="'") | replace(from="&amp;", to="&") -%}
+        {%- if text | length > 80 -%}
+            {%- set_global wide_code = true -%}
+        {%- endif -%}
+    {%- endif -%}
+{%- endfor %}
+<div class="post post--centered{% if wide_code %} post--wide-code{% endif %}">
     {{ <post_header page={page} /> }}
     <div class="post-content">
         {{ page.content | safe }}

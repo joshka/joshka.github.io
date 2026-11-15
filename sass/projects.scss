@@ -132,6 +132,12 @@
   }
 }
 
+// Section headings on the projects page sit closer to their own cards than to the section before
+.post:not(.post--centered) > .post-content > h2 {
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+
 .project-card :is(h3, .card-title) {
   display: flex;
   align-items: baseline;
@@ -215,6 +221,12 @@
   }
 }
 
+// On the tags index the chips look like tags everywhere else: mono and tag-coloured
+.project-chips--tags a {
+  font-family: var(--font-mono);
+  color: var(--tag-color);
+}
+
 .resume-role {
   margin: -12px 0 10px;
   font-size: var(--text-sm);
@@ -286,6 +298,11 @@
 // Home page highlight tiles are whole-card links
 .home-highlights {
   margin: 28px 0 8px;
+
+  // Three cards in two columns would leave one on its own row, so stack them until there's room for three
+  @media (max-width: 999px) {
+    grid-template-columns: 1fr;
+  }
 
   a.project-card {
     color: inherit;
