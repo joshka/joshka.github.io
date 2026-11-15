@@ -24,7 +24,7 @@ this.
 The usual way is the Unicode Box Drawing block, which has 128 characters for lines, corners and
 joins. Somehow that's still not enough:
 
-[![The Unicode Box Drawing block, U+2500 to U+257F, rendered in Ghostty](box-drawing-block.png)](box-drawing-block.png)
+<a href="box-drawing-block.png"><img src="box-drawing-block.png" width="361" alt="The Unicode Box Drawing block, U+2500 to U+257F, in a 16 by 8 grid with hex row and column labels"></a>
 
 So I've been working on a terminal protocol that draws thin lines on the edges of cells instead.
 I've got it working as [a patch to Ghostty][branch] (and [an earlier version in
