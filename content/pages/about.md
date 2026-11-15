@@ -41,6 +41,6 @@ How I got started with computers is in [my geek origin story](/my-geek-origin-st
 
 ## Contact
 
-Email <resume.2026@joshka.net>, or find me on [GitHub](https://github.com/joshka),
+Find me on [GitHub](https://github.com/joshka),
 [LinkedIn](https://www.linkedin.com/in/joshka), [Mastodon](https://hachyderm.io/@joshka), or
 [Bluesky](https://bsky.app/profile/joshka.net).
