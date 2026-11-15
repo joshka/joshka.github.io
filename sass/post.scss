@@ -179,7 +179,7 @@
 }
 
 // On centred pages the header and footer (rules included) match the reading column too
-.container:has(.post--centered) {
+.container:has(.post--centered, .home) {
   --column: var(--measure);
 
   > .header,
