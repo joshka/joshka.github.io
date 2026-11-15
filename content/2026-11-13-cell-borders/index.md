@@ -314,7 +314,7 @@ I'm not attached to this being the exact solution, but I think it's a problem wo
 I'd like it to be more than one terminal's feature (and more than one weekend's worth of yak
 shaving). If you work on a terminal, would you implement this, and which parts look expensive? If you work on a TUI library or app, which of your widgets
 would use it, and what would they need that isn't here? Comments are welcome on the
-[Ghostty discussion][discussion].
+[Ghostty discussion][discussion], or on [Hacker News][hn] and [Lobsters][lobsters].
 
 [Ratatui]: https://ratatui.rs
 [spec]: https://github.com/joshka/ghostty/blob/joshka/cell-borders/specs/cell-border-protocol.md
@@ -323,3 +323,5 @@ would use it, and what would they need that isn't here? Comments are welcome on 
 [ratatui-branch]: https://github.com/joshka/ratatui/tree/joshka/cell-borders
 [discussion]: https://github.com/ghostty-org/ghostty/discussions/14324
 [raphamorim/rio#1947]: https://github.com/raphamorim/rio/pull/1947
+[hn]: https://news.ycombinator.com/item?id=50491423
+[lobsters]: https://lobste.rs/s/akdy9z/terminal_borders_don_t_cost_cell
