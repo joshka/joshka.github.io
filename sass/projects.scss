@@ -223,6 +223,13 @@
 
 .home {
   width: 100%;
+
+  // Intro and latest writing share the reading column; the highlight cards are the wide element
+  > .intro,
+  > .home-latest {
+    max-width: var(--measure);
+    margin-inline: auto;
+  }
 }
 
 .intro {
@@ -430,9 +437,17 @@
     overflow-x: auto;
     white-space: nowrap;
     scrollbar-width: none;
+    // Fade the right edge so it reads as scrollable rather than cut off
+    mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent);
+    padding-right: 32px;
   }
 
   .post-tags-inline {
     display: block;
+  }
+
+  // On its own line under the date, the tags need no label
+  .post-tags-inline__label {
+    display: none;
   }
 }

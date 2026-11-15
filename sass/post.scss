@@ -104,6 +104,7 @@
 
   &__date {
     color: var(--light-color-secondary);
+    font-size: var(--text-sm);
     white-space: nowrap;
     padding-right: 2ch !important;
   }
@@ -125,10 +126,12 @@
     font-size: var(--text-sm);
   }
 
+  // Tags sit under the description, so the title gets the full width of the row
   &__tags {
-    width: 24ch;
-    padding-left: 2ch !important;
-    font-size: var(--text-sm);
+    display: block;
+    margin-top: 2px;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
 
     .post-tag {
       color: var(--tag-color);
@@ -164,4 +167,145 @@
     content: " #";
     color: var(--accent);
   }
+}
+
+// Reading pages centre a single column; code gets 100 columns, and tables, images and card grids the full frame.
+// A registered <length> resolves --measure (in em) once on .post, so headings and meta inherit the body text's
+// measure instead of resolving it against their own font size.
+@property --column {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+// On centred pages the header and footer (rules included) match the reading column too
+.container:has(.post--centered) {
+  --column: var(--measure);
+
+  > .header,
+  > .home-strip,
+  > .footer {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: var(--column);
+    margin-inline: auto;
+  }
+}
+
+.post.post--centered {
+  --column: var(--measure);
+
+  > *,
+  > .post-content > * {
+    max-width: var(--column);
+    margin-inline: auto;
+  }
+
+  > .post-content {
+    max-width: none;
+  }
+
+  // Bullets hang in the margin on wide screens; once the gutter is too narrow for them, indent instead
+  @media (max-width: $tablet-max-width) {
+    > .post-content > :is(ul, ol) {
+      padding-left: 30px;
+    }
+  }
+
+  // Headings sit closer to the text they introduce than to the section before
+  > .post-content > :is(h2, h3, h4) {
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+  }
+
+  // 100 columns of code; ch here is the code font's own character width, plus the 20px side padding
+  > .post-content > pre {
+    max-width: calc(101ch + 40px);
+  }
+
+  > .post-content > :is(figure, table, .table-scroll, .project-grid),
+  > .post-content > :has(img, video, picture):not(.about-header) {
+    max-width: none;
+  }
+
+  // Wide tables break out of the frame to the full window, keeping the page gutter
+  > .post-content > .table-scroll {
+    box-sizing: border-box;
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    padding-inline: 40px;
+
+    @media (max-width: $phone-max-width) {
+      padding-inline: 20px;
+    }
+  }
+
+  > .post-content > :has(img, video, picture):not(.about-header) {
+    text-align: center;
+
+    img {
+      margin-inline: auto;
+    }
+  }
+}
+
+// Groups of images in one row, one column per image; groups of four drop to 2x2 on tablets, all stack on phones
+.side-by-side {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 20px;
+  align-items: start;
+
+  @media (max-width: $tablet-max-width) {
+    &:has(> :nth-child(4)) {
+      grid-auto-flow: row;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: $phone-max-width) {
+    grid-auto-flow: row;
+    grid-template-columns: 1fr;
+
+    &:has(> :nth-child(4)) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// Footnotes: a quieter numbered list after a short rule, each ending in a ↩ link back to its reference
+.footnotes {
+  margin-top: 3em;
+  padding-top: 1em;
+  border-top: 1px solid var(--border-color);
+  font-size: var(--text-sm);
+  color: var(--light-color-secondary);
+
+  ol {
+    list-style: decimal;
+    margin-left: 1.5em;
+  }
+
+  li {
+    padding-left: 0.25em;
+  }
+
+  li::marker {
+    font-family: var(--font-mono);
+  }
+
+  p {
+    margin: 0.25em 0;
+  }
+
+  a[href*="#fr-"] {
+    text-decoration: none;
+    margin-left: 0.25em;
+  }
+}
+
+.footnote-reference a {
+  text-decoration: none;
+  font-family: var(--font-mono);
 }

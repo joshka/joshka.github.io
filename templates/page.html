@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="post">
+<div class="post post--centered">
     {{ <post_header page={page} /> }}
     <div class="post-content">
         {{ page.content | safe }}

@@ -18,6 +18,8 @@ taxonomies = [{ name = "tags" }]
 generate_feeds = true
 
 [markdown]
+# GitHub-style footnotes: one list at the end of the post, each with a link back to its reference
+bottom_footnotes = true
 
 [markdown.highlighting]
 dark_theme = "aardvark-ink"

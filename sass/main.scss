@@ -16,30 +16,48 @@ html {
   --text-sm: .9rem;
   --text-base: 1rem;
   --text-lg: 1.25rem;
-  --text-xl: 1.5rem;
-  --text-2xl: 2rem;
+  // Headings shrink on narrow screens so titles don't fill a phone's first screen (full size from ~1030px)
+  --text-xl: clamp(1.3rem, 1.1rem + 0.6vw, 1.5rem);
+  --text-2xl: clamp(1.6rem, 1.15rem + 1.3vw, 2rem);
   --weight-heading: 600;
 
-  // Comfortable line length for prose; wide content (code, tables, images, card grids) uses the full frame
-  --measure: 76ch;
+  // Prose is proportional for reading; mono carries the identity in headings, metadata, nav and code
+  --font-sans: 'Fira Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
+
+  // Line length for prose: ~88 characters of Fira Sans, the wide end of comfortable, with a
+  // generous line-height to match. Wide content (code, tables, images, card grids) uses the full frame
+  --measure: 46em;
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
-  font-size: 1rem;
-  line-height: 1.54;
+  font-family: var(--font-sans);
+  // Fluid: 16px on phones, growing to 18px from ~1030px wide
+  font-size: clamp(1rem, 0.9rem + 0.35vw, 1.125rem);
+  line-height: 1.65;
   background-color: var(--background);
   color: var(--color);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -webkit-overflow-scrolling: touch;
   -webkit-text-size-adjust: 100%;
+}
 
-  @media (max-width: $phone-max-width) {
-    font-size: 1rem;
-  }
+h1, h2, h3, h4, h5, h6,
+.header,
+.home-strip,
+.footer,
+.post-meta,
+.post-meta-inline,
+.post-byline,
+.post-tags,
+.post-table__date,
+.post-tag,
+.project-meta,
+.pagination__title {
+  font-family: var(--font-mono);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -133,7 +151,7 @@ figure {
 }
 
 code {
-  font-family: 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
+  font-family: var(--font-mono);
   font-feature-settings: normal;
   background: var(--accent-alpha-20);
   padding: 1px 6px;
@@ -142,7 +160,7 @@ code {
 }
 
 pre {
-  font-family: 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
+  font-family: var(--font-mono);
   padding: 20px;
   font-size: var(--text-sm);
   overflow: auto;

@@ -1,9 +1,11 @@
 {% component post_header(page) %}
 <h1 class="post-title"><a href="{{ page.permalink | safe }}">{{ page.title }}</a></h1>
+<div class="post-byline">
 <div class="post-meta-inline">
     <span class="post-date">{{ page.date | date(format="%Y-%m-%d") if page.date else "" }}</span>
 </div>
 {{ <tags page={page} /> }}
+</div>
 {% endcomponent post_header %}
 
 {% component post_list(pages) %}
@@ -14,11 +16,11 @@
         <td class="post-table__title">
             <a href="{{ page.permalink | safe }}">{{ page.title }}</a>
             {%- if page.description %}<span class="post-table__description">{{ page.description }}</span>{% endif %}
-        </td>
-        <td class="post-table__tags">
+            <span class="post-table__tags">
             {%- for tag in (page.taxonomies?.tags or []) | sort | unique %}
             <a class="post-tag" href="{{ get_taxonomy_url(kind='tags', term=tag) | safe }}">#{{ tag }}</a>
             {%- endfor %}
+            </span>
         </td>
     </tr>
 {%- endfor %}
@@ -29,7 +31,7 @@
 {%- set tags = page.taxonomies?.tags %}
 {%- if tags %}
 <span class="post-tags-inline">
-    {%- if short %} :: {% else %} :: tags:&nbsp; {% endif %}
+    {%- if short %} :: {% else %}<span class="post-tags-inline__label"> :: tags:&nbsp; </span>{% endif %}
     {%- for tag in tags | sort | unique %}
         <a class="post-tag" href="{{ get_taxonomy_url(kind='tags', term=tag) | safe }}">#{{ tag }}</a>
         {%- if not loop.last %}{{ "," if short else "&nbsp;" | safe }}{% endif -%}

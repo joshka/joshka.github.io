@@ -61,16 +61,18 @@ attribute instead, and the checkbox and buttons turn into brackets.
 
 The settings form, with cell borders and then with the box-drawing fallback:
 
-[![A form with underlined text fields, a checkbox and rounded buttons drawn with cell borders](zoom-form.png)](zoom-form.png)
-
-[![The same form with the underline attribute and bracketed buttons](zoom-form-box.png)](zoom-form-box.png)
+<div class="side-by-side">
+<a href="zoom-form.png"><img src="zoom-form.png" alt="A form with underlined text fields, a checkbox and rounded buttons drawn with cell borders"></a>
+<a href="zoom-form-box.png"><img src="zoom-form-box.png" alt="The same form with the underline attribute and bracketed buttons"></a>
+</div>
 
 The tabs are the same story. With cell borders they sit on the pane's top edge. With box
 characters they need their own row inside the frame:
 
-[![Pane tabs drawn on the top edge of the pane with cell borders](zoom-tabs.png)](zoom-tabs.png)
-
-[![The same tabs inside a box-drawing frame](zoom-tabs-box.png)](zoom-tabs-box.png)
+<div class="side-by-side">
+<a href="zoom-tabs.png"><img src="zoom-tabs.png" alt="Pane tabs drawn on the top edge of the pane with cell borders"></a>
+<a href="zoom-tabs-box.png"><img src="zoom-tabs-box.png" alt="The same tabs inside a box-drawing frame"></a>
+</div>
 
 ### Charts
 

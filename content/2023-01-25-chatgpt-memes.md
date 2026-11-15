@@ -121,25 +121,33 @@ Prompt: Write a list of prompts. One for each of the captions above.
 
 And now to feed Midjourney...
 
-![Robot trying to understand why humans need to sleep](https://i.imgflip.com/78p5ia.jpg)
-![Robot trying to understand why humans need to sleep](https://i.imgflip.com/78p5w0.jpg)
-![Robot trying to understand why humans need to sleep](https://i.imgflip.com/78p5u9.jpg)
-![Robot trying to understand why humans need to sleep](https://i.imgflip.com/78p5rl.jpg)
+<div class="side-by-side">
+<a href="https://i.imgflip.com/78p5ia.jpg"><img src="https://i.imgflip.com/78p5ia.jpg" alt="Robot trying to understand why humans need to sleep"></a>
+<a href="https://i.imgflip.com/78p5w0.jpg"><img src="https://i.imgflip.com/78p5w0.jpg" alt="Robot trying to understand why humans need to sleep"></a>
+<a href="https://i.imgflip.com/78p5u9.jpg"><img src="https://i.imgflip.com/78p5u9.jpg" alt="Robot trying to understand why humans need to sleep"></a>
+<a href="https://i.imgflip.com/78p5rl.jpg"><img src="https://i.imgflip.com/78p5rl.jpg" alt="Robot trying to understand why humans need to sleep"></a>
+</div>
 
-![Robot trying to understand sarcasm](https://i.imgflip.com/78p686.jpg)
-![Robot trying to understand sarcasm](https://i.imgflip.com/78p66t.jpg)
-![Robot trying to understand sarcasm](https://i.imgflip.com/78p63y.jpg)
-![Robot trying to understand sarcasm](https://i.imgflip.com/78p93k.jpg)
+<div class="side-by-side">
+<a href="https://i.imgflip.com/78p686.jpg"><img src="https://i.imgflip.com/78p686.jpg" alt="Robot trying to understand sarcasm"></a>
+<a href="https://i.imgflip.com/78p66t.jpg"><img src="https://i.imgflip.com/78p66t.jpg" alt="Robot trying to understand sarcasm"></a>
+<a href="https://i.imgflip.com/78p63y.jpg"><img src="https://i.imgflip.com/78p63y.jpg" alt="Robot trying to understand sarcasm"></a>
+<a href="https://i.imgflip.com/78p93k.jpg"><img src="https://i.imgflip.com/78p93k.jpg" alt="Robot trying to understand sarcasm"></a>
+</div>
 
-![Robot trying to understand the concept of love](https://i.imgflip.com/78p9ga.jpg)
-![Robot trying to understand the concept of love](https://i.imgflip.com/78p9j4.jpg)
-![Robot trying to understand the concept of love](https://i.imgflip.com/78p9l6.jpg)
-![Robot trying to understand the concept of love](https://i.imgflip.com/78p9o2.jpg)
+<div class="side-by-side">
+<a href="https://i.imgflip.com/78p9ga.jpg"><img src="https://i.imgflip.com/78p9ga.jpg" alt="Robot trying to understand the concept of love"></a>
+<a href="https://i.imgflip.com/78p9j4.jpg"><img src="https://i.imgflip.com/78p9j4.jpg" alt="Robot trying to understand the concept of love"></a>
+<a href="https://i.imgflip.com/78p9l6.jpg"><img src="https://i.imgflip.com/78p9l6.jpg" alt="Robot trying to understand the concept of love"></a>
+<a href="https://i.imgflip.com/78p9o2.jpg"><img src="https://i.imgflip.com/78p9o2.jpg" alt="Robot trying to understand the concept of love"></a>
+</div>
 
-![Robot trying to understand why humans watch reality TV](https://i.imgflip.com/78p9w8.jpg)
-![Robot trying to understand why humans watch reality TV](https://i.imgflip.com/78p9yd.jpg)
-![Robot trying to understand why humans watch reality TV](https://i.imgflip.com/78pa07.jpg)
-![Robot trying to understand why humans watch reality TV](https://i.imgflip.com/78pa2a.jpg)
+<div class="side-by-side">
+<a href="https://i.imgflip.com/78p9w8.jpg"><img src="https://i.imgflip.com/78p9w8.jpg" alt="Robot trying to understand why humans watch reality TV"></a>
+<a href="https://i.imgflip.com/78p9yd.jpg"><img src="https://i.imgflip.com/78p9yd.jpg" alt="Robot trying to understand why humans watch reality TV"></a>
+<a href="https://i.imgflip.com/78pa07.jpg"><img src="https://i.imgflip.com/78pa07.jpg" alt="Robot trying to understand why humans watch reality TV"></a>
+<a href="https://i.imgflip.com/78pa2a.jpg"><img src="https://i.imgflip.com/78pa2a.jpg" alt="Robot trying to understand why humans watch reality TV"></a>
+</div>
 
 Is this funny? Meaningful? Who knows?
 
